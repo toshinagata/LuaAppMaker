@@ -1,0 +1,3 @@
+[submodule "wxlua"]
+	path = wxlua
+	url = https://github.com/toshinagata/wxlua

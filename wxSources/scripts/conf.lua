@@ -1,0 +1,2 @@
+LuaApp.config = {
+}

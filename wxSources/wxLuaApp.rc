@@ -1,0 +1,2 @@
+myicon ICON "../../art/wxlua.ico"
+#include "wx/msw/wx.rc"

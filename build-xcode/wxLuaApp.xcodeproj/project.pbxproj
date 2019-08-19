@@ -1,0 +1,1121 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 45;
+	objects = {
+
+/* Begin PBXAggregateTarget section */
+		E4CB370F1FE4FF0E001BB75E /* wxLuaApp_archive */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = E4CB37101FE4FF0E001BB75E /* Build configuration list for PBXAggregateTarget "wxLuaApp_archive" */;
+			buildPhases = (
+				E4CB37171FE4FF42001BB75E /* ShellScript */,
+			);
+			dependencies = (
+				E4CB37141FE4FF23001BB75E /* PBXTargetDependency */,
+				E4CB37191FE50707001BB75E /* PBXTargetDependency */,
+			);
+			name = wxLuaApp_archive;
+			productName = "Molby (Mac Archive)";
+		};
+/* End PBXAggregateTarget section */
+
+/* Begin PBXBuildFile section */
+		E48A4A3D2153E902005F88AB /* QTKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E48A4A3C2153E902005F88AB /* QTKit.framework */; };
+		E4D6D8B9230ADE4A0008ADE9 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = E4D6D8B8230ADE4A0008ADE9 /* Info.plist */; };
+		E4D6D8C6230ADEC10008ADE9 /* wxLuaApp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E4D6D8BD230ADEC00008ADE9 /* wxLuaApp.cpp */; };
+		E4D6D8C7230ADEC10008ADE9 /* lua_addition.c in Sources */ = {isa = PBXBuildFile; fileRef = E4D6D8BE230ADEC10008ADE9 /* lua_addition.c */; };
+		E4D6D8C8230ADEC10008ADE9 /* ConsoleFrame.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E4D6D8BF230ADEC10008ADE9 /* ConsoleFrame.cpp */; };
+		E4D6D8C9230ADEC10008ADE9 /* textctrl_addition.mm in Sources */ = {isa = PBXBuildFile; fileRef = E4D6D8C0230ADEC10008ADE9 /* textctrl_addition.mm */; };
+		E4D6D8CC230ADF320008ADE9 /* buildInfo.c in Sources */ = {isa = PBXBuildFile; fileRef = E4D6D8CB230ADF320008ADE9 /* buildInfo.c */; };
+		E4D6D8CE230AE2C90008ADE9 /* libluajit-5.1.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = E4D6D8CD230AE2C90008ADE9 /* libluajit-5.1.dylib */; };
+		E4D6D923230AE8910008ADE9 /* wxbase_base.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E4D6D8ED230AE8900008ADE9 /* wxbase_base.cpp */; };
+		E4D6D924230AE8910008ADE9 /* wxcore_print.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E4D6D8EE230AE8900008ADE9 /* wxcore_print.cpp */; };
+		E4D6D926230AE8910008ADE9 /* wxbase_data.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E4D6D8F0230AE8900008ADE9 /* wxbase_data.cpp */; };
+		E4D6D927230AE8910008ADE9 /* wxpropgrid_bind.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E4D6D8F1230AE8900008ADE9 /* wxpropgrid_bind.cpp */; };
+		E4D6D928230AE8910008ADE9 /* wxstc_bind.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E4D6D8F2230AE8900008ADE9 /* wxstc_bind.cpp */; };
+		E4D6D929230AE8910008ADE9 /* wxbase_datetime.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E4D6D8F3230AE8900008ADE9 /* wxbase_datetime.cpp */; };
+		E4D6D92B230AE8910008ADE9 /* wxcore_wxlcore.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E4D6D8F5230AE8900008ADE9 /* wxcore_wxlcore.cpp */; };
+		E4D6D92C230AE8910008ADE9 /* wxcore_help.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E4D6D8F6230AE8900008ADE9 /* wxcore_help.cpp */; };
+		E4D6D92D230AE8910008ADE9 /* wxcore_appframe.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E4D6D8F7230AE8900008ADE9 /* wxcore_appframe.cpp */; };
+		E4D6D92E230AE8910008ADE9 /* wxgl_bind.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E4D6D8F8230AE8900008ADE9 /* wxgl_bind.cpp */; };
+		E4D6D92F230AE8910008ADE9 /* wxcore_defsutils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E4D6D8F9230AE8900008ADE9 /* wxcore_defsutils.cpp */; };
+		E4D6D930230AE8910008ADE9 /* wxcore_clipdrag.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E4D6D8FA230AE8900008ADE9 /* wxcore_clipdrag.cpp */; };
+		E4D6D932230AE8910008ADE9 /* wxcore_core.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E4D6D8FC230AE8900008ADE9 /* wxcore_core.cpp */; };
+		E4D6D933230AE8910008ADE9 /* wxxml_bind.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E4D6D8FD230AE8900008ADE9 /* wxxml_bind.cpp */; };
+		E4D6D935230AE8910008ADE9 /* Makefile in Sources */ = {isa = PBXBuildFile; fileRef = E4D6D8FF230AE8900008ADE9 /* Makefile */; };
+		E4D6D936230AE8910008ADE9 /* wxbase_bind.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E4D6D900230AE8900008ADE9 /* wxbase_bind.cpp */; };
+		E4D6D937230AE8910008ADE9 /* wxhtml_wxlhtml.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E4D6D901230AE8900008ADE9 /* wxhtml_wxlhtml.cpp */; };
+		E4D6D938230AE8910008ADE9 /* wxcore_bind.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E4D6D902230AE8900008ADE9 /* wxcore_bind.cpp */; };
+		E4D6D939230AE8910008ADE9 /* wxcore_picker.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E4D6D903230AE8900008ADE9 /* wxcore_picker.cpp */; };
+		E4D6D93A230AE8910008ADE9 /* wxcore_gdi.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E4D6D904230AE8900008ADE9 /* wxcore_gdi.cpp */; };
+		E4D6D93B230AE8910008ADE9 /* wxrichtext_bind.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E4D6D905230AE8900008ADE9 /* wxrichtext_bind.cpp */; };
+		E4D6D93D230AE8910008ADE9 /* wxbase_config.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E4D6D907230AE8900008ADE9 /* wxbase_config.cpp */; };
+		E4D6D93E230AE8910008ADE9 /* wxadv_bind.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E4D6D908230AE8900008ADE9 /* wxadv_bind.cpp */; };
+		E4D6D93F230AE8910008ADE9 /* wxcore_sizer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E4D6D909230AE8900008ADE9 /* wxcore_sizer.cpp */; };
+		E4D6D940230AE8910008ADE9 /* wxhtml_bind.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E4D6D90A230AE8900008ADE9 /* wxhtml_bind.cpp */; };
+		E4D6D941230AE8910008ADE9 /* wxcore_image.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E4D6D90B230AE8900008ADE9 /* wxcore_image.cpp */; };
+		E4D6D942230AE8910008ADE9 /* wxcore_geometry.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E4D6D90C230AE8900008ADE9 /* wxcore_geometry.cpp */; };
+		E4D6D943230AE8910008ADE9 /* wxcore_controls.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E4D6D90D230AE8900008ADE9 /* wxcore_controls.cpp */; };
+		E4D6D944230AE8910008ADE9 /* wxcore_dialogs.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E4D6D90E230AE8900008ADE9 /* wxcore_dialogs.cpp */; };
+		E4D6D946230AE8910008ADE9 /* wxwebview_bind.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E4D6D910230AE8900008ADE9 /* wxwebview_bind.cpp */; };
+		E4D6D948230AE8910008ADE9 /* wxcore_mdi.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E4D6D912230AE8900008ADE9 /* wxcore_mdi.cpp */; };
+		E4D6D94A230AE8910008ADE9 /* wxcore_event.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E4D6D914230AE8900008ADE9 /* wxcore_event.cpp */; };
+		E4D6D94B230AE8910008ADE9 /* dummy.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E4D6D915230AE8900008ADE9 /* dummy.cpp */; };
+		E4D6D94E230AE8910008ADE9 /* wxcore_menutool.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E4D6D918230AE8900008ADE9 /* wxcore_menutool.cpp */; };
+		E4D6D94F230AE8910008ADE9 /* wxnet_bind.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E4D6D919230AE8900008ADE9 /* wxnet_bind.cpp */; };
+		E4D6D951230AE8910008ADE9 /* wxmedia_bind.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E4D6D91B230AE8900008ADE9 /* wxmedia_bind.cpp */; };
+		E4D6D952230AE8910008ADE9 /* wxcore_windows.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E4D6D91C230AE8900008ADE9 /* wxcore_windows.cpp */; };
+		E4D6D954230AE8910008ADE9 /* wxbase_file.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E4D6D91E230AE8900008ADE9 /* wxbase_file.cpp */; };
+		E4D6D955230AE8910008ADE9 /* wxadv_wxladv.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E4D6D91F230AE8900008ADE9 /* wxadv_wxladv.cpp */; };
+		E4D6D956230AE8910008ADE9 /* wxxrc_bind.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E4D6D920230AE8900008ADE9 /* wxxrc_bind.cpp */; };
+		E4D6D957230AE8910008ADE9 /* wxaui_bind.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E4D6D921230AE8900008ADE9 /* wxaui_bind.cpp */; };
+		E4D6D987230AE8B10008ADE9 /* wxlstate.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E4D6D95F230AE8B10008ADE9 /* wxlstate.cpp */; };
+		E4D6D988230AE8B10008ADE9 /* Makefile in Sources */ = {isa = PBXBuildFile; fileRef = E4D6D960230AE8B10008ADE9 /* Makefile */; };
+		E4D6D989230AE8B10008ADE9 /* wxlua_bind.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E4D6D961230AE8B10008ADE9 /* wxlua_bind.cpp */; };
+		E4D6D98A230AE8B10008ADE9 /* wxlconsole.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E4D6D964230AE8B10008ADE9 /* wxlconsole.cpp */; };
+		E4D6D98B230AE8B10008ADE9 /* wxlcallb.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E4D6D966230AE8B10008ADE9 /* wxlcallb.cpp */; };
+		E4D6D98C230AE8B10008ADE9 /* dummy.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E4D6D968230AE8B10008ADE9 /* dummy.cpp */; };
+		E4D6D98D230AE8B10008ADE9 /* wxllua.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E4D6D969230AE8B10008ADE9 /* wxllua.cpp */; };
+		E4D6D98F230AE8B10008ADE9 /* Makefile in Sources */ = {isa = PBXBuildFile; fileRef = E4D6D96F230AE8B10008ADE9 /* Makefile */; };
+		E4D6D990230AE8B10008ADE9 /* wxldtarg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E4D6D970230AE8B10008ADE9 /* wxldtarg.cpp */; };
+		E4D6D991230AE8B10008ADE9 /* dummy.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E4D6D972230AE8B10008ADE9 /* dummy.cpp */; };
+		E4D6D992230AE8B10008ADE9 /* wxldserv.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E4D6D974230AE8B10008ADE9 /* wxldserv.cpp */; };
+		E4D6D993230AE8B10008ADE9 /* wxlsock.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E4D6D975230AE8B10008ADE9 /* wxlsock.cpp */; };
+		E4D6D994230AE8B10008ADE9 /* wxluadebugger_bind.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E4D6D977230AE8B10008ADE9 /* wxluadebugger_bind.cpp */; };
+		E4D6D995230AE8B10008ADE9 /* lbitlib.c in Sources */ = {isa = PBXBuildFile; fileRef = E4D6D978230AE8B10008ADE9 /* lbitlib.c */; };
+		E4D6D996230AE8B10008ADE9 /* wxlbind.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E4D6D97A230AE8B10008ADE9 /* wxlbind.cpp */; };
+		E4D6D998230AE8B10008ADE9 /* Makefile in Sources */ = {isa = PBXBuildFile; fileRef = E4D6D97D230AE8B10008ADE9 /* Makefile */; };
+		E4D6D999230AE8B10008ADE9 /* wxlstack.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E4D6D97F230AE8B10008ADE9 /* wxlstack.cpp */; };
+		E4D6D99A230AE8B10008ADE9 /* dummy.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E4D6D980230AE8B10008ADE9 /* dummy.cpp */; };
+		E4D6D99B230AE8B10008ADE9 /* wxldebug.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E4D6D981230AE8B10008ADE9 /* wxldebug.cpp */; };
+		E4D6D99C230AE8B10008ADE9 /* wxlobject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E4D6D985230AE8B10008ADE9 /* wxlobject.cpp */; };
+		E4D6D99E230AEB190008ADE9 /* scripts in Resources */ = {isa = PBXBuildFile; fileRef = E4D6D99D230AEB190008ADE9 /* scripts */; };
+		E4FC7811183E50DC0064FB2E /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4FC7810183E50DC0064FB2E /* Accelerate.framework */; };
+		E4FC7838183E50F00064FB2E /* AGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4FC7837183E50F00064FB2E /* AGL.framework */; };
+		E4FC784C183E51180064FB2E /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4FC7845183E51180064FB2E /* Carbon.framework */; };
+		E4FC784D183E51180064FB2E /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4FC7846183E51180064FB2E /* Cocoa.framework */; };
+		E4FC784E183E51180064FB2E /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4FC7847183E51180064FB2E /* GLUT.framework */; };
+		E4FC784F183E51180064FB2E /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4FC7848183E51180064FB2E /* IOKit.framework */; };
+		E4FC7850183E51180064FB2E /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4FC7849183E51180064FB2E /* OpenGL.framework */; };
+		E4FC7851183E51180064FB2E /* QuickTime.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4FC784A183E51180064FB2E /* QuickTime.framework */; };
+		E4FC7852183E51180064FB2E /* System.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4FC784B183E51180064FB2E /* System.framework */; };
+		E4FC7A17183E51570064FB2E /* AppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4FC7A15183E51570064FB2E /* AppKit.framework */; };
+		E4FC7A18183E51570064FB2E /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4FC7A16183E51570064FB2E /* Foundation.framework */; };
+		E4FC7B59183E53710064FB2E /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4FC7B58183E53710064FB2E /* WebKit.framework */; };
+		E4FC7CAD183F953E0064FB2E /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4FC7CAC183F953E0064FB2E /* AudioToolbox.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		E4CB37131FE4FF23001BB75E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 29B97313FDCFA39411CA2CEA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 8D1107260486CEB800E47090;
+			remoteInfo = Molby;
+		};
+		E4CB37181FE50707001BB75E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 29B97313FDCFA39411CA2CEA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = E4CB370B1FE2C1F7001BB75E;
+			remoteInfo = "Molby (Windows)";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		E4817ED0218208ED00986125 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = lib;
+			dstSubfolderSpec = 7;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		8D1107320486CEB800E47090 /* wxLuaApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = wxLuaApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		E48A4A3C2153E902005F88AB /* QTKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QTKit.framework; path = ../../../../../../System/Library/Frameworks/QTKit.framework; sourceTree = "<group>"; };
+		E4D6D8B8230ADE4A0008ADE9 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		E4D6D8BA230ADEC00008ADE9 /* wxLuaApp.rc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = wxLuaApp.rc; path = ../wxSources/wxLuaApp.rc; sourceTree = "<group>"; };
+		E4D6D8BB230ADEC00008ADE9 /* wxLuaApp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = wxLuaApp.h; path = ../wxSources/wxLuaApp.h; sourceTree = "<group>"; };
+		E4D6D8BC230ADEC00008ADE9 /* record_build_date.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; name = record_build_date.sh; path = ../wxSources/record_build_date.sh; sourceTree = "<group>"; };
+		E4D6D8BD230ADEC00008ADE9 /* wxLuaApp.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = wxLuaApp.cpp; path = ../wxSources/wxLuaApp.cpp; sourceTree = "<group>"; };
+		E4D6D8BE230ADEC10008ADE9 /* lua_addition.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = lua_addition.c; path = ../wxSources/lua_addition.c; sourceTree = "<group>"; };
+		E4D6D8BF230ADEC10008ADE9 /* ConsoleFrame.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ConsoleFrame.cpp; path = ../wxSources/ConsoleFrame.cpp; sourceTree = "<group>"; };
+		E4D6D8C0230ADEC10008ADE9 /* textctrl_addition.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = textctrl_addition.mm; path = ../wxSources/textctrl_addition.mm; sourceTree = "<group>"; };
+		E4D6D8C1230ADEC10008ADE9 /* ConsoleFrame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ConsoleFrame.h; path = ../wxSources/ConsoleFrame.h; sourceTree = "<group>"; };
+		E4D6D8C2230ADEC10008ADE9 /* lua_addition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = lua_addition.h; path = ../wxSources/lua_addition.h; sourceTree = "<group>"; };
+		E4D6D8C3230ADEC10008ADE9 /* wxLuaApp.iss */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = wxLuaApp.iss; path = ../wxSources/wxLuaApp.iss; sourceTree = "<group>"; };
+		E4D6D8CB230ADF320008ADE9 /* buildInfo.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = buildInfo.c; path = build/buildInfo.c; sourceTree = "<group>"; };
+		E4D6D8CD230AE2C90008ADE9 /* libluajit-5.1.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libluajit-5.1.dylib"; path = "build/lib/libluajit-5.1.dylib"; sourceTree = "<group>"; };
+		E4D6D8D6230AE8900008ADE9 /* CMakeLists.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = CMakeLists.txt; sourceTree = "<group>"; };
+		E4D6D8D8230AE8900008ADE9 /* wxadv_bind.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = wxadv_bind.h; sourceTree = "<group>"; };
+		E4D6D8D9230AE8900008ADE9 /* wxaui_bind.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = wxaui_bind.h; sourceTree = "<group>"; };
+		E4D6D8DA230AE8900008ADE9 /* wxrichtext_bind.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = wxrichtext_bind.h; sourceTree = "<group>"; };
+		E4D6D8DB230AE8900008ADE9 /* wxstc_bind.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = wxstc_bind.h; sourceTree = "<group>"; };
+		E4D6D8DC230AE8900008ADE9 /* wxbase_bind.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = wxbase_bind.h; sourceTree = "<group>"; };
+		E4D6D8DD230AE8900008ADE9 /* wxhtml_wxlhtml.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = wxhtml_wxlhtml.h; sourceTree = "<group>"; };
+		E4D6D8DE230AE8900008ADE9 /* wxxml_bind.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = wxxml_bind.h; sourceTree = "<group>"; };
+		E4D6D8DF230AE8900008ADE9 /* wxcore_bind.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = wxcore_bind.h; sourceTree = "<group>"; };
+		E4D6D8E0230AE8900008ADE9 /* wxxrc_bind.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = wxxrc_bind.h; sourceTree = "<group>"; };
+		E4D6D8E1230AE8900008ADE9 /* wxmedia_bind.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = wxmedia_bind.h; sourceTree = "<group>"; };
+		E4D6D8E2230AE8900008ADE9 /* wxadv_wxladv.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = wxadv_wxladv.h; sourceTree = "<group>"; };
+		E4D6D8E3230AE8900008ADE9 /* wxbinddefs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = wxbinddefs.h; sourceTree = "<group>"; };
+		E4D6D8E4230AE8900008ADE9 /* wxwebview_bind.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = wxwebview_bind.h; sourceTree = "<group>"; };
+		E4D6D8E5230AE8900008ADE9 /* wxcore_wxlcore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = wxcore_wxlcore.h; sourceTree = "<group>"; };
+		E4D6D8E6230AE8900008ADE9 /* wxnet_bind.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = wxnet_bind.h; sourceTree = "<group>"; };
+		E4D6D8E7230AE8900008ADE9 /* wxgl_bind.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = wxgl_bind.h; sourceTree = "<group>"; };
+		E4D6D8E8230AE8900008ADE9 /* wxhtml_bind.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = wxhtml_bind.h; sourceTree = "<group>"; };
+		E4D6D8E9230AE8900008ADE9 /* wxpropgrid_bind.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = wxpropgrid_bind.h; sourceTree = "<group>"; };
+		E4D6D8EB230AE8900008ADE9 /* wxluasetup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = wxluasetup.h; sourceTree = "<group>"; };
+		E4D6D8ED230AE8900008ADE9 /* wxbase_base.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = wxbase_base.cpp; sourceTree = "<group>"; };
+		E4D6D8EE230AE8900008ADE9 /* wxcore_print.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = wxcore_print.cpp; sourceTree = "<group>"; };
+		E4D6D8EF230AE8900008ADE9 /* Makefile_wxhtml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Makefile_wxhtml; sourceTree = "<group>"; };
+		E4D6D8F0230AE8900008ADE9 /* wxbase_data.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = wxbase_data.cpp; sourceTree = "<group>"; };
+		E4D6D8F1230AE8900008ADE9 /* wxpropgrid_bind.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = wxpropgrid_bind.cpp; sourceTree = "<group>"; };
+		E4D6D8F2230AE8900008ADE9 /* wxstc_bind.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = wxstc_bind.cpp; sourceTree = "<group>"; };
+		E4D6D8F3230AE8900008ADE9 /* wxbase_datetime.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = wxbase_datetime.cpp; sourceTree = "<group>"; };
+		E4D6D8F4230AE8900008ADE9 /* Makefile_wxadv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Makefile_wxadv; sourceTree = "<group>"; };
+		E4D6D8F5230AE8900008ADE9 /* wxcore_wxlcore.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = wxcore_wxlcore.cpp; sourceTree = "<group>"; };
+		E4D6D8F6230AE8900008ADE9 /* wxcore_help.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = wxcore_help.cpp; sourceTree = "<group>"; };
+		E4D6D8F7230AE8900008ADE9 /* wxcore_appframe.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = wxcore_appframe.cpp; sourceTree = "<group>"; };
+		E4D6D8F8230AE8900008ADE9 /* wxgl_bind.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = wxgl_bind.cpp; sourceTree = "<group>"; };
+		E4D6D8F9230AE8900008ADE9 /* wxcore_defsutils.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = wxcore_defsutils.cpp; sourceTree = "<group>"; };
+		E4D6D8FA230AE8900008ADE9 /* wxcore_clipdrag.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = wxcore_clipdrag.cpp; sourceTree = "<group>"; };
+		E4D6D8FB230AE8900008ADE9 /* Makefile_wxmedia */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Makefile_wxmedia; sourceTree = "<group>"; };
+		E4D6D8FC230AE8900008ADE9 /* wxcore_core.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = wxcore_core.cpp; sourceTree = "<group>"; };
+		E4D6D8FD230AE8900008ADE9 /* wxxml_bind.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = wxxml_bind.cpp; sourceTree = "<group>"; };
+		E4D6D8FE230AE8900008ADE9 /* Makefile_wxcore */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Makefile_wxcore; sourceTree = "<group>"; };
+		E4D6D8FF230AE8900008ADE9 /* Makefile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.make; path = Makefile; sourceTree = "<group>"; };
+		E4D6D900230AE8900008ADE9 /* wxbase_bind.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = wxbase_bind.cpp; sourceTree = "<group>"; };
+		E4D6D901230AE8900008ADE9 /* wxhtml_wxlhtml.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = wxhtml_wxlhtml.cpp; sourceTree = "<group>"; };
+		E4D6D902230AE8900008ADE9 /* wxcore_bind.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = wxcore_bind.cpp; sourceTree = "<group>"; };
+		E4D6D903230AE8900008ADE9 /* wxcore_picker.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = wxcore_picker.cpp; sourceTree = "<group>"; };
+		E4D6D904230AE8900008ADE9 /* wxcore_gdi.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = wxcore_gdi.cpp; sourceTree = "<group>"; };
+		E4D6D905230AE8900008ADE9 /* wxrichtext_bind.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = wxrichtext_bind.cpp; sourceTree = "<group>"; };
+		E4D6D906230AE8900008ADE9 /* Makefile_wxgl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Makefile_wxgl; sourceTree = "<group>"; };
+		E4D6D907230AE8900008ADE9 /* wxbase_config.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = wxbase_config.cpp; sourceTree = "<group>"; };
+		E4D6D908230AE8900008ADE9 /* wxadv_bind.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = wxadv_bind.cpp; sourceTree = "<group>"; };
+		E4D6D909230AE8900008ADE9 /* wxcore_sizer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = wxcore_sizer.cpp; sourceTree = "<group>"; };
+		E4D6D90A230AE8900008ADE9 /* wxhtml_bind.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = wxhtml_bind.cpp; sourceTree = "<group>"; };
+		E4D6D90B230AE8900008ADE9 /* wxcore_image.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = wxcore_image.cpp; sourceTree = "<group>"; };
+		E4D6D90C230AE8900008ADE9 /* wxcore_geometry.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = wxcore_geometry.cpp; sourceTree = "<group>"; };
+		E4D6D90D230AE8900008ADE9 /* wxcore_controls.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = wxcore_controls.cpp; sourceTree = "<group>"; };
+		E4D6D90E230AE8900008ADE9 /* wxcore_dialogs.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = wxcore_dialogs.cpp; sourceTree = "<group>"; };
+		E4D6D90F230AE8900008ADE9 /* Makefile_wxxrc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Makefile_wxxrc; sourceTree = "<group>"; };
+		E4D6D910230AE8900008ADE9 /* wxwebview_bind.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = wxwebview_bind.cpp; sourceTree = "<group>"; };
+		E4D6D911230AE8900008ADE9 /* Makefile_wxaui */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Makefile_wxaui; sourceTree = "<group>"; };
+		E4D6D912230AE8900008ADE9 /* wxcore_mdi.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = wxcore_mdi.cpp; sourceTree = "<group>"; };
+		E4D6D913230AE8900008ADE9 /* Makefile_wxnet */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Makefile_wxnet; sourceTree = "<group>"; };
+		E4D6D914230AE8900008ADE9 /* wxcore_event.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = wxcore_event.cpp; sourceTree = "<group>"; };
+		E4D6D915230AE8900008ADE9 /* dummy.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = dummy.cpp; sourceTree = "<group>"; };
+		E4D6D916230AE8900008ADE9 /* Makefile_wxbase */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Makefile_wxbase; sourceTree = "<group>"; };
+		E4D6D917230AE8900008ADE9 /* Makefile_wxrichtext */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Makefile_wxrichtext; sourceTree = "<group>"; };
+		E4D6D918230AE8900008ADE9 /* wxcore_menutool.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = wxcore_menutool.cpp; sourceTree = "<group>"; };
+		E4D6D919230AE8900008ADE9 /* wxnet_bind.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = wxnet_bind.cpp; sourceTree = "<group>"; };
+		E4D6D91A230AE8900008ADE9 /* Makefile_wxxml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Makefile_wxxml; sourceTree = "<group>"; };
+		E4D6D91B230AE8900008ADE9 /* wxmedia_bind.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = wxmedia_bind.cpp; sourceTree = "<group>"; };
+		E4D6D91C230AE8900008ADE9 /* wxcore_windows.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = wxcore_windows.cpp; sourceTree = "<group>"; };
+		E4D6D91D230AE8900008ADE9 /* Makefile_wxstc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Makefile_wxstc; sourceTree = "<group>"; };
+		E4D6D91E230AE8900008ADE9 /* wxbase_file.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = wxbase_file.cpp; sourceTree = "<group>"; };
+		E4D6D91F230AE8900008ADE9 /* wxadv_wxladv.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = wxadv_wxladv.cpp; sourceTree = "<group>"; };
+		E4D6D920230AE8900008ADE9 /* wxxrc_bind.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = wxxrc_bind.cpp; sourceTree = "<group>"; };
+		E4D6D921230AE8900008ADE9 /* wxaui_bind.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = wxaui_bind.cpp; sourceTree = "<group>"; };
+		E4D6D959230AE8B10008ADE9 /* wxlconsole.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = wxlconsole.h; sourceTree = "<group>"; };
+		E4D6D95A230AE8B10008ADE9 /* wxlua_bind.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = wxlua_bind.h; sourceTree = "<group>"; };
+		E4D6D95B230AE8B10008ADE9 /* wxlbind.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = wxlbind.h; sourceTree = "<group>"; };
+		E4D6D95C230AE8B10008ADE9 /* CMakeLists.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = CMakeLists.txt; sourceTree = "<group>"; };
+		E4D6D95D230AE8B10008ADE9 /* wxlua.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = wxlua.h; sourceTree = "<group>"; };
+		E4D6D95E230AE8B10008ADE9 /* wxlversion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = wxlversion.h; sourceTree = "<group>"; };
+		E4D6D95F230AE8B10008ADE9 /* wxlstate.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = wxlstate.cpp; sourceTree = "<group>"; };
+		E4D6D960230AE8B10008ADE9 /* Makefile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.make; path = Makefile; sourceTree = "<group>"; };
+		E4D6D961230AE8B10008ADE9 /* wxlua_bind.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = wxlua_bind.cpp; sourceTree = "<group>"; };
+		E4D6D962230AE8B10008ADE9 /* wxllua.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = wxllua.h; sourceTree = "<group>"; };
+		E4D6D963230AE8B10008ADE9 /* sharedptr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sharedptr.h; sourceTree = "<group>"; };
+		E4D6D964230AE8B10008ADE9 /* wxlconsole.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = wxlconsole.cpp; sourceTree = "<group>"; };
+		E4D6D965230AE8B10008ADE9 /* wxlobject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = wxlobject.h; sourceTree = "<group>"; };
+		E4D6D966230AE8B10008ADE9 /* wxlcallb.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = wxlcallb.cpp; sourceTree = "<group>"; };
+		E4D6D967230AE8B10008ADE9 /* wxlstate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = wxlstate.h; sourceTree = "<group>"; };
+		E4D6D968230AE8B10008ADE9 /* dummy.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = dummy.cpp; sourceTree = "<group>"; };
+		E4D6D969230AE8B10008ADE9 /* wxllua.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = wxllua.cpp; sourceTree = "<group>"; };
+		E4D6D96A230AE8B10008ADE9 /* wxlcallb.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = wxlcallb.h; sourceTree = "<group>"; };
+		E4D6D96C230AE8B10008ADE9 /* wxldserv.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = wxldserv.h; sourceTree = "<group>"; };
+		E4D6D96D230AE8B10008ADE9 /* CMakeLists.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = CMakeLists.txt; sourceTree = "<group>"; };
+		E4D6D96E230AE8B10008ADE9 /* wxldtarg.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = wxldtarg.h; sourceTree = "<group>"; };
+		E4D6D96F230AE8B10008ADE9 /* Makefile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.make; path = Makefile; sourceTree = "<group>"; };
+		E4D6D970230AE8B10008ADE9 /* wxldtarg.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = wxldtarg.cpp; sourceTree = "<group>"; };
+		E4D6D971230AE8B10008ADE9 /* wxluadebuggerdefs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = wxluadebuggerdefs.h; sourceTree = "<group>"; };
+		E4D6D972230AE8B10008ADE9 /* dummy.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = dummy.cpp; sourceTree = "<group>"; };
+		E4D6D973230AE8B10008ADE9 /* wxluadebugger_bind.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = wxluadebugger_bind.h; sourceTree = "<group>"; };
+		E4D6D974230AE8B10008ADE9 /* wxldserv.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = wxldserv.cpp; sourceTree = "<group>"; };
+		E4D6D975230AE8B10008ADE9 /* wxlsock.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = wxlsock.cpp; sourceTree = "<group>"; };
+		E4D6D976230AE8B10008ADE9 /* wxlsock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = wxlsock.h; sourceTree = "<group>"; };
+		E4D6D977230AE8B10008ADE9 /* wxluadebugger_bind.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = wxluadebugger_bind.cpp; sourceTree = "<group>"; };
+		E4D6D978230AE8B10008ADE9 /* lbitlib.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = lbitlib.c; sourceTree = "<group>"; };
+		E4D6D979230AE8B10008ADE9 /* wxldefs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = wxldefs.h; sourceTree = "<group>"; };
+		E4D6D97A230AE8B10008ADE9 /* wxlbind.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = wxlbind.cpp; sourceTree = "<group>"; };
+		E4D6D97C230AE8B10008ADE9 /* CMakeLists.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = CMakeLists.txt; sourceTree = "<group>"; };
+		E4D6D97D230AE8B10008ADE9 /* Makefile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.make; path = Makefile; sourceTree = "<group>"; };
+		E4D6D97E230AE8B10008ADE9 /* wxldebug.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = wxldebug.h; sourceTree = "<group>"; };
+		E4D6D97F230AE8B10008ADE9 /* wxlstack.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = wxlstack.cpp; sourceTree = "<group>"; };
+		E4D6D980230AE8B10008ADE9 /* dummy.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = dummy.cpp; sourceTree = "<group>"; };
+		E4D6D981230AE8B10008ADE9 /* wxldebug.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = wxldebug.cpp; sourceTree = "<group>"; };
+		E4D6D982230AE8B10008ADE9 /* wxlstack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = wxlstack.h; sourceTree = "<group>"; };
+		E4D6D983230AE8B10008ADE9 /* wxluadebugdefs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = wxluadebugdefs.h; sourceTree = "<group>"; };
+		E4D6D984230AE8B10008ADE9 /* atomic.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = atomic.h; sourceTree = "<group>"; };
+		E4D6D985230AE8B10008ADE9 /* wxlobject.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = wxlobject.cpp; sourceTree = "<group>"; };
+		E4D6D99D230AEB190008ADE9 /* scripts */ = {isa = PBXFileReference; lastKnownFileType = folder; name = scripts; path = ../wxSources/scripts; sourceTree = "<group>"; };
+		E4FC7810183E50DC0064FB2E /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = /System/Library/Frameworks/Accelerate.framework; sourceTree = "<absolute>"; };
+		E4FC7837183E50F00064FB2E /* AGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AGL.framework; path = /System/Library/Frameworks/AGL.framework; sourceTree = "<absolute>"; };
+		E4FC7845183E51180064FB2E /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = /System/Library/Frameworks/Carbon.framework; sourceTree = "<absolute>"; };
+		E4FC7846183E51180064FB2E /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
+		E4FC7847183E51180064FB2E /* GLUT.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLUT.framework; path = /System/Library/Frameworks/GLUT.framework; sourceTree = "<absolute>"; };
+		E4FC7848183E51180064FB2E /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = /System/Library/Frameworks/IOKit.framework; sourceTree = "<absolute>"; };
+		E4FC7849183E51180064FB2E /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = /System/Library/Frameworks/OpenGL.framework; sourceTree = "<absolute>"; };
+		E4FC784A183E51180064FB2E /* QuickTime.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuickTime.framework; path = /System/Library/Frameworks/QuickTime.framework; sourceTree = "<absolute>"; };
+		E4FC784B183E51180064FB2E /* System.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = System.framework; path = /System/Library/Frameworks/System.framework; sourceTree = "<absolute>"; };
+		E4FC7A15183E51570064FB2E /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = ../../../../../../System/Library/Frameworks/AppKit.framework; sourceTree = SOURCE_ROOT; };
+		E4FC7A16183E51570064FB2E /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = ../../../../../../System/Library/Frameworks/Foundation.framework; sourceTree = SOURCE_ROOT; };
+		E4FC7B58183E53710064FB2E /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = /System/Library/Frameworks/WebKit.framework; sourceTree = "<absolute>"; };
+		E4FC7CAC183F953E0064FB2E /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = /System/Library/Frameworks/AudioToolbox.framework; sourceTree = "<absolute>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		8D11072E0486CEB800E47090 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E48A4A3D2153E902005F88AB /* QTKit.framework in Frameworks */,
+				E4D6D8CE230AE2C90008ADE9 /* libluajit-5.1.dylib in Frameworks */,
+				E4FC7811183E50DC0064FB2E /* Accelerate.framework in Frameworks */,
+				E4FC7838183E50F00064FB2E /* AGL.framework in Frameworks */,
+				E4FC784C183E51180064FB2E /* Carbon.framework in Frameworks */,
+				E4FC784D183E51180064FB2E /* Cocoa.framework in Frameworks */,
+				E4FC784E183E51180064FB2E /* GLUT.framework in Frameworks */,
+				E4FC784F183E51180064FB2E /* IOKit.framework in Frameworks */,
+				E4FC7850183E51180064FB2E /* OpenGL.framework in Frameworks */,
+				E4FC7851183E51180064FB2E /* QuickTime.framework in Frameworks */,
+				E4FC7852183E51180064FB2E /* System.framework in Frameworks */,
+				E4FC7A17183E51570064FB2E /* AppKit.framework in Frameworks */,
+				E4FC7A18183E51570064FB2E /* Foundation.framework in Frameworks */,
+				E4FC7B59183E53710064FB2E /* WebKit.framework in Frameworks */,
+				E4FC7CAD183F953E0064FB2E /* AudioToolbox.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		19C28FACFE9D520D11CA2CBB /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				8D1107320486CEB800E47090 /* wxLuaApp.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		29B97314FDCFA39411CA2CEA /* Molby */ = {
+			isa = PBXGroup;
+			children = (
+				E4888B0B183E4BD800DF5749 /* Sources */,
+				E4D6D8B8230ADE4A0008ADE9 /* Info.plist */,
+				E4FC77CD183E4FDD0064FB2E /* Resources */,
+				29B97323FDCFA39411CA2CEA /* Frameworks */,
+				19C28FACFE9D520D11CA2CBB /* Products */,
+			);
+			name = Molby;
+			sourceTree = "<group>";
+		};
+		29B97323FDCFA39411CA2CEA /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				E4FC780D183E50AF0064FB2E /* Linked Frameworks */,
+				E4FC7A13183E51330064FB2E /* Other Frameworks */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		E474B7A32160D6A300DF343D /* wxSources */ = {
+			isa = PBXGroup;
+			children = (
+				E4D6D8BF230ADEC10008ADE9 /* ConsoleFrame.cpp */,
+				E4D6D8C1230ADEC10008ADE9 /* ConsoleFrame.h */,
+				E4D6D8BE230ADEC10008ADE9 /* lua_addition.c */,
+				E4D6D8C2230ADEC10008ADE9 /* lua_addition.h */,
+				E4D6D8BC230ADEC00008ADE9 /* record_build_date.sh */,
+				E4D6D8C0230ADEC10008ADE9 /* textctrl_addition.mm */,
+				E4D6D8BD230ADEC00008ADE9 /* wxLuaApp.cpp */,
+				E4D6D8BB230ADEC00008ADE9 /* wxLuaApp.h */,
+				E4D6D8C3230ADEC10008ADE9 /* wxLuaApp.iss */,
+				E4D6D8BA230ADEC00008ADE9 /* wxLuaApp.rc */,
+			);
+			name = wxSources;
+			sourceTree = "<group>";
+		};
+		E474B7B42160D9F200DF343D /* generated_on_build */ = {
+			isa = PBXGroup;
+			children = (
+				E4D6D8CB230ADF320008ADE9 /* buildInfo.c */,
+			);
+			name = generated_on_build;
+			sourceTree = "<group>";
+		};
+		E4888B0B183E4BD800DF5749 /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				E4D6D958230AE8B10008ADE9 /* wxlua */,
+				E4D6D8D5230AE8900008ADE9 /* wxbind */,
+				E474B7A32160D6A300DF343D /* wxSources */,
+				E474B7B42160D9F200DF343D /* generated_on_build */,
+			);
+			name = Sources;
+			sourceTree = "<group>";
+		};
+		E4D6D8D5230AE8900008ADE9 /* wxbind */ = {
+			isa = PBXGroup;
+			children = (
+				E4D6D8D6230AE8900008ADE9 /* CMakeLists.txt */,
+				E4D6D8D7230AE8900008ADE9 /* include */,
+				E4D6D8EA230AE8900008ADE9 /* setup */,
+				E4D6D8EC230AE8900008ADE9 /* src */,
+			);
+			name = wxbind;
+			path = ../wxlua/wxLua/modules/wxbind;
+			sourceTree = "<group>";
+		};
+		E4D6D8D7230AE8900008ADE9 /* include */ = {
+			isa = PBXGroup;
+			children = (
+				E4D6D8D8230AE8900008ADE9 /* wxadv_bind.h */,
+				E4D6D8D9230AE8900008ADE9 /* wxaui_bind.h */,
+				E4D6D8DA230AE8900008ADE9 /* wxrichtext_bind.h */,
+				E4D6D8DB230AE8900008ADE9 /* wxstc_bind.h */,
+				E4D6D8DC230AE8900008ADE9 /* wxbase_bind.h */,
+				E4D6D8DD230AE8900008ADE9 /* wxhtml_wxlhtml.h */,
+				E4D6D8DE230AE8900008ADE9 /* wxxml_bind.h */,
+				E4D6D8DF230AE8900008ADE9 /* wxcore_bind.h */,
+				E4D6D8E0230AE8900008ADE9 /* wxxrc_bind.h */,
+				E4D6D8E1230AE8900008ADE9 /* wxmedia_bind.h */,
+				E4D6D8E2230AE8900008ADE9 /* wxadv_wxladv.h */,
+				E4D6D8E3230AE8900008ADE9 /* wxbinddefs.h */,
+				E4D6D8E4230AE8900008ADE9 /* wxwebview_bind.h */,
+				E4D6D8E5230AE8900008ADE9 /* wxcore_wxlcore.h */,
+				E4D6D8E6230AE8900008ADE9 /* wxnet_bind.h */,
+				E4D6D8E7230AE8900008ADE9 /* wxgl_bind.h */,
+				E4D6D8E8230AE8900008ADE9 /* wxhtml_bind.h */,
+				E4D6D8E9230AE8900008ADE9 /* wxpropgrid_bind.h */,
+			);
+			path = include;
+			sourceTree = "<group>";
+		};
+		E4D6D8EA230AE8900008ADE9 /* setup */ = {
+			isa = PBXGroup;
+			children = (
+				E4D6D8EB230AE8900008ADE9 /* wxluasetup.h */,
+			);
+			path = setup;
+			sourceTree = "<group>";
+		};
+		E4D6D8EC230AE8900008ADE9 /* src */ = {
+			isa = PBXGroup;
+			children = (
+				E4D6D8ED230AE8900008ADE9 /* wxbase_base.cpp */,
+				E4D6D8EE230AE8900008ADE9 /* wxcore_print.cpp */,
+				E4D6D8EF230AE8900008ADE9 /* Makefile_wxhtml */,
+				E4D6D8F0230AE8900008ADE9 /* wxbase_data.cpp */,
+				E4D6D8F1230AE8900008ADE9 /* wxpropgrid_bind.cpp */,
+				E4D6D8F2230AE8900008ADE9 /* wxstc_bind.cpp */,
+				E4D6D8F3230AE8900008ADE9 /* wxbase_datetime.cpp */,
+				E4D6D8F4230AE8900008ADE9 /* Makefile_wxadv */,
+				E4D6D8F5230AE8900008ADE9 /* wxcore_wxlcore.cpp */,
+				E4D6D8F6230AE8900008ADE9 /* wxcore_help.cpp */,
+				E4D6D8F7230AE8900008ADE9 /* wxcore_appframe.cpp */,
+				E4D6D8F8230AE8900008ADE9 /* wxgl_bind.cpp */,
+				E4D6D8F9230AE8900008ADE9 /* wxcore_defsutils.cpp */,
+				E4D6D8FA230AE8900008ADE9 /* wxcore_clipdrag.cpp */,
+				E4D6D8FB230AE8900008ADE9 /* Makefile_wxmedia */,
+				E4D6D8FC230AE8900008ADE9 /* wxcore_core.cpp */,
+				E4D6D8FD230AE8900008ADE9 /* wxxml_bind.cpp */,
+				E4D6D8FE230AE8900008ADE9 /* Makefile_wxcore */,
+				E4D6D8FF230AE8900008ADE9 /* Makefile */,
+				E4D6D900230AE8900008ADE9 /* wxbase_bind.cpp */,
+				E4D6D901230AE8900008ADE9 /* wxhtml_wxlhtml.cpp */,
+				E4D6D902230AE8900008ADE9 /* wxcore_bind.cpp */,
+				E4D6D903230AE8900008ADE9 /* wxcore_picker.cpp */,
+				E4D6D904230AE8900008ADE9 /* wxcore_gdi.cpp */,
+				E4D6D905230AE8900008ADE9 /* wxrichtext_bind.cpp */,
+				E4D6D906230AE8900008ADE9 /* Makefile_wxgl */,
+				E4D6D907230AE8900008ADE9 /* wxbase_config.cpp */,
+				E4D6D908230AE8900008ADE9 /* wxadv_bind.cpp */,
+				E4D6D909230AE8900008ADE9 /* wxcore_sizer.cpp */,
+				E4D6D90A230AE8900008ADE9 /* wxhtml_bind.cpp */,
+				E4D6D90B230AE8900008ADE9 /* wxcore_image.cpp */,
+				E4D6D90C230AE8900008ADE9 /* wxcore_geometry.cpp */,
+				E4D6D90D230AE8900008ADE9 /* wxcore_controls.cpp */,
+				E4D6D90E230AE8900008ADE9 /* wxcore_dialogs.cpp */,
+				E4D6D90F230AE8900008ADE9 /* Makefile_wxxrc */,
+				E4D6D910230AE8900008ADE9 /* wxwebview_bind.cpp */,
+				E4D6D911230AE8900008ADE9 /* Makefile_wxaui */,
+				E4D6D912230AE8900008ADE9 /* wxcore_mdi.cpp */,
+				E4D6D913230AE8900008ADE9 /* Makefile_wxnet */,
+				E4D6D914230AE8900008ADE9 /* wxcore_event.cpp */,
+				E4D6D915230AE8900008ADE9 /* dummy.cpp */,
+				E4D6D916230AE8900008ADE9 /* Makefile_wxbase */,
+				E4D6D917230AE8900008ADE9 /* Makefile_wxrichtext */,
+				E4D6D918230AE8900008ADE9 /* wxcore_menutool.cpp */,
+				E4D6D919230AE8900008ADE9 /* wxnet_bind.cpp */,
+				E4D6D91A230AE8900008ADE9 /* Makefile_wxxml */,
+				E4D6D91B230AE8900008ADE9 /* wxmedia_bind.cpp */,
+				E4D6D91C230AE8900008ADE9 /* wxcore_windows.cpp */,
+				E4D6D91D230AE8900008ADE9 /* Makefile_wxstc */,
+				E4D6D91E230AE8900008ADE9 /* wxbase_file.cpp */,
+				E4D6D91F230AE8900008ADE9 /* wxadv_wxladv.cpp */,
+				E4D6D920230AE8900008ADE9 /* wxxrc_bind.cpp */,
+				E4D6D921230AE8900008ADE9 /* wxaui_bind.cpp */,
+			);
+			path = src;
+			sourceTree = "<group>";
+		};
+		E4D6D958230AE8B10008ADE9 /* wxlua */ = {
+			isa = PBXGroup;
+			children = (
+				E4D6D959230AE8B10008ADE9 /* wxlconsole.h */,
+				E4D6D95A230AE8B10008ADE9 /* wxlua_bind.h */,
+				E4D6D95B230AE8B10008ADE9 /* wxlbind.h */,
+				E4D6D95C230AE8B10008ADE9 /* CMakeLists.txt */,
+				E4D6D95D230AE8B10008ADE9 /* wxlua.h */,
+				E4D6D95E230AE8B10008ADE9 /* wxlversion.h */,
+				E4D6D95F230AE8B10008ADE9 /* wxlstate.cpp */,
+				E4D6D960230AE8B10008ADE9 /* Makefile */,
+				E4D6D961230AE8B10008ADE9 /* wxlua_bind.cpp */,
+				E4D6D962230AE8B10008ADE9 /* wxllua.h */,
+				E4D6D963230AE8B10008ADE9 /* sharedptr.h */,
+				E4D6D964230AE8B10008ADE9 /* wxlconsole.cpp */,
+				E4D6D965230AE8B10008ADE9 /* wxlobject.h */,
+				E4D6D966230AE8B10008ADE9 /* wxlcallb.cpp */,
+				E4D6D967230AE8B10008ADE9 /* wxlstate.h */,
+				E4D6D968230AE8B10008ADE9 /* dummy.cpp */,
+				E4D6D969230AE8B10008ADE9 /* wxllua.cpp */,
+				E4D6D96A230AE8B10008ADE9 /* wxlcallb.h */,
+				E4D6D96B230AE8B10008ADE9 /* debugger */,
+				E4D6D978230AE8B10008ADE9 /* lbitlib.c */,
+				E4D6D979230AE8B10008ADE9 /* wxldefs.h */,
+				E4D6D97A230AE8B10008ADE9 /* wxlbind.cpp */,
+				E4D6D97B230AE8B10008ADE9 /* debug */,
+				E4D6D984230AE8B10008ADE9 /* atomic.h */,
+				E4D6D985230AE8B10008ADE9 /* wxlobject.cpp */,
+			);
+			name = wxlua;
+			path = ../wxlua/wxLua/modules/wxlua;
+			sourceTree = "<group>";
+		};
+		E4D6D96B230AE8B10008ADE9 /* debugger */ = {
+			isa = PBXGroup;
+			children = (
+				E4D6D96C230AE8B10008ADE9 /* wxldserv.h */,
+				E4D6D96D230AE8B10008ADE9 /* CMakeLists.txt */,
+				E4D6D96E230AE8B10008ADE9 /* wxldtarg.h */,
+				E4D6D96F230AE8B10008ADE9 /* Makefile */,
+				E4D6D970230AE8B10008ADE9 /* wxldtarg.cpp */,
+				E4D6D971230AE8B10008ADE9 /* wxluadebuggerdefs.h */,
+				E4D6D972230AE8B10008ADE9 /* dummy.cpp */,
+				E4D6D973230AE8B10008ADE9 /* wxluadebugger_bind.h */,
+				E4D6D974230AE8B10008ADE9 /* wxldserv.cpp */,
+				E4D6D975230AE8B10008ADE9 /* wxlsock.cpp */,
+				E4D6D976230AE8B10008ADE9 /* wxlsock.h */,
+				E4D6D977230AE8B10008ADE9 /* wxluadebugger_bind.cpp */,
+			);
+			path = debugger;
+			sourceTree = "<group>";
+		};
+		E4D6D97B230AE8B10008ADE9 /* debug */ = {
+			isa = PBXGroup;
+			children = (
+				E4D6D97C230AE8B10008ADE9 /* CMakeLists.txt */,
+				E4D6D97D230AE8B10008ADE9 /* Makefile */,
+				E4D6D97E230AE8B10008ADE9 /* wxldebug.h */,
+				E4D6D97F230AE8B10008ADE9 /* wxlstack.cpp */,
+				E4D6D980230AE8B10008ADE9 /* dummy.cpp */,
+				E4D6D981230AE8B10008ADE9 /* wxldebug.cpp */,
+				E4D6D982230AE8B10008ADE9 /* wxlstack.h */,
+				E4D6D983230AE8B10008ADE9 /* wxluadebugdefs.h */,
+			);
+			path = debug;
+			sourceTree = "<group>";
+		};
+		E4FC77CD183E4FDD0064FB2E /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				E4D6D99D230AEB190008ADE9 /* scripts */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
+		E4FC780D183E50AF0064FB2E /* Linked Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				E4D6D8CD230AE2C90008ADE9 /* libluajit-5.1.dylib */,
+				E48A4A3C2153E902005F88AB /* QTKit.framework */,
+				E4FC7CAC183F953E0064FB2E /* AudioToolbox.framework */,
+				E4FC7810183E50DC0064FB2E /* Accelerate.framework */,
+				E4FC7837183E50F00064FB2E /* AGL.framework */,
+				E4FC7845183E51180064FB2E /* Carbon.framework */,
+				E4FC7846183E51180064FB2E /* Cocoa.framework */,
+				E4FC7847183E51180064FB2E /* GLUT.framework */,
+				E4FC7848183E51180064FB2E /* IOKit.framework */,
+				E4FC7849183E51180064FB2E /* OpenGL.framework */,
+				E4FC784A183E51180064FB2E /* QuickTime.framework */,
+				E4FC784B183E51180064FB2E /* System.framework */,
+				E4FC7B58183E53710064FB2E /* WebKit.framework */,
+			);
+			name = "Linked Frameworks";
+			sourceTree = "<group>";
+		};
+		E4FC7A13183E51330064FB2E /* Other Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				E4FC7A15183E51570064FB2E /* AppKit.framework */,
+				E4FC7A16183E51570064FB2E /* Foundation.framework */,
+			);
+			name = "Other Frameworks";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXLegacyTarget section */
+		E4CB370B1FE2C1F7001BB75E /* wxLuaApp_win */ = {
+			isa = PBXLegacyTarget;
+			buildArgumentsString = "PATH=/usr/local/mingw-w32/bin:$PATH make $(ACTION)";
+			buildConfigurationList = E4CB370C1FE2C1F7001BB75E /* Build configuration list for PBXLegacyTarget "wxLuaApp_win" */;
+			buildPhases = (
+			);
+			buildToolPath = /usr/bin/env;
+			buildWorkingDirectory = "$(PROJECT_DIR)";
+			dependencies = (
+			);
+			name = wxLuaApp_win;
+			passBuildSettingsInEnvironment = 1;
+			productName = "Molby (Windows)";
+		};
+/* End PBXLegacyTarget section */
+
+/* Begin PBXNativeTarget section */
+		8D1107260486CEB800E47090 /* wxLuaApp */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C01FCF4A08A954540054247B /* Build configuration list for PBXNativeTarget "wxLuaApp" */;
+			buildPhases = (
+				E4FC7B57183E516E0064FB2E /* ShellScript */,
+				E474B7B92160DD2800DF343D /* ShellScript */,
+				8D1107290486CEB800E47090 /* Resources */,
+				8D11072C0486CEB800E47090 /* Sources */,
+				8D11072E0486CEB800E47090 /* Frameworks */,
+				E4817ED0218208ED00986125 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = wxLuaApp;
+			productInstallPath = "$(HOME)/Applications";
+			productName = Molby;
+			productReference = 8D1107320486CEB800E47090 /* wxLuaApp.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		29B97313FDCFA39411CA2CEA /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				TargetAttributes = {
+					E4CB370B1FE2C1F7001BB75E = {
+						CreatedOnToolsVersion = 8.2.1;
+						ProvisioningStyle = Automatic;
+					};
+					E4CB370F1FE4FF0E001BB75E = {
+						CreatedOnToolsVersion = 8.2.1;
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = C01FCF4E08A954540054247B /* Build configuration list for PBXProject "wxLuaApp" */;
+			compatibilityVersion = "Xcode 3.1";
+			developmentRegion = English;
+			hasScannedForEncodings = 1;
+			knownRegions = (
+				English,
+				Japanese,
+				French,
+				German,
+			);
+			mainGroup = 29B97314FDCFA39411CA2CEA /* Molby */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				8D1107260486CEB800E47090 /* wxLuaApp */,
+				E4CB370B1FE2C1F7001BB75E /* wxLuaApp_win */,
+				E4CB370F1FE4FF0E001BB75E /* wxLuaApp_archive */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		8D1107290486CEB800E47090 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E4D6D8B9230ADE4A0008ADE9 /* Info.plist in Resources */,
+				E4D6D99E230AEB190008ADE9 /* scripts in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		E474B7B92160DD2800DF343D /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if [ ! -f $PROJECT_DIR/build/lib/libluajit-5.1.dylib ]; then\n  make -C $PROJECT_DIR/../LuaJIT-2.0.5 PREFIX=$PROJECT_DIR/build install || exit 1\n  (cd $PROJECT_DIR/build/lib; install_name_tool -id \"@rpath/libluajit-5.1.dylib\" libluajit-5.1.dylib)\n  make -C $PROJECT_DIR/../LuaJIT-2.0.5 clean\nfi\n";
+		};
+		E4CB37171FE4FF42001BB75E /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if [ \"${BUILD_STYLE:=$CONFIGURATION}\" = \"Release\" ]; then\n  (cd \"$PROJECT_DIR/../latest_binaries\" && rm -f \"${PRODUCT_NAME}Mac.zip\" && zip -r \"${PRODUCT_NAME}Mac.zip\" \"${PRODUCT_NAME}\" -x \\*.DS_Store -x \\*.svn*) || exit 1\n#  (cd \"$PROJECT_DIR/../Documents\" && /usr/bin/ruby makedoc.rb && cp -a MolbyDoc \"$PROJECT_DIR/../latest_binaries\") || exit 1\n#  (cd \"$PROJECT_DIR/../latest_binaries\" && zip -r \"${PRODUCT_NAME}Doc.zip\" \"${PRODUCT_NAME}Doc\" -x \\*.DS_Store -x \\*.svn*) || exit 1\n  (cd \"$PROJECT_DIR/../mswx-build\"; PATH=/usr/local/mingw-w32/bin:$PATH; make setup) || exit 1\nfi\n";
+		};
+		E4FC7B57183E516E0064FB2E /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "cd $PROJECT_DIR; mkdir -p build; sh ../wxSources/record_build_date.sh --with-svn-status >build/buildInfo.c\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		8D11072C0486CEB800E47090 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E4D6D923230AE8910008ADE9 /* wxbase_base.cpp in Sources */,
+				E4D6D98D230AE8B10008ADE9 /* wxllua.cpp in Sources */,
+				E4D6D8C7230ADEC10008ADE9 /* lua_addition.c in Sources */,
+				E4D6D8C8230ADEC10008ADE9 /* ConsoleFrame.cpp in Sources */,
+				E4D6D93F230AE8910008ADE9 /* wxcore_sizer.cpp in Sources */,
+				E4D6D994230AE8B10008ADE9 /* wxluadebugger_bind.cpp in Sources */,
+				E4D6D94E230AE8910008ADE9 /* wxcore_menutool.cpp in Sources */,
+				E4D6D951230AE8910008ADE9 /* wxmedia_bind.cpp in Sources */,
+				E4D6D995230AE8B10008ADE9 /* lbitlib.c in Sources */,
+				E4D6D988230AE8B10008ADE9 /* Makefile in Sources */,
+				E4D6D92E230AE8910008ADE9 /* wxgl_bind.cpp in Sources */,
+				E4D6D929230AE8910008ADE9 /* wxbase_datetime.cpp in Sources */,
+				E4D6D955230AE8910008ADE9 /* wxadv_wxladv.cpp in Sources */,
+				E4D6D946230AE8910008ADE9 /* wxwebview_bind.cpp in Sources */,
+				E4D6D936230AE8910008ADE9 /* wxbase_bind.cpp in Sources */,
+				E4D6D942230AE8910008ADE9 /* wxcore_geometry.cpp in Sources */,
+				E4D6D991230AE8B10008ADE9 /* dummy.cpp in Sources */,
+				E4D6D933230AE8910008ADE9 /* wxxml_bind.cpp in Sources */,
+				E4D6D939230AE8910008ADE9 /* wxcore_picker.cpp in Sources */,
+				E4D6D926230AE8910008ADE9 /* wxbase_data.cpp in Sources */,
+				E4D6D954230AE8910008ADE9 /* wxbase_file.cpp in Sources */,
+				E4D6D98F230AE8B10008ADE9 /* Makefile in Sources */,
+				E4D6D98A230AE8B10008ADE9 /* wxlconsole.cpp in Sources */,
+				E4D6D98C230AE8B10008ADE9 /* dummy.cpp in Sources */,
+				E4D6D940230AE8910008ADE9 /* wxhtml_bind.cpp in Sources */,
+				E4D6D999230AE8B10008ADE9 /* wxlstack.cpp in Sources */,
+				E4D6D927230AE8910008ADE9 /* wxpropgrid_bind.cpp in Sources */,
+				E4D6D92C230AE8910008ADE9 /* wxcore_help.cpp in Sources */,
+				E4D6D92B230AE8910008ADE9 /* wxcore_wxlcore.cpp in Sources */,
+				E4D6D998230AE8B10008ADE9 /* Makefile in Sources */,
+				E4D6D948230AE8910008ADE9 /* wxcore_mdi.cpp in Sources */,
+				E4D6D935230AE8910008ADE9 /* Makefile in Sources */,
+				E4D6D924230AE8910008ADE9 /* wxcore_print.cpp in Sources */,
+				E4D6D928230AE8910008ADE9 /* wxstc_bind.cpp in Sources */,
+				E4D6D956230AE8910008ADE9 /* wxxrc_bind.cpp in Sources */,
+				E4D6D993230AE8B10008ADE9 /* wxlsock.cpp in Sources */,
+				E4D6D93A230AE8910008ADE9 /* wxcore_gdi.cpp in Sources */,
+				E4D6D8C6230ADEC10008ADE9 /* wxLuaApp.cpp in Sources */,
+				E4D6D99A230AE8B10008ADE9 /* dummy.cpp in Sources */,
+				E4D6D93E230AE8910008ADE9 /* wxadv_bind.cpp in Sources */,
+				E4D6D941230AE8910008ADE9 /* wxcore_image.cpp in Sources */,
+				E4D6D94F230AE8910008ADE9 /* wxnet_bind.cpp in Sources */,
+				E4D6D99C230AE8B10008ADE9 /* wxlobject.cpp in Sources */,
+				E4D6D8C9230ADEC10008ADE9 /* textctrl_addition.mm in Sources */,
+				E4D6D94A230AE8910008ADE9 /* wxcore_event.cpp in Sources */,
+				E4D6D952230AE8910008ADE9 /* wxcore_windows.cpp in Sources */,
+				E4D6D94B230AE8910008ADE9 /* dummy.cpp in Sources */,
+				E4D6D992230AE8B10008ADE9 /* wxldserv.cpp in Sources */,
+				E4D6D99B230AE8B10008ADE9 /* wxldebug.cpp in Sources */,
+				E4D6D987230AE8B10008ADE9 /* wxlstate.cpp in Sources */,
+				E4D6D93B230AE8910008ADE9 /* wxrichtext_bind.cpp in Sources */,
+				E4D6D8CC230ADF320008ADE9 /* buildInfo.c in Sources */,
+				E4D6D944230AE8910008ADE9 /* wxcore_dialogs.cpp in Sources */,
+				E4D6D932230AE8910008ADE9 /* wxcore_core.cpp in Sources */,
+				E4D6D937230AE8910008ADE9 /* wxhtml_wxlhtml.cpp in Sources */,
+				E4D6D93D230AE8910008ADE9 /* wxbase_config.cpp in Sources */,
+				E4D6D938230AE8910008ADE9 /* wxcore_bind.cpp in Sources */,
+				E4D6D92D230AE8910008ADE9 /* wxcore_appframe.cpp in Sources */,
+				E4D6D996230AE8B10008ADE9 /* wxlbind.cpp in Sources */,
+				E4D6D989230AE8B10008ADE9 /* wxlua_bind.cpp in Sources */,
+				E4D6D92F230AE8910008ADE9 /* wxcore_defsutils.cpp in Sources */,
+				E4D6D957230AE8910008ADE9 /* wxaui_bind.cpp in Sources */,
+				E4D6D930230AE8910008ADE9 /* wxcore_clipdrag.cpp in Sources */,
+				E4D6D98B230AE8B10008ADE9 /* wxlcallb.cpp in Sources */,
+				E4D6D990230AE8B10008ADE9 /* wxldtarg.cpp in Sources */,
+				E4D6D943230AE8910008ADE9 /* wxcore_controls.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		E4CB37141FE4FF23001BB75E /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 8D1107260486CEB800E47090 /* wxLuaApp */;
+			targetProxy = E4CB37131FE4FF23001BB75E /* PBXContainerItemProxy */;
+		};
+		E4CB37191FE50707001BB75E /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = E4CB370B1FE2C1F7001BB75E /* wxLuaApp_win */;
+			targetProxy = E4CB37181FE50707001BB75E /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		C01FCF4B08A954540054247B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD)";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++98";
+				CLANG_CXX_LIBRARY = "libstdc++";
+				CLANG_LINK_OBJC_RUNTIME = NO;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_MODEL_TUNING = G5;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = NO;
+				GCC_PREFIX_HEADER = "";
+				GCC_REUSE_STRINGS = NO;
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = "";
+				HEADER_SEARCH_PATHS = (
+					"$(PROJECT_DIR)/../../wxWidgets-3.0.3/include",
+					"$(PROJECT_DIR)/../../wxWidgets-3.0.3/build-osx/lib/wx/include/osx_cocoa-unicode-static-3.0",
+					"$(PROJECT_DIR)/build/include/luajit-2.0",
+					"$(PROJECT_DIR)/../wxlua/wxLua/modules/wxbind/include",
+					"$(PROJECT_DIR)/../wxlua/wxLua/modules/wxbind/setup",
+					"$(PROJECT_DIR)/../wxlua/wxLua/modules",
+					"$(PROJECT_DIR)/../wxlua/wxLua",
+				);
+				INFOPLIST_FILE = "$(SRCROOT)/Info.plist";
+				INSTALL_PATH = "$(HOME)/Applications";
+				LD_NO_PIE = NO;
+				LD_RUNPATH_SEARCH_PATHS = "@executable_path/../Resources/lib";
+				LIBRARY_SEARCH_PATHS = (
+					"$(PROJECT_DIR)/../../wxWidgets-3.0.3/build-osx/lib",
+					"$(PROJECT_DIR)/build/lib",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				OTHER_CFLAGS = (
+					"-D_FILE_OFFSET_BITS=64",
+					"-D__WXMAC__",
+					"-D__WXOSX__",
+					"-D__WXOSX_COCOA__",
+					"-DLUA_COMPAT_MODULE",
+					"-DMacOS",
+				);
+				OTHER_LDFLAGS = (
+					"-lwx_osx_cocoau-3.0",
+					"-lwx_osx_cocoau_gl-3.0",
+					"-lwxregexu-3.0",
+					"-lwxtiff-3.0",
+					"-lwxjpeg-3.0",
+					"-lwxpng-3.0",
+					"-lwxscintilla-3.0",
+					"-lz",
+					"-lpthread",
+					"-liconv",
+					"-lexpat",
+					"-lluajit-5.1",
+					"-pagezero_size",
+					10000,
+					"-image_base",
+					100000000,
+				);
+				PRESERVE_DEAD_CODE_INITS_AND_TERMS = NO;
+				PRODUCT_NAME = wxLuaApp;
+				SDKROOT = macosx10.6;
+			};
+			name = Debug;
+		};
+		C01FCF4C08A954540054247B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD)";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++98";
+				CLANG_CXX_LIBRARY = "libstdc++";
+				CLANG_LINK_OBJC_RUNTIME = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEPLOYMENT_POSTPROCESSING = NO;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_MODEL_TUNING = G5;
+				GCC_PRECOMPILE_PREFIX_HEADER = NO;
+				GCC_PREFIX_HEADER = "";
+				GCC_REUSE_STRINGS = NO;
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = "";
+				HEADER_SEARCH_PATHS = (
+					"$(PROJECT_DIR)/../../wxWidgets-3.0.3/include",
+					"$(PROJECT_DIR)/../../wxWidgets-3.0.3/build-osx/lib/wx/include/osx_cocoa-unicode-static-3.0",
+					"$(PROJECT_DIR)/build/include/luajit-2.0",
+					"$(PROJECT_DIR)/../wxlua/wxLua/modules/wxbind/include",
+					"$(PROJECT_DIR)/../wxlua/wxLua/modules/wxbind/setup",
+					"$(PROJECT_DIR)/../wxlua/wxLua/modules",
+					"$(PROJECT_DIR)/../wxlua/wxLua",
+				);
+				INFOPLIST_FILE = "$(SRCROOT)/Info.plist";
+				INSTALL_PATH = "$(HOME)/Applications";
+				LD_NO_PIE = NO;
+				LD_RUNPATH_SEARCH_PATHS = "@executable_path/../Resources/lib";
+				LIBRARY_SEARCH_PATHS = (
+					"$(PROJECT_DIR)/../../wxWidgets-3.0.3/build-osx/lib",
+					"$(PROJECT_DIR)/build/lib",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				OTHER_CFLAGS = (
+					"-D_FILE_OFFSET_BITS=64",
+					"-D__WXMAC__",
+					"-D__WXOSX__",
+					"-D__WXOSX_COCOA__",
+					"-DLUA_COMPAT_MODULE",
+					"-DMacOS",
+				);
+				OTHER_LDFLAGS = (
+					"-lwx_osx_cocoau-3.0",
+					"-lwx_osx_cocoau_gl-3.0",
+					"-lwxregexu-3.0",
+					"-lwxtiff-3.0",
+					"-lwxjpeg-3.0",
+					"-lwxpng-3.0",
+					"-lwxscintilla-3.0",
+					"-lz",
+					"-lpthread",
+					"-liconv",
+					"-lexpat",
+					"-lluajit-5.1",
+					"-pagezero_size",
+					10000,
+					"-image_base",
+					100000000,
+				);
+				PRESERVE_DEAD_CODE_INITS_AND_TERMS = NO;
+				PRODUCT_NAME = wxLuaApp;
+				SDKROOT = macosx10.6;
+			};
+			name = Release;
+		};
+		C01FCF4F08A954540054247B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_MODEL_TUNING = G5;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				ONLY_ACTIVE_ARCH = YES;
+				PREBINDING = NO;
+				SDKROOT = macosx10.6;
+			};
+			name = Debug;
+		};
+		C01FCF5008A954540054247B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_MODEL_TUNING = G5;
+				GCC_OPTIMIZATION_LEVEL = 2;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				PREBINDING = NO;
+				SDKROOT = macosx10.6;
+			};
+			name = Release;
+		};
+		E4CB370D1FE2C1F7001BB75E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				BUILD_CONFIGURATION = Debug;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUGGING_SYMBOLS = YES;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				OTHER_CFLAGS = "";
+				OTHER_LDFLAGS = "";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		E4CB370E1FE2C1F7001BB75E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				BUILD_CONFIGURATION = Release;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				OTHER_CFLAGS = "";
+				OTHER_LDFLAGS = "";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		E4CB37111FE4FF0E001BB75E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		E4CB37121FE4FF0E001BB75E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		C01FCF4A08A954540054247B /* Build configuration list for PBXNativeTarget "wxLuaApp" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C01FCF4B08A954540054247B /* Debug */,
+				C01FCF4C08A954540054247B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		C01FCF4E08A954540054247B /* Build configuration list for PBXProject "wxLuaApp" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C01FCF4F08A954540054247B /* Debug */,
+				C01FCF5008A954540054247B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		E4CB370C1FE2C1F7001BB75E /* Build configuration list for PBXLegacyTarget "wxLuaApp_win" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E4CB370D1FE2C1F7001BB75E /* Debug */,
+				E4CB370E1FE2C1F7001BB75E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		E4CB37101FE4FF0E001BB75E /* Build configuration list for PBXAggregateTarget "wxLuaApp_archive" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E4CB37111FE4FF0E001BB75E /* Debug */,
+				E4CB37121FE4FF0E001BB75E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 29B97313FDCFA39411CA2CEA /* Project object */;
+}
