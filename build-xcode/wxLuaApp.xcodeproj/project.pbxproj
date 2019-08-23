@@ -93,6 +93,7 @@
 		E4D6D99B230AE8B10008ADE9 /* wxldebug.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E4D6D981230AE8B10008ADE9 /* wxldebug.cpp */; };
 		E4D6D99C230AE8B10008ADE9 /* wxlobject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E4D6D985230AE8B10008ADE9 /* wxlobject.cpp */; };
 		E4D6D99E230AEB190008ADE9 /* scripts in Resources */ = {isa = PBXBuildFile; fileRef = E4D6D99D230AEB190008ADE9 /* scripts */; };
+		E4D6D9A023101F240008ADE9 /* filedlg.mm in Sources */ = {isa = PBXBuildFile; fileRef = E4D6D99F23101F240008ADE9 /* filedlg.mm */; };
 		E4FC7811183E50DC0064FB2E /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4FC7810183E50DC0064FB2E /* Accelerate.framework */; };
 		E4FC7838183E50F00064FB2E /* AGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4FC7837183E50F00064FB2E /* AGL.framework */; };
 		E4FC784C183E51180064FB2E /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4FC7845183E51180064FB2E /* Carbon.framework */; };
@@ -270,6 +271,7 @@
 		E4D6D984230AE8B10008ADE9 /* atomic.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = atomic.h; sourceTree = "<group>"; };
 		E4D6D985230AE8B10008ADE9 /* wxlobject.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = wxlobject.cpp; sourceTree = "<group>"; };
 		E4D6D99D230AEB190008ADE9 /* scripts */ = {isa = PBXFileReference; lastKnownFileType = folder; name = scripts; path = ../wxSources/scripts; sourceTree = "<group>"; };
+		E4D6D99F23101F240008ADE9 /* filedlg.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = filedlg.mm; path = ../wxSources/filedlg.mm; sourceTree = "<group>"; };
 		E4FC7810183E50DC0064FB2E /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = /System/Library/Frameworks/Accelerate.framework; sourceTree = "<absolute>"; };
 		E4FC7837183E50F00064FB2E /* AGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AGL.framework; path = /System/Library/Frameworks/AGL.framework; sourceTree = "<absolute>"; };
 		E4FC7845183E51180064FB2E /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = /System/Library/Frameworks/Carbon.framework; sourceTree = "<absolute>"; };
@@ -345,6 +347,7 @@
 			children = (
 				E4D6D8BF230ADEC10008ADE9 /* ConsoleFrame.cpp */,
 				E4D6D8C1230ADEC10008ADE9 /* ConsoleFrame.h */,
+				E4D6D99F23101F240008ADE9 /* filedlg.mm */,
 				E4D6D8BE230ADEC10008ADE9 /* lua_addition.c */,
 				E4D6D8C2230ADEC10008ADE9 /* lua_addition.h */,
 				E4D6D8BC230ADEC00008ADE9 /* record_build_date.sh */,
@@ -784,6 +787,7 @@
 				E4D6D996230AE8B10008ADE9 /* wxlbind.cpp in Sources */,
 				E4D6D989230AE8B10008ADE9 /* wxlua_bind.cpp in Sources */,
 				E4D6D92F230AE8910008ADE9 /* wxcore_defsutils.cpp in Sources */,
+				E4D6D9A023101F240008ADE9 /* filedlg.mm in Sources */,
 				E4D6D957230AE8910008ADE9 /* wxaui_bind.cpp in Sources */,
 				E4D6D930230AE8910008ADE9 /* wxcore_clipdrag.cpp in Sources */,
 				E4D6D98B230AE8B10008ADE9 /* wxlcallb.cpp in Sources */,
