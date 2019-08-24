@@ -497,6 +497,10 @@ ConsoleFrame::ShowHistory(bool up, bool option)
 void
 ConsoleFrame::ShowPrompt()
 {
+    int lastpos = textCtrl->GetLastPosition();
+    wxChar lastChar = textCtrl->GetRange(lastpos - 1, lastpos).GetChar(0);
+    if (lastChar != '\n')
+        textCtrl->AppendText("\n");
     SetConsoleColor(0);
     AppendConsoleMessage("% ");
 }
