@@ -266,8 +266,9 @@ bool wxLuaStandaloneApp::OnInit()
     //luaopen_luaglu(L);
     lua_register_string_ext(L);
     
-    //  Initialize "LuaApp" as a subclass object of wx.wxApp
-    m_wxlState.RunString(wxT("LuaApp = {}; setmetatable(LuaApp, {__index = wx.wxApp})"));
+    //  Initialize "LuaApp" as a shortcut to wx.wxGetApp()
+    //  LuaApp.config is defined as an empty table (which may be overwritten by conf.lua)
+    m_wxlState.RunString(wxT("LuaApp = wx.wxGetApp(); LuaApp.config = {}"));
     
     //  If configuration script is present in the working directory, then run it first
     wxString conf = wxT("conf.lua");
