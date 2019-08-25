@@ -17,21 +17,26 @@
 PWD ?= $(shell pwd)
 
 #  wxLua project base directory
-WXLUA_DIR = $(PWD)/../..
+WXLUA_DIR = $(PWD)/..
 
 #  LuaJIT directory
 LUAJIT_DIR = $(PWD)/../LuaJIT-2.0.5
 
 #  wxWidgets base directory
 #  (Depends on your installation)
-WX_DIR = $(PWD)/../../../../wxWidgets-3.0.3
+WX_DIR = $(PWD)/../../wxWidgets-3.0.3
 
 #  Application name
 APPNAME = wxLuaApp
 
 #  Target platform and cross compile flag
-TARGET_PLATFORM=MSW
+ifeq ($(TARGET_ARCH),x86_64)
+CROSS=mingw64
+else
 CROSS=mingw32
+endif
+
+PATH_PREFIX=/usr/local/homebrew/bin/
 
 #  Object files
 
@@ -48,42 +53,38 @@ WXBIND_O = wxadv_bind.o wxadv_wxladv.o wxaui_bind.o wxbase_base.o wxbase_bind.o 
   wxwebview_bind.o wxxml_bind.o wxxrc_bind.o
 WXLUAAPP_O = wxLuaApp.o ConsoleFrame.o lua_addition.o
 LUAGL_O = luagl_const.o luagl_util.o luagl.o luaglu.o
-WXLUA_ALL_O = $(addprefix modules/wxlua/debug/,$(WXLUA_DEBUG_O)) \
-  $(addprefix modules/wxlua/debugger/,$(WXLUA_DEBUGGER_O)) \
-  $(addprefix modules/wxlua/,$(WXLUA_O)) \
-  $(addprefix modules/wxbind/src/,$(WXBIND_O)) \
-  $(addprefix wxLuaApp/wxSources/,$(WXLUAAPP_O)) \
-  $(addprefix wxLuaApp/luagl/src/,$(LUAGL_O))
+WXLUA_ALL_O = $(addprefix wxlua/wxLua/modules/wxlua/debug/,$(WXLUA_DEBUG_O)) \
+  $(addprefix wxlua/wxLua/modules/wxlua/debugger/,$(WXLUA_DEBUGGER_O)) \
+  $(addprefix wxlua/wxLua/modules/wxlua/,$(WXLUA_O)) \
+  $(addprefix wxlua/wxLua/modules/wxbind/src/,$(WXBIND_O)) \
+  $(addprefix wxSources/,$(WXLUAAPP_O))
 
 OBJECTS = $(WXLUA_ALL_O)
 
-SUBDIRS = modules/wxlua/debug modules/wxlua/debugger modules/wxbind/src wxLuaApp/wxSources wxLuaApp/luagl/src
+SUBDIRS = wxlua/wxLua/modules/wxlua/debug wxlua/wxLua/modules/wxlua/debugger wxlua/wxLua/modules/wxbind/src wxSources
 
 #  wx libraries
 WXLIB_LIST = core,base,gl,adv
 
 ifeq ($(TARGET_PLATFORM),MSW)
- CPP_EXTRA_FLAGS = -I$(LUAJIT_DIR)/src -I../.. -I../../modules -I../../modules/wxbind/include -I../../modules/wxbind/setup -I../luagl/include -DLUA_COMPAT_MODULE
+ CPP_EXTRA_FLAGS = -I$(LUAJIT_DIR)/src -I../wxlua/wxLua -I../wxlua/wxLua/modules -I../wxlua/wxLua/modules/wxbind/include -I../wxlua/wxLua/modules/wxbind/setup -DLUA_COMPAT_MODULE
  ifneq ($(CROSS),)
-  ifeq ($(CROSS),mingw32)
-   PATH_PREFIX = /usr/local/mingw-w32/bin/
+  ifeq ($(TARGET_ARCH),i686)
+   BUILD_DIR = build-win32
    TOOL_PREFIX = i686-w64-mingw32-
    LIB_SUFFIX = -3.0-i686-w64-mingw32
-   BUILD_DIR = build-win32
    HOST_CC = "gcc -m32"
    LUAJIT_HOSTCC_FLAGS = "HOST_XCFLAGS=-I. -DLUAJIT_OS=LUAJIT_OS_WINDOWS"
   else
-   ifeq ($(CROSS),mingw64)
-    PATH_PREFIX = /usr/local/mingw-w64/bin/
+   ifeq ($(TARGET_ARCH),x86_64)
+    BUILD_DIR = build-win
     TOOL_PREFIX = x86_64-w64-mingw32-
     LIB_SUFFIX = -3.0-x86_64-w64-mingw32
-    BUILD_DIR = build-win64
     HOST_CC = "gcc"
    endif
   endif
   WINE_PATH=/Applications/EasyWine.app/Contents/Resources/wine/bin
  else
-  BUILD_DIR = build-msw
   LIB_SUFFIX = -3.0
  endif
  WX_LIB_DIR = $(WX_DIR)/$(BUILD_DIR)/lib
@@ -97,7 +98,7 @@ ifeq ($(TARGET_PLATFORM),MSW)
  PRODUCT_DIR = $(APPNAME)
  PRODUCT = $(PRODUCT_DIR)/$(FINAL_EXECUTABLE)
  EXTRA_OBJECTS = $(MSW_OBJECTS)
- LUAJIT_LIB = ../build/$(BUILD_DIR)/lib/lua51.dll
+ LUAJIT_LIB = build/$(BUILD_DIR)/lib/lua51.dll
 endif
 
 CPP = $(PATH_PREFIX)$(TOOL_PREFIX)g++
@@ -114,10 +115,10 @@ ifeq ($(BUILD_CONFIGURATION),Debug)
 endif
 
 ifeq ($(DEBUG),1)
- DESTPREFIX = ../build/$(BUILD_DIR)/debug
+ DESTPREFIX = build/$(BUILD_DIR)/debug
  COPT = -O0 -g
 else
- DESTPREFIX = ../build/$(BUILD_DIR)/release
+ DESTPREFIX = build/$(BUILD_DIR)/release
  COPT = -O2 -g
 endif
 MAKEDIR = $(PWD)
@@ -145,8 +146,8 @@ make_dir:
 	for i in $(SUBDIRS); do mkdir -p $(DESTPREFIX)/$$i; done
 
 ifeq ($(TARGET_PLATFORM),MSW)
-RESOURCE = wxLuaApp/wxSources/$(APPNAME)_rc.o
-$(DESTPREFIX)/$(RESOURCE) : $(WXLUA_DIR)/wxLuaApp/wxSources/$(APPNAME).rc
+RESOURCE = wxSources/$(APPNAME)_rc.o
+$(DESTPREFIX)/$(RESOURCE) : $(WXLUA_DIR)/wxSources/$(APPNAME).rc
 	$(PATH_PREFIX)$(TOOL_PREFIX)windres -i $< -o $@ -I$(WX_DIR)/include
 endif
 
@@ -175,9 +176,9 @@ $(DESTPREFIX)/%.o : $(WXLUA_DIR)/%.c
 $(LUAJIT_LIB) :
 ifeq ($(TARGET_PLATFORM),MSW)
 	make -C $(LUAJIT_DIR) HOST_CC=$(HOST_CC) CFLAGS="" LDFLAGS="" TARGET_FLAGS="-static-libgcc" CROSS=$(PATH_PREFIX)$(TOOL_PREFIX) $(LUAJIT_HOSTCC_FLAGS)  TARGET_SYS=Windows || exit 1
-	mkdir -p ../build/$(BUILD_DIR)/lib/lua
-	cp $(LUAJIT_DIR)/src/lua51.dll ../build/$(BUILD_DIR)/lib
-	cp -R $(LUAJIT_DIR)/src/jit ../build/$(BUILD_DIR)/lib/lua
+	mkdir -p build/$(BUILD_DIR)/lib/lua
+	cp $(LUAJIT_DIR)/src/lua51.dll build/$(BUILD_DIR)/lib
+	cp -R $(LUAJIT_DIR)/src/jit build/$(BUILD_DIR)/lib/lua
 	make -C $(LUAJIT_DIR) HOST_CC=$(HOST_CC) CFLAGS="" LDFLAGS="" TARGET_FLAGS="-static-libgcc" CROSS=$(PATH_PREFIX)$(TOOL_PREFIX) TARGET_SYS=Windows clean
 endif
 
@@ -194,7 +195,7 @@ ifeq ($(TARGET_PLATFORM),MSW)
 	mkdir -p $(DESTPREFIX)/$(PRODUCT_DIR)
 	cp $(DESTPREFIX)/$(EXECUTABLE) $(DESTPREFIX)/$(PRODUCT_DIR)/$(FINAL_EXECUTABLE)
 	cp $(LUAJIT_LIB) $(DESTPREFIX)/$(PRODUCT_DIR)
-	cp -R ../scripts $(DESTPREFIX)/$(PRODUCT_DIR)
+	cp -R ../wxSources/scripts $(DESTPREFIX)/$(PRODUCT_DIR)
 endif
 
 ifeq ($(TARGET_PLATFORM),MSW)

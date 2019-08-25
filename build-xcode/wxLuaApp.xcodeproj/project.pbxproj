@@ -601,7 +601,7 @@
 			buildPhases = (
 			);
 			buildToolPath = /usr/bin/env;
-			buildWorkingDirectory = "$(PROJECT_DIR)";
+			buildWorkingDirectory = "$(PROJECT_DIR)/../build-win";
 			dependencies = (
 			);
 			name = wxLuaApp_win;
