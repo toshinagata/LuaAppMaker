@@ -325,7 +325,6 @@ bool wxLuaStandaloneApp::CheckInstance()
     wxString name = wxT("MyApp-") + wxGetUserId();
     m_ipcServiceName = new wxString(name);
     m_ipcServiceName->Prepend(wxT("IPC-"));
-    free(buf);
     m_checker = new wxSingleInstanceChecker(name);
     if (m_checker->IsAnotherRunning()) {
         //  Make a connection with the other instance and ask for opening the file(s)
