@@ -536,15 +536,15 @@ wxLuaStandaloneApp::OpenPendingFiles()
     if (m_numberOfProcessedFiles < 0) {
         //  First invocation: look for the lua script from the file list
         for (i = 0; i < size; i++) {
-            wxFileName file(m_pendingFilesToOpen[i]);
-            if (file.DirExists()) {
-                wxFileName name(m_pendingFilesToOpen[i], wxT("wxmain.lua"));
-                if (name.Exists()) {
+            printf("%s\n", (const char *)m_pendingFilesToOpen[i]);
+            if (wxFileName::DirExists(m_pendingFilesToOpen[i])) {
+                wxString name = m_pendingFilesToOpen[i] + wxFILE_SEP_PATH + wxT("wxmain.lua");
+                if (wxFileName::FileExists(name)) {
                     //  This is the name of the startup script
                     //  Remove this from the file list
-                    dname = file;
-                    dname.MakeAbsolute();
-                    dpath = dname.GetFullPath();
+                    wxFileName file(m_pendingFilesToOpen[i]);
+                    file.MakeAbsolute();
+                    dpath = file.GetFullPath();
                     m_pendingFilesToOpen.RemoveAt(i, 1);
                     size--;
                     break;
