@@ -239,14 +239,6 @@ bool wxLuaStandaloneApp::OnInit()
     setlocale(LC_NUMERIC, "C");
 #endif
     
-    //  Set working directory
-    wxString dirname = FindResourcePath();
-    if (!dirname.IsEmpty()) {
-        dirname += wxFILE_SEP_PATH;
-        dirname += wxT("scripts");
-        wxSetWorkingDirectory(dirname);
-    }
-
     // Initialize the wxLua bindings we want to use.
     // See notes for WXLUA_DECLARE_BIND_ALL above.
     WXLUA_IMPLEMENT_BIND_ALL
@@ -535,15 +527,19 @@ wxLuaStandaloneApp::OpenPendingFiles()
     if (m_numberOfProcessedFiles < 0) {
         //  First invocation: look for the lua script from the file list
         for (i = 0; i < size; i++) {
-            printf("%s\n", (const char *)m_pendingFilesToOpen[i]);
-            if (wxFileName::DirExists(m_pendingFilesToOpen[i])) {
-                wxString name = m_pendingFilesToOpen[i] + wxFILE_SEP_PATH + wxT("wxmain.lua");
-                if (wxFileName::FileExists(name)) {
+            wxFileName dname1(m_pendingFilesToOpen[i]);
+            dname1.MakeAbsolute();
+            wxString dpath1 = dname1.GetFullPath();
+            const char *p = (const char *)(dpath1);
+            printf("%s\n", p);
+            if (wxFileName::DirExists(dpath1)) {
+                wxString path1 = dpath1 + wxFILE_SEP_PATH + wxT("wxmain.lua");
+                const char *p2 = (const char *)(path1);
+                printf("%s\n", p2);
+                if (wxFileName::FileExists(path1)) {
                     //  This is the name of the startup script
                     //  Remove this from the file list
-                    wxFileName file(m_pendingFilesToOpen[i]);
-                    file.MakeAbsolute();
-                    dpath = file.GetFullPath();
+                    dpath = dpath1;
                     m_pendingFilesToOpen.RemoveAt(i, 1);
                     size--;
                     break;
