@@ -1,2 +1,2 @@
-myicon ICON "../wxlua/wxLua/art/wxlua.ico"
+myicon ICON "wxlualogo.ico"
 #include "wx/msw/wx.rc"
