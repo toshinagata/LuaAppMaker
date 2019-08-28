@@ -695,7 +695,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if [ ! -f $PROJECT_DIR/build/lib/libluajit-5.1.dylib ]; then\n  make -C $PROJECT_DIR/../LuaJIT-2.0.5 PREFIX=$PROJECT_DIR/build install || exit 1\n  (cd $PROJECT_DIR/build/lib; install_name_tool -id \"@rpath/libluajit-5.1.dylib\" libluajit-5.1.dylib)\n  make -C $PROJECT_DIR/../LuaJIT-2.0.5 clean\nfi\n";
+			shellScript = "if [ ! -f $PROJECT_DIR/build/lib/libluajit-5.1.dylib ]; then\n  make -C $PROJECT_DIR/../LuaJIT-2.0.5u PREFIX=$PROJECT_DIR/build install || exit 1\n  (cd $PROJECT_DIR/build/lib; install_name_tool -id \"@rpath/libluajit-5.1.dylib\" libluajit-5.1.dylib)\n  make -C $PROJECT_DIR/../LuaJIT-2.0.5 clean\nfi\n";
 		};
 		E4CB37171FE4FF42001BB75E /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
