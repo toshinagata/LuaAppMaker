@@ -406,7 +406,7 @@ ConsoleFrame::OnEnterPressed()
         for (int i = 0; i < nresults; i++) {
             const char *val = luaL_tolstring(L, -1, NULL);
             result.Prepend(i == 0 ? wxT("\n") : wxT(","));
-            result.Prepend(val);
+            result.Prepend(wxString(val, wxConvUTF8));
             lua_pop(L, 2);
         }
         string.RemoveLast();  //  Remove the last \n
@@ -538,7 +538,7 @@ ConsoleFrame::OnTextEnter(wxCommandEvent &event)
 int
 ConsoleFrame::AppendConsoleMessage(const char *mes)
 {
-	wxString string(mes);
+	wxString string(mes, wxConvUTF8);
 	textCtrl->AppendText(string);
 	commandHistoryIndex = valueHistoryIndex = -1;
 	return string.Len();
