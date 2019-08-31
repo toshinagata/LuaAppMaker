@@ -166,7 +166,7 @@ LUALIB_API void (luaL_pushresult) (luaL_Buffer *B);
 
 /*  Support for fopen of UTF-8 filenames (2019.8.27. Toshi Nagata)  */
 /*  Implementation of win_fopen is in lib_io.c  */
-#if LUAJIT_OS == LUAJIT_OS_WINDOWS
+#if _WIN32 || _WIN64
 #define fopen win_fopen
 extern FILE *win_fopen(const char *path, const char *mode);
 #endif
