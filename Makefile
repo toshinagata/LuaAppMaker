@@ -98,7 +98,8 @@ ifeq ($(TARGET_PLATFORM),MSW)
  PRODUCT_DIR = $(APPNAME)
  PRODUCT = $(PRODUCT_DIR)/$(FINAL_EXECUTABLE)
  EXTRA_OBJECTS = $(MSW_OBJECTS)
- LUAJIT_LIB = build/$(BUILD_DIR)/lib/lua51.dll
+ LUAJIT_LIB = build/lib/lua51.dll
+ WIN_FOPEN_O = build/lib/win_fopen.o
 endif
 
 CPP = $(PATH_PREFIX)$(TOOL_PREFIX)g++
@@ -115,10 +116,10 @@ ifeq ($(BUILD_CONFIGURATION),Debug)
 endif
 
 ifeq ($(DEBUG),1)
- DESTPREFIX = build/$(BUILD_DIR)/debug
+ DESTPREFIX = build/debug
  COPT = -O0 -g
 else
- DESTPREFIX = build/$(BUILD_DIR)/release
+ DESTPREFIX = build/release
  COPT = -O2 -g
 endif
 MAKEDIR = $(PWD)
@@ -173,12 +174,18 @@ $(DESTPREFIX)/%.o : $(WXLUA_DIR)/%.cpp
 $(DESTPREFIX)/%.o : $(WXLUA_DIR)/%.c
 	$(CC) -c $< -o $@ $(CFLAGS)
 
-$(LUAJIT_LIB) :
 ifeq ($(TARGET_PLATFORM),MSW)
-	make -C $(LUAJIT_DIR) HOST_CC=$(HOST_CC) CFLAGS="" LDFLAGS="" TARGET_FLAGS="-static-libgcc" CROSS=$(PATH_PREFIX)$(TOOL_PREFIX) $(LUAJIT_HOSTCC_FLAGS)  TARGET_SYS=Windows || exit 1
-	mkdir -p build/$(BUILD_DIR)/lib/lua
-	cp $(LUAJIT_DIR)/src/lua51.dll build/$(BUILD_DIR)/lib
-	cp -R $(LUAJIT_DIR)/src/jit build/$(BUILD_DIR)/lib/lua
+$(WIN_FOPEN_O) : $(WXLUA_DIR)/wxSources/win_fopen.c
+	mkdir -p build/lib
+	$(CC) -c $< -o $@ $(CFLAGS)
+endif
+
+$(LUAJIT_LIB) : $(WIN_FOPEN_O)
+ifeq ($(TARGET_PLATFORM),MSW)
+	make -C $(LUAJIT_DIR) HOST_CC=$(HOST_CC) CFLAGS="" LDFLAGS="" TARGET_SHLDFLAGS="$(PWD)/$(WIN_FOPEN_O)" TARGET_FLAGS="-static-libgcc" CROSS=$(PATH_PREFIX)$(TOOL_PREFIX) $(LUAJIT_HOSTCC_FLAGS) TARGET_SYS=Windows || exit 1
+	mkdir -p build/lib/lua
+	cp $(LUAJIT_DIR)/src/lua51.dll build/lib
+	cp -R $(LUAJIT_DIR)/src/jit build/lib/lua
 	make -C $(LUAJIT_DIR) HOST_CC=$(HOST_CC) CFLAGS="" LDFLAGS="" TARGET_FLAGS="-static-libgcc" CROSS=$(PATH_PREFIX)$(TOOL_PREFIX) TARGET_SYS=Windows clean
 endif
 
@@ -187,7 +194,7 @@ DESTOBJECTS = $(addprefix $(DESTPREFIX)/,$(ALL_OBJECTS))
 $(DESTPREFIX)/$(EXECUTABLE) : $(LUAJIT_LIB) $(DESTPREFIX) $(DESTOBJECTS)
 	sh ../wxSources/record_build_date.sh >$(DESTPREFIX)/buildInfo.c
 	$(CC) -c $(DESTPREFIX)/buildInfo.c -o $(DESTPREFIX)/buildInfo.o $(CFLAGS)
-	$(CPP) -o $@ $(DESTOBJECTS) $(DESTPREFIX)/buildInfo.o $(CFLAGS) $(LDFLAGS) $(LUAJIT_LIB)
+	$(CPP) -o $@ $(DESTOBJECTS) $(DESTPREFIX)/buildInfo.o $(WIN_FOPEN_O) $(LUAJIT_LIB) $(CFLAGS) $(LDFLAGS)
 
 $(DESTPREFIX)/$(PRODUCT) : $(DESTPREFIX)/$(EXECUTABLE)
 ifeq ($(TARGET_PLATFORM),MSW)

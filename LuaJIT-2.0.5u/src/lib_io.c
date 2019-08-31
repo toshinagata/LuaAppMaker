@@ -40,38 +40,6 @@ typedef struct IOFileUD {
 #define IOSTDF_UD(L, id)	(&gcref(G(L)->gcroot[(id)])->ud)
 #define IOSTDF_IOF(L, id)	((IOFileUD *)uddata(IOSTDF_UD(L, (id))))
 
-/*  Support for fopen of UTF-8 filenames (2019.8.27. Toshi Nagata)  */
-/*  Implementation of win_fopen is in lib_io.c  */
-#if LUAJIT_OS == LUAJIT_OS_WINDOWS
-#undef fopen
-#include <Windows.h>
-static int utf8towchar(const char *utf8, wchar_t **outbuf)
-{
-  size_t buflen = MultiByteToWideChar(CP_UTF8, 0, utf8, -1, (void *)0, 0);
-  wchar_t *buf = calloc(buflen, sizeof(wchar_t));
-  if (MultiByteToWideChar(CP_UTF8, 0, utf8, -1, buf, buflen) == 0) {
-    free(buf);
-    return -1;
-  }
-  *outbuf = buf;
-  return 0;
-}
-
-FILE *win_fopen(const char *path, const char *mode)
-{
-  wchar_t *wpath, *wmode;
-  if (utf8towchar(path, &wpath) != 0 || utf8towchar(mode, &wmode) != 0)
-    return NULL;
-  FILE *f;
-  f = _wfopen(wpath, wmode);
-  free(wpath);
-  free(wmode);
-  return f;
-}
-#define fopen win_fopen
-#endif
-/*  End Toshi Nagata  */
-
 /* -- Open/close helpers -------------------------------------------------- */
 
 static IOFileUD *io_tofilep(lua_State *L)
