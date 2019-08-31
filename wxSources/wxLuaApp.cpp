@@ -184,6 +184,42 @@ FindResourcePath()
 #endif
 }
 
+static wxString
+MakeLuaString(wxString str)
+{
+    wxString::const_iterator i;
+    wxString res = wxT("\"");
+    for (i = str.begin(); i != str.end(); ++i) {
+        wxUniChar ch = *i;
+        char buf[8];
+        if (ch >= 0 && ch < 32) {
+            sprintf(buf, "\\%03d", (char)ch);
+            res.Append(buf);
+        } else if (ch == '\\' || ch == '\"') {
+            buf[0] = '\\';
+            buf[1] = ch;
+            buf[2] = 0;
+            res.Append(buf);
+        } else {
+            res.Append(ch);
+        }
+    }
+    res.Append(wxT("\""));
+    return res;
+}
+
+inline static wxString
+DyLibExtension()
+{
+#if defined(__WXMSW__)
+    return wxT("dll");
+#elif defined(__WXMAC__)
+    return wxT("dylib");
+#else
+    return wxT("so");
+#endif
+}
+
 bool wxLuaStandaloneApp::OnInit()
 {
     m_programName       = argv[0];  // The name of this program
@@ -262,6 +298,19 @@ bool wxLuaStandaloneApp::OnInit()
     //  LuaApp.config is defined as an empty table (which may be overwritten by conf.lua)
     m_wxlState.RunString(wxT("LuaApp = wx.wxGetApp(); LuaApp.config = {}"));
     
+    //  Replace package.path and package.cpath (to prevent looking outside this app)
+    wxString rpath = FindResourcePath();
+    wxString lpath = wxT("./?.lua;") +
+        rpath + wxFILE_SEP_PATH + wxT("scripts/?.lua;") +
+        rpath + wxFILE_SEP_PATH + wxT("lib/?.lua");
+    wxString ext = DyLibExtension();
+    wxString cpath = wxT("./?.lua;") +
+        rpath + wxFILE_SEP_PATH + wxT("scripts/?.") + ext + wxT(";") +
+        rpath + wxFILE_SEP_PATH + wxT("lib/?.") + ext;
+
+    m_wxlState.RunString(wxT("package.path = ") + MakeLuaString(lpath));
+    m_wxlState.RunString(wxT("package.cpath = ") + MakeLuaString(cpath));
+
     //  If configuration script is present in the working directory, then run it first
     wxString conf = wxT("conf.lua");
     if (wxFileExists(conf)) {
@@ -475,30 +524,6 @@ wxLuaStandaloneApp::OnOpenFilesByEvent(wxCommandEvent& event)
     OpenPendingFiles();
 }
 
-static wxString
-MakeLuaString(wxString str)
-{
-    wxString::const_iterator i;
-    wxString res = wxT("\"");
-    for (i = str.begin(); i != str.end(); ++i) {
-        wxUniChar ch = *i;
-        char buf[8];
-        if (ch >= 0 && ch < 32) {
-            sprintf(buf, "\\%03d", (char)ch);
-            res.Append(buf);
-        } else if (ch == '\\' || ch == '\"') {
-            buf[0] = '\\';
-            buf[1] = ch;
-            buf[2] = 0;
-            res.Append(buf);
-        } else {
-            res.Append(ch);
-        }
-    }
-    res.Append(wxT("\""));
-    return res;
-}
-
 bool
 wxLuaStandaloneApp::CheckLuaLogicalExpression(wxString str)
 {
@@ -551,16 +576,11 @@ wxLuaStandaloneApp::OpenPendingFiles()
             //  Set the working directory
             wxSetWorkingDirectory(dpath);
             //  Set the package search directory
-            lua_getglobal(L, "package");  // [package]
-            lua_pushstring(L, dpath.utf8_str()); // [package, dpath]
-            char sep[8] = " ?.lua;";
-            sep[0] = wxFILE_SEP_PATH;
-            lua_pushstring(L, sep);       // [package, dpath, "/?.lua;"]
-            lua_concat(L, 2);             // [package, "dpath/?.lua;"]
-            lua_getfield(L, -2, "path");  // [package, "dpath/?.lua;", path]
-            lua_concat(L, 2);             // [package, "dpath/?.lua;path"]
-            lua_setfield(L, -2, "path");  // Replace package.path
-            lua_pop(L, 1);                // Pop 'package' reference
+            wxString lpath = dpath + wxFILE_SEP_PATH + wxT("?.lua;");
+            wxString cpath = dpath + wxFILE_SEP_PATH + wxT("?.") + DyLibExtension() + wxT(";");
+            m_wxlState.RunString(wxT("package.path = ") + MakeLuaString(lpath) + wxT(".. package.path"));
+            m_wxlState.RunString(wxT("package.cpath = ") + MakeLuaString(cpath) + wxT(".. package.cpath"));
+
             //  Load "wxmain.lua"
             DisplayMessage(wxT("Running wxmain.lua from " + dpath), false);
             int rc = m_wxlState.RunFile(spath);
