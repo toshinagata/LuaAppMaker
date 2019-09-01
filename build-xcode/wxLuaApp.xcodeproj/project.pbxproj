@@ -24,6 +24,7 @@
 
 /* Begin PBXBuildFile section */
 		E4318880231258D300B53D02 /* wxlualogo.icns in Resources */ = {isa = PBXBuildFile; fileRef = E431887F231258D300B53D02 /* wxlualogo.icns */; };
+		E46089F8231BD5B400CA06FD /* libluajit-5.1.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = E4D6D8CD230AE2C90008ADE9 /* libluajit-5.1.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		E48A4A3D2153E902005F88AB /* QTKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E48A4A3C2153E902005F88AB /* QTKit.framework */; };
 		E4D6D8B9230ADE4A0008ADE9 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = E4D6D8B8230ADE4A0008ADE9 /* Info.plist */; };
 		E4D6D8C6230ADEC10008ADE9 /* wxLuaApp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E4D6D8BD230ADEC00008ADE9 /* wxLuaApp.cpp */; };
@@ -134,6 +135,7 @@
 			dstPath = lib;
 			dstSubfolderSpec = 7;
 			files = (
+				E46089F8231BD5B400CA06FD /* libluajit-5.1.dylib in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

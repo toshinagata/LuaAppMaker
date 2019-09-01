@@ -34,6 +34,7 @@
 
 #include "wxlua/wxlua.h"
 #include "wxlua/debugger/wxldserv.h"
+#include "wxbind/include/wxcore_bind.h"
 
 #include "wxLuaApp.h"
 #include "ConsoleFrame.h"
@@ -312,7 +313,7 @@ bool wxLuaStandaloneApp::OnInit()
     m_wxlState.RunString(wxT("package.cpath = ") + MakeLuaString(cpath));
 
     //  If configuration script is present in the working directory, then run it first
-    wxString conf = wxT("conf.lua");
+    wxString conf = rpath + wxFILE_SEP_PATH + wxT("scripts/conf.lua");
     if (wxFileExists(conf)) {
         int rc = m_wxlState.RunFile(conf);
         run_ok = (rc == 0);
@@ -323,6 +324,15 @@ bool wxLuaStandaloneApp::OnInit()
     sConsoleFrame = ConsoleFrame::CreateConsoleFrame(NULL);
     sConsoleFrame->Show(true);
     SetTopWindow(sConsoleFrame);
+
+    //  Set LuaApp.luaConsole as the console frame
+    wxFrame *consoleFrame = wxDynamicCast(sConsoleFrame, wxFrame);
+    if (consoleFrame != NULL) {
+        lua_getglobal(L, "LuaApp");
+        wxluaT_pushuserdatatype(L, consoleFrame, wxluatype_wxFrame);
+        lua_setfield(L, -2, "luaConsole");
+        lua_pop(L, 1);
+    }
 
     // check to see if there is a toplevel window open for the user to close, else exit
     if (run_ok && !dont_quit)
@@ -538,6 +548,7 @@ bool
 wxLuaStandaloneApp::OpenPendingFiles()
 {
     int i, size;
+    int hideConsole = 0;
     wxFileName dname(FindResourcePath(), wxT("scripts"));
     dname.MakeAbsolute();
     wxString dpath = dname.GetFullPath();
@@ -555,12 +566,8 @@ wxLuaStandaloneApp::OpenPendingFiles()
             wxFileName dname1(m_pendingFilesToOpen[i]);
             dname1.MakeAbsolute();
             wxString dpath1 = dname1.GetFullPath();
-            const char *p = (const char *)(dpath1);
-            printf("%s\n", p);
             if (wxFileName::DirExists(dpath1)) {
                 wxString path1 = dpath1 + wxFILE_SEP_PATH + wxT("wxmain.lua");
-                const char *p2 = (const char *)(path1);
-                printf("%s\n", p2);
                 if (wxFileName::FileExists(path1)) {
                     //  This is the name of the startup script
                     //  Remove this from the file list
@@ -584,7 +591,11 @@ wxLuaStandaloneApp::OpenPendingFiles()
             //  Load "wxmain.lua"
             DisplayMessage(wxT("Running wxmain.lua from " + dpath), false);
             int rc = m_wxlState.RunFile(spath);
-            if (rc != 0) {
+            if (rc == 0) {
+                if (!CheckLuaLogicalExpression(wxT("LuaApp.config.showConsole"))) {
+                    hideConsole = 1;
+                }
+            } else {
                 DisplayMessage(wxlua_LUA_ERR_msg(rc), false);
             }
         } else {
@@ -613,6 +624,11 @@ wxLuaStandaloneApp::OpenPendingFiles()
                 i++;
             }
         }
+    }
+    int count = wxTopLevelWindows.GetCount();
+    if (count > 1 && hideConsole) {
+        if (hideConsole)
+            sConsoleFrame->Hide();
     }
     sConsoleFrame->ShowPrompt();
     return true;
