@@ -259,12 +259,10 @@ bool wxLuaStandaloneApp::OnInit()
     wxFileSystem::AddHandler(new wxMemoryFSHandler);
     wxMemoryFSHandler::AddFile(wxT("wxLua"), wxBitmap(wxlualogo_xpm), wxBITMAP_TYPE_XPM);
     m_mem_bitmap_added = true;
-    
-    Bind(LUAAPP_EVENT, &wxLuaStandaloneApp::OnOpenFilesByEvent, this, LuaAppEvent_openFiles);
-    Bind(LUAAPP_EVENT, &wxLuaStandaloneApp::OnExecuteLuaScript, this, LuaAppEvent_executeLuaScript);
-
-    //  For wxLuaEvent, Bind() cannot be used, probably because wxLuaEvent has
-    //  one more member (m_wxlState) than wxCommandEvent. Connect() can take care of it
+ 
+    Connect(LuaAppEvent_openFiles, LUAAPP_EVENT, wxCommandEventHandler(wxLuaStandaloneApp::OnOpenFilesByEvent));
+    Connect(LuaAppEvent_executeLuaScript, LUAAPP_EVENT, wxCommandEventHandler(wxLuaStandaloneApp::OnExecuteLuaScript));
+    Connect(wxID_EXIT, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(wxLuaStandaloneApp::OnQuitCommand));
     Connect(wxEVT_LUA_PRINT, wxLuaEventHandler(wxLuaStandaloneApp::OnLua));
     Connect(wxEVT_LUA_ERROR, wxLuaEventHandler(wxLuaStandaloneApp::OnLua));
 
@@ -496,6 +494,30 @@ void wxLuaStandaloneApp::DisplayMessage(const wxString &msg, bool is_error)
 void wxLuaStandaloneApp::OnLua( wxLuaEvent &event )
 {
     DisplayMessage(event.GetString(), event.GetEventType() == wxEVT_LUA_ERROR);
+}
+
+void wxLuaStandaloneApp::OnQuitCommand(wxCommandEvent &event)
+{
+    wxTopLevelWindow **windows;
+    wxWindowList::iterator iter;
+    int i, n = wxTopLevelWindows.GetCount();
+    windows = (wxTopLevelWindow **)malloc(n * sizeof(wxTopLevelWindow*));
+    if (windows == NULL)
+        return;
+    //  Pass 1: get the list of all windows
+    for (iter = wxTopLevelWindows.begin(), i = 0; iter != wxTopLevelWindows.end(); ++iter, i++) {
+        windows[i] = (wxTopLevelWindow *)(*iter);
+    }
+    //  Pass 2: close all windows except for LuaConsole
+    for (i = 0; i < n; i++) {
+        if (windows[i] != wxDynamicCast(sConsoleFrame, wxWindow)) {
+            if (!windows[i]->Close())
+                return;  /*  Cannot close this window  */
+        }
+    }
+    //  Pass 3: close LuaConsole
+    sConsoleFrame->Close();
+    free(windows);
 }
 
 void wxLuaStandaloneApp::OnExecuteLuaScript(wxCommandEvent &event)

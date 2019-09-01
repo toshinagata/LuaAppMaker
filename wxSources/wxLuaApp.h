@@ -77,6 +77,7 @@ public:
     void OnLua(wxLuaEvent &event);
 
     void OnExecuteLuaScript(wxCommandEvent &event);
+    void OnQuitCommand(wxCommandEvent &event);
 
     void RequestOpenFilesByEvent(wxString& files);
     void OnOpenFilesByEvent(wxCommandEvent& event);
