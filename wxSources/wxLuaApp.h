@@ -75,7 +75,9 @@ public:
     void DisplayMessage(const wxString &msg, bool is_error);
 
     void OnLua(wxLuaEvent &event);
-    
+
+    void OnExecuteLuaScript(wxCommandEvent &event);
+
     void RequestOpenFilesByEvent(wxString& files);
     void OnOpenFilesByEvent(wxCommandEvent& event);
     bool OpenPendingFiles();

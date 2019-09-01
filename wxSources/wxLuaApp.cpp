@@ -73,6 +73,8 @@ IMPLEMENT_APP(wxLuaStandaloneApp)
 
 wxDEFINE_EVENT(LUAAPP_EVENT, wxCommandEvent);
 const int LuaAppEvent_openFiles = 1;
+const int LuaAppEvent_executeLuaScript = 2;
+
 bool gInitCompleted = false;
 int gNumberOfOpenedFiles = 0;
 
@@ -259,7 +261,8 @@ bool wxLuaStandaloneApp::OnInit()
     m_mem_bitmap_added = true;
     
     Bind(LUAAPP_EVENT, &wxLuaStandaloneApp::OnOpenFilesByEvent, this, LuaAppEvent_openFiles);
-    
+    Bind(LUAAPP_EVENT, &wxLuaStandaloneApp::OnExecuteLuaScript, this, LuaAppEvent_executeLuaScript);
+
     //  For wxLuaEvent, Bind() cannot be used, probably because wxLuaEvent has
     //  one more member (m_wxlState) than wxCommandEvent. Connect() can take care of it
     Connect(wxEVT_LUA_PRINT, wxLuaEventHandler(wxLuaStandaloneApp::OnLua));
@@ -448,7 +451,6 @@ int wxLuaStandaloneApp::OnExit()
     return ret;
 }
 
-
 void wxLuaStandaloneApp::DisplayMessage(const wxString &msg, bool is_error)
 {
     if (sConsoleFrame == NULL)
@@ -494,6 +496,12 @@ void wxLuaStandaloneApp::DisplayMessage(const wxString &msg, bool is_error)
 void wxLuaStandaloneApp::OnLua( wxLuaEvent &event )
 {
     DisplayMessage(event.GetString(), event.GetEventType() == wxEVT_LUA_ERROR);
+}
+
+void wxLuaStandaloneApp::OnExecuteLuaScript(wxCommandEvent &event)
+{
+    wxString str = event.GetString();
+    m_wxlState.RunString(str, wxT(""), 0);
 }
 
 #if 0
@@ -627,8 +635,11 @@ wxLuaStandaloneApp::OpenPendingFiles()
     }
     int count = wxTopLevelWindows.GetCount();
     if (count > 1 && hideConsole) {
-        if (hideConsole)
-            sConsoleFrame->Hide();
+        if (hideConsole) {
+            wxCommandEvent *myEvent = new wxCommandEvent(LUAAPP_EVENT, LuaAppEvent_executeLuaScript);
+            myEvent->SetString(wxT("LuaApp.luaConsole:Hide()"));
+            this->QueueEvent(myEvent);
+        }
     }
     sConsoleFrame->ShowPrompt();
     return true;
