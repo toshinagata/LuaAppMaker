@@ -201,6 +201,9 @@ ifeq ($(TARGET_PLATFORM),MSW)
 	rm -rf $(DESTPREFIX)/$(PRODUCT_DIR)
 	mkdir -p $(DESTPREFIX)/$(PRODUCT_DIR)
 	cp $(DESTPREFIX)/$(EXECUTABLE) $(DESTPREFIX)/$(PRODUCT_DIR)/$(FINAL_EXECUTABLE)
+ifneq ($(DEBUG),1)
+	$(PATH_PREFIX)$(TOOL_PREFIX)strip $(DESTPREFIX)/$(PRODUCT_DIR)/$(FINAL_EXECUTABLE)
+endif
 	cp $(LUAJIT_LIB) $(DESTPREFIX)/$(PRODUCT_DIR)
 	cp -R ../wxSources/scripts $(DESTPREFIX)/$(PRODUCT_DIR)
 endif
@@ -209,14 +212,14 @@ ifeq ($(TARGET_PLATFORM),MSW)
 install: setup
 
 setup: build/release/$(PRODUCT_DIR)/$(FINAL_EXECUTABLE)
-	mkdir -p ../latest_binaries
+	mkdir -p ../_latest_binaries
 ifneq ($(CROSS),)
 	($(WINE_PATH)/wine ../../Inno\ Setup\ 5/ISCC.exe $(APPNAME).iss || exit 1)
 else
 	(/c/Program\ Files\ \(x86\)/Inno\ Setup\ 5/iscc $(APPNAME).iss || exit 1)
 endif
-	mv Output/Setup_$(APPNAME).exe ../latest_binaries
-	(cd build/release && rm -rf $(MAKEDIR)/../latest_binaries/$(APPNAME)Win* && mv $(PRODUCT_DIR) $(PRODUCT_DIR)Win && zip -r $(MAKEDIR)/../latest_binaries/$(APPNAME)Win.zip $(PRODUCT_DIR)Win -x \*.DS_Store \*.svn* && mv $(PRODUCT_DIR)Win $(PRODUCT_DIR))
+	mv Output/Setup_$(APPNAME).exe ../_latest_binaries
+	(cd build/release && rm -rf $(MAKEDIR)/../_latest_binaries/$(APPNAME)Win* && mv $(PRODUCT_DIR) $(PRODUCT_DIR)Win && zip -r $(MAKEDIR)/../_latest_binaries/$(APPNAME)Win.zip $(PRODUCT_DIR)Win -x \*.DS_Store \*.svn* && mv $(PRODUCT_DIR)Win $(PRODUCT_DIR))
 endif
 
 clean:
