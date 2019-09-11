@@ -131,6 +131,8 @@ utf8_from_sjis(lua_State *L)
     return 1;
 #elif defined(__APPLE__)
     CFStringRef ref = CFStringCreateWithBytes(kCFAllocatorDefault, (const UInt8 *)sjis, len, kCFStringEncodingDOSJapanese, false);
+    if (ref == (CFStringRef)0)
+        goto error_conv;
     size_t widelen = CFStringGetLength(ref);
     char *utf8 = (char *)calloc(widelen * 6 + 1, sizeof(char));
     if (utf8 == NULL) {
@@ -194,6 +196,8 @@ utf8_to_sjis(lua_State *L)
     return 1;
 #elif defined(__APPLE__)
     CFStringRef ref = CFStringCreateWithBytes(kCFAllocatorDefault, (const UInt8 *)utf8, len, kCFStringEncodingUTF8, false);
+    if (ref == (CFStringRef)0)
+        goto error_conv;
     size_t widelen = CFStringGetLength(ref);
     char *sjis = (char *)calloc(widelen * 2 + 1, sizeof(char));
     if (sjis == NULL) {
