@@ -488,6 +488,16 @@ void wxLuaStandaloneApp::DisplayMessage(const wxString &msg, bool is_error)
             sConsoleFrame->AppendConsoleMessage(msg.utf8_str());
         }
         sConsoleFrame->SetConsoleColor(0);
+        if (!sConsoleFrame->IsShown()) {
+            //  Cancel is 'Show Lua Console' and quit this dialog
+            wxMessageDialog *dlg = new wxMessageDialog(NULL, msg, wxT("Internal Error"), wxOK | wxCANCEL);
+            dlg->SetOKCancelLabels(wxID_OK, wxT("Show Lua Console"));
+            if (dlg->ShowModal() == wxID_CANCEL) {
+                sConsoleFrame->Show();
+                sConsoleFrame->Raise();
+            }
+            dlg->Destroy();
+        }
     }
 }
 
