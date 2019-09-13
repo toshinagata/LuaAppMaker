@@ -65,6 +65,8 @@ public:
 // wxLuaStandaloneApp
 // ----------------------------------------------------------------------------
 
+#define MyID_CREATE_APP  1000
+
 class wxLuaStandaloneApp : public wxApp
 {
 public:
@@ -83,6 +85,8 @@ public:
     void OnOpenFilesByEvent(wxCommandEvent& event);
     bool OpenPendingFiles();
     bool CheckLuaLogicalExpression(wxString str);
+
+    void OnCreateApplication(wxCommandEvent &event);
 
     virtual void MacOpenFiles(const wxArrayString &fileNames);
     virtual void MacNewFile();

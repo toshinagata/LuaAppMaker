@@ -205,7 +205,7 @@ ifneq ($(DEBUG),1)
 	$(PATH_PREFIX)$(TOOL_PREFIX)strip $(DESTPREFIX)/$(PRODUCT_DIR)/$(FINAL_EXECUTABLE)
 endif
 	cp $(LUAJIT_LIB) $(DESTPREFIX)/$(PRODUCT_DIR)
-	cp -R ../wxSources/scripts $(DESTPREFIX)/$(PRODUCT_DIR)
+	cp -R ../wxSources/lib $(DESTPREFIX)/$(PRODUCT_DIR)
 endif
 
 ifeq ($(TARGET_PLATFORM),MSW)

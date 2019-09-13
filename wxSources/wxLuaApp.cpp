@@ -50,6 +50,16 @@ extern "C"
 //#include "luaglu.h"   //  for LuaGLU
 }
 
+//  For stat or _stat functions
+#if defined(__WXMSW__)
+#include <sys/types.h>
+#include <sys/stat.h>
+#else
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <unistd.h>
+#endif
+
 #ifndef wxICON_NONE
 #define wxICON_NONE 0 // for 2.8 compat
 #endif
@@ -263,6 +273,7 @@ bool wxLuaStandaloneApp::OnInit()
     Connect(LuaAppEvent_openFiles, LUAAPP_EVENT, wxCommandEventHandler(wxLuaStandaloneApp::OnOpenFilesByEvent));
     Connect(LuaAppEvent_executeLuaScript, LUAAPP_EVENT, wxCommandEventHandler(wxLuaStandaloneApp::OnExecuteLuaScript));
     Connect(wxID_EXIT, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(wxLuaStandaloneApp::OnQuitCommand));
+    Connect(MyID_CREATE_APP, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(wxLuaStandaloneApp::OnCreateApplication));
     Connect(wxEVT_LUA_PRINT, wxLuaEventHandler(wxLuaStandaloneApp::OnLua));
     Connect(wxEVT_LUA_ERROR, wxLuaEventHandler(wxLuaStandaloneApp::OnLua));
 
@@ -695,6 +706,188 @@ void
 wxLuaStandaloneApp::MacNewFile()
 {
     OpenPendingFiles();
+}
+
+#if 0
+#pragma mark ====== Create Application ======
+#endif
+
+static void
+SetFileExecutable(wxString &fullpath)
+{
+#if defined(__WXMSW__)
+    //  Do nothing: Windows has no executable bits
+/*    wchar_t *wpath = fullpath.wc_str();
+    struct _stat fileStat;
+    mode_t newmode;
+    if(_wstat(wpath, &fileStat) < 0)
+        return;
+    newmode = fileStat.st_mode | S_IXUSR | S_IXGRP | S_IXOTH;
+    chmod(cpath, newmode);
+*/
+#else
+    const char *cpath = fullpath.utf8_str();
+    struct stat fileStat;
+    mode_t newmode;
+    if(stat(cpath, &fileStat) < 0)
+        return;
+    newmode = fileStat.st_mode | S_IXUSR | S_IXGRP | S_IXOTH;
+    chmod(cpath, newmode);
+#endif
+}
+
+static wxString
+CopyRecursive(wxString &src, wxString &dst, bool allowOverwrite)
+{
+    if (wxFileName::DirExists(src)) {
+        if (wxFileName::FileExists(dst)) {
+            return wxString::Format(wxT("Cannot copy directory %s over file %s"), (const char *)src, (const char *)dst);
+        } else if (!wxFileName::DirExists(dst)) {
+            //  Create a directory
+            wxFileName dname = wxFileName::DirName(dst);
+            dname.Mkdir();
+        }
+        wxDir dir(src);
+        if (!dir.IsOpened())
+            return wxString::Format(wxT("Cannot open directory %s"), (const char *)src);
+        wxString name;
+        if (dir.GetFirst(&name)) {
+            do {
+                //  TODO: Copy src to dst
+                wxString src1 = src + wxFILE_SEP_PATH + name;
+                wxString dst1 = dst + wxFILE_SEP_PATH + name;
+                CopyRecursive(src1, dst1, allowOverwrite);
+            } while (dir.GetNext(&name));
+        }
+    } else if (wxFileName::FileExists(src)) {
+        //  Copy file from src to dst
+        if (wxFileName::DirExists(dst)) {
+            return wxString::Format(wxT("Cannot overwrite file on directory %s"), (const char *)dst);
+        } else if (wxFileName::Exists(dst) && !allowOverwrite) {
+            return wxString::Format(wxT("Cannot overwrite file on %s"), (const char *)dst);
+        }
+        wxFile srcFile(src);
+        wxFile dstFile(dst, wxFile::write);
+        ssize_t ssize;
+        char *buf;
+        const ssize_t bufsize = 128*1024;
+        buf = (char *)malloc(bufsize);
+        if (buf == NULL)
+            return wxString::Format(wxT("Cannot allocate buffer during copy of %s"), (const char *)src);
+        while ((ssize = srcFile.Read(buf, bufsize)) > 0) {
+            dstFile.Write(buf, ssize);
+        }
+        srcFile.Close();
+        dstFile.Close();
+        //  Change times and executable bit
+        wxFileName srcFName(src);
+        wxFileName dstFName(dst);
+        wxDateTime dtAccess, dtMod, dtCreate;
+        if (srcFName.GetTimes(&dtAccess, &dtMod, &dtCreate))
+            dstFName.SetTimes(&dtAccess, &dtMod, &dtCreate);
+        if (srcFName.IsFileExecutable())
+            SetFileExecutable(dst);
+    } else {
+        return wxString::Format(wxT("File %s does not exist"), (const char *)src);
+    }
+    return wxT("");
+}
+
+void
+wxLuaStandaloneApp::OnCreateApplication(wxCommandEvent &event)
+{
+    lua_State *L = m_wxlState.GetLuaState();
+    const char *script_folder = NULL;
+    const char *app_name = NULL;
+    const char *icon_path = NULL;
+    //  LuaApp.CreateApp() returns the following info:
+    //  1 script_folder (string)
+    //  2 app_name (string)
+    //  3 icon_path (string)
+    m_wxlState.RunString(wxT("require \"create_app\"; return LuaApp.CreateApp()"), wxT(""), 3);
+    if (!lua_isnil(L, -3))
+        script_folder = lua_tolstring(L, -3, NULL);
+    if (!lua_isnil(L, -2))
+        app_name = lua_tolstring(L, -2, NULL);
+    if (!lua_isnil(L, -1))
+        icon_path = lua_tolstring(L, -1, NULL);
+    lua_pop(L, 2);
+    if (script_folder == NULL || script_folder[0] == 0)
+        return;  /*  Do nothing  */
+    if (icon_path == NULL || icon_path[0] == 0)
+        return;  /*  Do nothing  */
+    wxString scriptFolder(script_folder);
+    wxString iconPath(icon_path);
+    
+    //  Replace the script folder name with app_name
+    wxFileName scriptFolderFName = wxFileName::DirName(scriptFolder);
+    scriptFolderFName.RemoveLastDir();
+    wxString appName(app_name);
+#if defined(__WXMAC__)
+    wxString appNameExt = appName + wxT(".app");
+#else
+    wxString appNameExt = appName;
+#endif
+    
+    int n = 1;
+    while (1) {
+        if (!scriptFolderFName.AppendDir(appNameExt)) {
+            DisplayMessage(wxT("ERROR: Cannot build the application folder name"), false);
+            return;
+        }
+        if (!scriptFolderFName.Exists())
+            break;  //  OK
+        scriptFolderFName.RemoveLastDir();
+        n++;
+#if defined(__WXMAC__)
+        appNameExt = wxString::Format("%s %d.app", app_name, n);
+#else
+        appNameExt = wxString::Format("%s %d", app_name, n);
+#endif
+    }
+    wxString appDstPath = scriptFolderFName.GetFullPath();
+    
+#if defined(__WXMAC__)
+    CFBundleRef mainBundle = CFBundleGetMainBundle();
+    CFURLRef ref = CFBundleCopyBundleURL(mainBundle);
+    UInt8 app_src_path[MAXPATHLEN];
+    app_src_path[0] = 0;
+    if (ref != NULL) {
+        CFURLGetFileSystemRepresentation(ref, true, app_src_path, sizeof app_src_path);
+        CFRelease(ref);
+    }
+    if (app_src_path[0] == 0) {
+        DisplayMessage(wxT("ERROR: Cannot get application path"), false);
+        return;
+    }
+    wxString appSrcPath(app_src_path);
+    CopyRecursive(appSrcPath, appDstPath, true);
+    //  Copy script folder
+    wxString scriptDstPath = appDstPath + wxT("/Contents/Resources/scripts");
+    CopyRecursive(scriptFolder, scriptDstPath, true);
+    //  Copy Icon
+    wxString iconDstPath = appDstPath + wxT("/Contents/Resources/") + appName + wxT(".icns");
+    CopyRecursive(iconPath, iconDstPath, true);
+    //  Rewrite Info.plist
+    wxString plistPath = appDstPath + wxT("/Contents/Info.plist");
+    wxFile plist(plistPath);
+    wxString plistContent;
+    plist.ReadAll(&plistContent);
+    plist.Close();
+    plistContent.Replace(wxT("wxLuaApp"), appName, true);
+    plistContent.Replace(wxT("wxlualogo.icns"), appName + wxT(".icns"), true);
+    wxFile plistOut(plistPath, wxFile::write);
+    plistOut.Write(plistContent);
+    plistOut.Close();
+    //  Rename executable
+    wxString exeName = appDstPath + wxT("/Contents/MacOS/wxLuaApp");
+    wxString exeNewName = appDstPath + wxT("/Contents/MacOS/") + appName;
+    ::wxRenameFile(exeName, exeNewName);
+#else
+    DisplayMessage(wxT("script_folder = ") + wxString(script_folder ? script_folder : "(nil)") + wxT("\n"), false);
+    DisplayMessage(wxT("icon_path = ") + wxString(icon_path ? icon_path : "(nil)") + wxT("\n"), false);
+#endif
+    return;
 }
 
 #if 0

@@ -85,7 +85,7 @@ ConsoleFrame::CreateMenuBar()
     
     wxMenu *help_menu = new wxMenu;
     help_menu->Append(wxID_ABOUT, _T("&About...\tF1"));
-    
+    help_menu->Append(MyID_CREATE_APP, _T("Create Standalone Application..."));
     wxMenuBar *menu_bar = new wxMenuBar;
     
     menu_bar->Append(file_menu, _T("&File"));

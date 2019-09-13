@@ -23,10 +23,10 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
+		E4137209232BBF8B006C980A /* lib in Resources */ = {isa = PBXBuildFile; fileRef = E4137208232BBF8B006C980A /* lib */; };
 		E4318880231258D300B53D02 /* wxlualogo.icns in Resources */ = {isa = PBXBuildFile; fileRef = E431887F231258D300B53D02 /* wxlualogo.icns */; };
 		E46089F8231BD5B400CA06FD /* libluajit-5.1.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = E4D6D8CD230AE2C90008ADE9 /* libluajit-5.1.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		E48A4A3D2153E902005F88AB /* QTKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E48A4A3C2153E902005F88AB /* QTKit.framework */; };
-		E4D6D8B9230ADE4A0008ADE9 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = E4D6D8B8230ADE4A0008ADE9 /* Info.plist */; };
 		E4D6D8C6230ADEC10008ADE9 /* wxLuaApp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E4D6D8BD230ADEC00008ADE9 /* wxLuaApp.cpp */; };
 		E4D6D8C7230ADEC10008ADE9 /* lua_addition.c in Sources */ = {isa = PBXBuildFile; fileRef = E4D6D8BE230ADEC10008ADE9 /* lua_addition.c */; };
 		E4D6D8C8230ADEC10008ADE9 /* ConsoleFrame.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E4D6D8BF230ADEC10008ADE9 /* ConsoleFrame.cpp */; };
@@ -94,7 +94,6 @@
 		E4D6D99A230AE8B10008ADE9 /* dummy.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E4D6D980230AE8B10008ADE9 /* dummy.cpp */; };
 		E4D6D99B230AE8B10008ADE9 /* wxldebug.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E4D6D981230AE8B10008ADE9 /* wxldebug.cpp */; };
 		E4D6D99C230AE8B10008ADE9 /* wxlobject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E4D6D985230AE8B10008ADE9 /* wxlobject.cpp */; };
-		E4D6D99E230AEB190008ADE9 /* scripts in Resources */ = {isa = PBXBuildFile; fileRef = E4D6D99D230AEB190008ADE9 /* scripts */; };
 		E4D6D9A023101F240008ADE9 /* filedlg.mm in Sources */ = {isa = PBXBuildFile; fileRef = E4D6D99F23101F240008ADE9 /* filedlg.mm */; };
 		E4FC7811183E50DC0064FB2E /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4FC7810183E50DC0064FB2E /* Accelerate.framework */; };
 		E4FC7838183E50F00064FB2E /* AGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4FC7837183E50F00064FB2E /* AGL.framework */; };
@@ -143,6 +142,7 @@
 
 /* Begin PBXFileReference section */
 		8D1107320486CEB800E47090 /* wxLuaApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = wxLuaApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		E4137208232BBF8B006C980A /* lib */ = {isa = PBXFileReference; lastKnownFileType = folder; name = lib; path = ../wxSources/lib; sourceTree = "<group>"; };
 		E431887F231258D300B53D02 /* wxlualogo.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = wxlualogo.icns; path = ../wxlua/wxLua/art/wxlualogo.icns; sourceTree = "<group>"; };
 		E48A4A3C2153E902005F88AB /* QTKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QTKit.framework; path = ../../../../../../System/Library/Frameworks/QTKit.framework; sourceTree = "<group>"; };
 		E4D6D8B8230ADE4A0008ADE9 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -274,7 +274,6 @@
 		E4D6D983230AE8B10008ADE9 /* wxluadebugdefs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = wxluadebugdefs.h; sourceTree = "<group>"; };
 		E4D6D984230AE8B10008ADE9 /* atomic.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = atomic.h; sourceTree = "<group>"; };
 		E4D6D985230AE8B10008ADE9 /* wxlobject.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = wxlobject.cpp; sourceTree = "<group>"; };
-		E4D6D99D230AEB190008ADE9 /* scripts */ = {isa = PBXFileReference; lastKnownFileType = folder; name = scripts; path = ../wxSources/scripts; sourceTree = "<group>"; };
 		E4D6D99F23101F240008ADE9 /* filedlg.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = filedlg.mm; path = ../wxSources/filedlg.mm; sourceTree = "<group>"; };
 		E4FC7810183E50DC0064FB2E /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = /System/Library/Frameworks/Accelerate.framework; sourceTree = "<absolute>"; };
 		E4FC7837183E50F00064FB2E /* AGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AGL.framework; path = /System/Library/Frameworks/AGL.framework; sourceTree = "<absolute>"; };
@@ -559,7 +558,7 @@
 			isa = PBXGroup;
 			children = (
 				E431887F231258D300B53D02 /* wxlualogo.icns */,
-				E4D6D99D230AEB190008ADE9 /* scripts */,
+				E4137208232BBF8B006C980A /* lib */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -677,9 +676,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E4137209232BBF8B006C980A /* lib in Resources */,
 				E4318880231258D300B53D02 /* wxlualogo.icns in Resources */,
-				E4D6D8B9230ADE4A0008ADE9 /* Info.plist in Resources */,
-				E4D6D99E230AEB190008ADE9 /* scripts in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
