@@ -67,7 +67,7 @@ SUBDIRS = wxlua/wxLua/modules/wxlua/debug wxlua/wxLua/modules/wxlua/debugger wxl
 WXLIB_LIST = core,base,gl,adv
 
 ifeq ($(TARGET_PLATFORM),MSW)
- CPP_EXTRA_FLAGS = -I$(LUAJIT_DIR)/src -I../wxlua/wxLua -I../wxlua/wxLua/modules -I../wxlua/wxLua/modules/wxbind/include -I../wxlua/wxLua/modules/wxbind/setup -DLUA_COMPAT_MODULE
+ CPP_EXTRA_FLAGS = -I$(LUAJIT_DIR)/src -I../wxlua/wxLua -I../wxlua/wxLua/modules -I../wxlua/wxLua/modules/wxbind/include -I../wxlua/wxLua/modules/wxbind/setup -DLUA_COMPAT_MODULE -fpermissive
  ifneq ($(CROSS),)
   ifeq ($(TARGET_ARCH),i686)
    BUILD_DIR = build-win32
@@ -97,7 +97,7 @@ ifeq ($(TARGET_PLATFORM),MSW)
  EXE_SUFFIX = .exe
  PRODUCT_DIR = $(APPNAME)
  PRODUCT = $(PRODUCT_DIR)/$(FINAL_EXECUTABLE)
- EXTRA_OBJECTS = $(MSW_OBJECTS)
+ EXTRA_OBJECTS = wxSources/win_resources.o
  LUAJIT_LIB = build/lib/lua51.dll
  WIN_FOPEN_O = build/lib/win_fopen.o
 endif

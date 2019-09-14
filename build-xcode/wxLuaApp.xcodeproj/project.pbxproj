@@ -143,6 +143,8 @@
 /* Begin PBXFileReference section */
 		8D1107320486CEB800E47090 /* wxLuaApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = wxLuaApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E4137208232BBF8B006C980A /* lib */ = {isa = PBXFileReference; lastKnownFileType = folder; name = lib; path = ../wxSources/lib; sourceTree = "<group>"; };
+		E413720A232BD380006C980A /* win_resources.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = win_resources.cpp; path = ../wxSources/win_resources.cpp; sourceTree = "<group>"; };
+		E413720B232BD380006C980A /* win_resources.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = win_resources.h; path = ../wxSources/win_resources.h; sourceTree = "<group>"; };
 		E431887F231258D300B53D02 /* wxlualogo.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = wxlualogo.icns; path = ../wxlua/wxLua/art/wxlualogo.icns; sourceTree = "<group>"; };
 		E48A4A3C2153E902005F88AB /* QTKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QTKit.framework; path = ../../../../../../System/Library/Frameworks/QTKit.framework; sourceTree = "<group>"; };
 		E4D6D8B8230ADE4A0008ADE9 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -353,6 +355,8 @@
 				E4D6D99F23101F240008ADE9 /* filedlg.mm */,
 				E4D6D8BE230ADEC10008ADE9 /* lua_addition.c */,
 				E4D6D8C2230ADEC10008ADE9 /* lua_addition.h */,
+				E413720A232BD380006C980A /* win_resources.cpp */,
+				E413720B232BD380006C980A /* win_resources.h */,
 				E4D6D8BC230ADEC00008ADE9 /* record_build_date.sh */,
 				E4D6D8C0230ADEC10008ADE9 /* textctrl_addition.mm */,
 				E4D6D8BD230ADEC00008ADE9 /* wxLuaApp.cpp */,

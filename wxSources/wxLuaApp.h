@@ -88,6 +88,10 @@ public:
 
     void OnCreateApplication(wxCommandEvent &event);
 
+    wxString SettingsPath();
+    void SaveSettings();
+    void LoadSettings();
+
     virtual void MacOpenFiles(const wxArrayString &fileNames);
     virtual void MacNewFile();
     

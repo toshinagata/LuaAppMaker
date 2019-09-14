@@ -60,6 +60,11 @@ extern "C"
 #include <unistd.h>
 #endif
 
+//  For handling resource files
+#if defined(__WXMSW__)
+#include "win_resources.h"
+#endif
+
 #ifndef wxICON_NONE
 #define wxICON_NONE 0 // for 2.8 compat
 #endif
@@ -120,6 +125,10 @@ fix_dosish_path(char *p)
 }
 #endif
 
+//  Cache the results of FindResourcePath()
+static wxString *resourcePath = NULL;
+static wxString *applicationName = NULL;
+
 //  Find the path of the directory where the relevant resources are to be found.
 //  Mac: the "Resources" directory in the application bundle.
 //  Windows: the directory in which the application executable is located.
@@ -128,13 +137,26 @@ static wxString
 FindResourcePath()
 {
 #if defined(__WXMAC__)
+    if (resourcePath != NULL)
+        return *resourcePath;
+    
+    resourcePath = new wxString;
+    applicationName = new wxString;
+
     CFBundleRef mainBundle = CFBundleGetMainBundle();
+    CFStringRef exeName = (CFStringRef)CFBundleGetValueForInfoDictionaryKey(mainBundle, kCFBundleExecutableKey);
+    if (exeName != NULL) {
+        wxString appName(CFStringGetCStringPtr(exeName, kCFStringEncodingUTF8));
+        *applicationName = appName;
+        CFRelease(exeName);
+    }
     CFURLRef ref = CFBundleCopyResourcesDirectoryURL(mainBundle);
     if (ref != NULL) {
         UInt8 buffer[MAXPATHLEN];
         if (CFURLGetFileSystemRepresentation(ref, true, buffer, sizeof buffer)) {
             wxString dirname((const char *)buffer);
             CFRelease(ref);
+            *resourcePath = dirname;
             return dirname;
         }
         CFRelease(ref);
@@ -165,6 +187,13 @@ FindResourcePath()
 #elif defined(__WXMSW__)
     wxString str;
     wxString argv0 = wxTheApp->argv[0];
+
+    if (resourcePath != NULL)
+        return *resourcePath;
+    
+    resourcePath = new wxString;
+    applicationName = new wxString;
+    
     //  Fix dosish path (when invoked from MSYS console, the path may be unix-like)
     //  Note: absolute paths like /c/Molby/... (== c:\Molby\...) is not supported
     {
@@ -175,26 +204,47 @@ FindResourcePath()
     }
     //  Is it an absolute path?
     if (wxIsAbsolutePath(argv0)) {
-        return wxPathOnly(argv0);
+        str = argv0;
+        goto found;
     } else {
         //  Is it a relative path?
         wxString currentDir = wxGetCwd();
         if (currentDir.Last() != wxFILE_SEP_PATH)
             currentDir += wxFILE_SEP_PATH;
         str = currentDir + argv0;
-        if (wxFileExists(str))
-            return wxPathOnly(str);
+        if (wxFileExists(str)) {
+            goto found;
+        }
     }
     //  Search PATH
-    wxPathList pathList;
-    pathList.AddEnvList(wxT("PATH"));
-    str = pathList.FindAbsoluteValidPath(argv0);
-    if (!str.IsEmpty())
-        return wxPathOnly(str);
+    {
+        wxPathList pathList;
+        pathList.AddEnvList(wxT("PATH"));
+        str = pathList.FindAbsoluteValidPath(argv0);
+        if (!str.IsEmpty()) {
+            goto found;
+        }
+    }
     return wxEmptyString;
+found:
+    wxFileName fname(str);
+    *resourcePath = fname.GetPath();
+    *applicationName = fname.GetName();
+    return *resourcePath;
 #else
 #error "FindResourcePath is not defined for UNIXes."
 #endif
+}
+
+static wxString
+FindApplicationName()
+{
+    if (applicationName != NULL)
+        return *applicationName;
+    FindResourcePath();
+    if (applicationName != NULL)
+        return *applicationName;
+    else return wxEmptyString;
 }
 
 static wxString
@@ -324,13 +374,17 @@ bool wxLuaStandaloneApp::OnInit()
     m_wxlState.RunString(wxT("package.path = ") + MakeLuaString(lpath));
     m_wxlState.RunString(wxT("package.cpath = ") + MakeLuaString(cpath));
 
-    //  If configuration script is present in the working directory, then run it first
-    wxString conf = rpath + wxFILE_SEP_PATH + wxT("scripts/conf.lua");
+    //  Configuration file path
+    wxString confPath = wxStandardPaths::Get().GetUserConfigDir() + wxFILE_SEP_PATH + FindApplicationName() + wxT("_conf.lua");
+    m_wxlState.RunString(wxT("LuaApp.settingsPath = ") + MakeLuaString(confPath));
+
+    //  Import startup definition
+    wxString conf = rpath + wxFILE_SEP_PATH + wxT("lib/startup.lua");
     if (wxFileExists(conf)) {
         int rc = m_wxlState.RunFile(conf);
         run_ok = (rc == 0);
     }
-    
+
     //  Start console
     m_want_console = true;
     sConsoleFrame = ConsoleFrame::CreateConsoleFrame(NULL);
@@ -753,7 +807,6 @@ CopyRecursive(wxString &src, wxString &dst, bool allowOverwrite)
         wxString name;
         if (dir.GetFirst(&name)) {
             do {
-                //  TODO: Copy src to dst
                 wxString src1 = src + wxFILE_SEP_PATH + name;
                 wxString dst1 = dst + wxFILE_SEP_PATH + name;
                 CopyRecursive(src1, dst1, allowOverwrite);
@@ -868,6 +921,9 @@ wxLuaStandaloneApp::OnCreateApplication(wxCommandEvent &event)
     //  Copy Icon
     wxString iconDstPath = appDstPath + wxT("/Contents/Resources/") + appName + wxT(".icns");
     CopyRecursive(iconPath, iconDstPath, true);
+    //  Remove wxLuaApp icon
+    wxString iconOrigPath = appDstPath + wxT("/Contents/Resources/wxlualogo.icns");
+    ::wxRemoveFile(iconOrigPath);
     //  Rewrite Info.plist
     wxString plistPath = appDstPath + wxT("/Contents/Info.plist");
     wxFile plist(plistPath);
@@ -882,6 +938,29 @@ wxLuaStandaloneApp::OnCreateApplication(wxCommandEvent &event)
     //  Rename executable
     wxString exeName = appDstPath + wxT("/Contents/MacOS/wxLuaApp");
     wxString exeNewName = appDstPath + wxT("/Contents/MacOS/") + appName;
+    ::wxRenameFile(exeName, exeNewName);
+
+#elif defined(__WXMSW__)
+    //  Find the folder in which this executable is located
+    wxFileName appSrcFName = wxFileName::DirName(FindResourcePath());
+    wxString appSrcPath = appSrcFName.GetFullPath();
+
+    DisplayMessage(wxT("scriptFolder = ") + scriptFolder, false);
+    DisplayMessage(wxT("iconPath = ") + iconPath, false);
+    DisplayMessage(wxT("appName = ") + appName, false);
+    DisplayMessage(wxT("appDstPath = ") + appDstPath, false);
+    DisplayMessage(wxT("appSrcPath = ") + appSrcPath, false);
+
+    //  Copy executable
+    CopyRecursive(appSrcPath, appDstPath, true);
+    //  Copy script folder
+    wxString scriptDstPath = appDstPath + wxT("scripts");
+    CopyRecursive(scriptFolder, scriptDstPath, true);
+    //  Replace application icon
+    wxString exeName = appDstPath + wxFILE_SEP_PATH + wxT("wxLuaApp.exe");
+    ReplaceWinAppIcon(exeName, iconPath);
+    //  Rename executable
+    wxString exeNewName = appDstPath + wxFILE_SEP_PATH + appName + wxT(".exe");
     ::wxRenameFile(exeName, exeNewName);
 #else
     DisplayMessage(wxT("script_folder = ") + wxString(script_folder ? script_folder : "(nil)") + wxT("\n"), false);
