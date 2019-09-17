@@ -16,6 +16,7 @@
 			dependencies = (
 				E4CB37141FE4FF23001BB75E /* PBXTargetDependency */,
 				E4CB37191FE50707001BB75E /* PBXTargetDependency */,
+				E447267A232E56A2000600DD /* PBXTargetDependency */,
 			);
 			name = wxLuaApp_archive;
 			productName = "Molby (Mac Archive)";
@@ -111,6 +112,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		E4472679232E56A2000600DD /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 29B97313FDCFA39411CA2CEA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = E4472675232E556F000600DD;
+			remoteInfo = wxLuaApp_win32;
+		};
 		E4CB37131FE4FF23001BB75E /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 29B97313FDCFA39411CA2CEA /* Project object */;
@@ -599,6 +607,20 @@
 /* End PBXGroup section */
 
 /* Begin PBXLegacyTarget section */
+		E4472675232E556F000600DD /* wxLuaApp_win32 */ = {
+			isa = PBXLegacyTarget;
+			buildArgumentsString = "PATH=/usr/local/mingw-w32/bin:$PATH make $(ACTION)";
+			buildConfigurationList = E4472676232E556F000600DD /* Build configuration list for PBXLegacyTarget "wxLuaApp_win32" */;
+			buildPhases = (
+			);
+			buildToolPath = /usr/bin/env;
+			buildWorkingDirectory = "$(PROJECT_DIR)/../build-win32";
+			dependencies = (
+			);
+			name = wxLuaApp_win32;
+			passBuildSettingsInEnvironment = 1;
+			productName = "Molby (Windows)";
+		};
 		E4CB370B1FE2C1F7001BB75E /* wxLuaApp_win */ = {
 			isa = PBXLegacyTarget;
 			buildArgumentsString = "PATH=/usr/local/mingw-w32/bin:$PATH make $(ACTION)";
@@ -670,6 +692,7 @@
 			targets = (
 				8D1107260486CEB800E47090 /* wxLuaApp */,
 				E4CB370B1FE2C1F7001BB75E /* wxLuaApp_win */,
+				E4472675232E556F000600DD /* wxLuaApp_win32 */,
 				E4CB370F1FE4FF0E001BB75E /* wxLuaApp_archive */,
 			);
 		};
@@ -712,7 +735,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if [ \"${BUILD_STYLE:=$CONFIGURATION}\" = \"Release\" ]; then\n  (cd \"$PROJECT_DIR/../latest_binaries\" && rm -f \"${PRODUCT_NAME}Mac.zip\" && zip -r \"${PRODUCT_NAME}Mac.zip\" \"${PRODUCT_NAME}\" -x \\*.DS_Store -x \\*.svn*) || exit 1\n#  (cd \"$PROJECT_DIR/../Documents\" && /usr/bin/ruby makedoc.rb && cp -a MolbyDoc \"$PROJECT_DIR/../latest_binaries\") || exit 1\n#  (cd \"$PROJECT_DIR/../latest_binaries\" && zip -r \"${PRODUCT_NAME}Doc.zip\" \"${PRODUCT_NAME}Doc\" -x \\*.DS_Store -x \\*.svn*) || exit 1\n  (cd \"$PROJECT_DIR/../mswx-build\"; PATH=/usr/local/mingw-w32/bin:$PATH; make setup) || exit 1\nfi\n";
+			shellScript = "if [ \"${BUILD_STYLE:=$CONFIGURATION}\" = \"Release\" ]; then\n  (cd \"$PROJECT_DIR/../latest_binaries\" && rm -f \"${PRODUCT_NAME}Mac.zip\" && zip -r \"${PRODUCT_NAME}Mac.zip\" \"${PRODUCT_NAME}\" -x \\*.DS_Store -x \\*.svn*) || exit 1\n#  (cd \"$PROJECT_DIR/../Documents\" && /usr/bin/ruby makedoc.rb && cp -a MolbyDoc \"$PROJECT_DIR/../latest_binaries\") || exit 1\n#  (cd \"$PROJECT_DIR/../latest_binaries\" && zip -r \"${PRODUCT_NAME}Doc.zip\" \"${PRODUCT_NAME}Doc\" -x \\*.DS_Store -x \\*.svn*) || exit 1\n#  (cd \"$PROJECT_DIR/../mswx-build\"; PATH=/usr/local/mingw-w32/bin:$PATH; make setup) || exit 1\nfi\n";
 		};
 		E4FC7B57183E516E0064FB2E /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -807,6 +830,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		E447267A232E56A2000600DD /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = E4472675232E556F000600DD /* wxLuaApp_win32 */;
+			targetProxy = E4472679232E56A2000600DD /* PBXContainerItemProxy */;
+		};
 		E4CB37141FE4FF23001BB75E /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 8D1107260486CEB800E47090 /* wxLuaApp */;
@@ -989,6 +1017,94 @@
 			};
 			name = Release;
 		};
+		E4472677232E556F000600DD /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = x86_64;
+				BUILD_CONFIGURATION = Debug;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUGGING_SYMBOLS = YES;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				OTHER_CFLAGS = "";
+				OTHER_LDFLAGS = "";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		E4472678232E556F000600DD /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = x86_64;
+				BUILD_CONFIGURATION = Release;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				OTHER_CFLAGS = "";
+				OTHER_LDFLAGS = "";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
 		E4CB370D1FE2C1F7001BB75E /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -1106,6 +1222,15 @@
 			buildConfigurations = (
 				C01FCF4F08A954540054247B /* Debug */,
 				C01FCF5008A954540054247B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		E4472676232E556F000600DD /* Build configuration list for PBXLegacyTarget "wxLuaApp_win32" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E4472677232E556F000600DD /* Debug */,
+				E4472678232E556F000600DD /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
