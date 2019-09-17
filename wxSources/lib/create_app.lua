@@ -79,3 +79,36 @@ function LuaApp.CreateApp()
   return script_folder, app_name, icon_path
 end
 
+function LuaApp.CreateISS(appname)
+  local script = [[
+#define MyAppName "@@1@@"
+#define Version ""
+
+[Setup]
+AppName = {#MyAppName}
+AppVerName = {#MyAppName} {#Version}
+DefaultDirName = {pf}\{#MyAppName}
+DefaultGroupName = {#MyAppName}
+UninstallDisplayIcon = {app}\{#MyAppName}.exe
+OutputBaseFileName = Setup_{#MyAppName}
+@@2@@ArchitecturesInstallIn64BitMode=x64
+@@2@@ArchitecturesAllowed=x64
+
+[Files]
+Source: "{#MyAppName}.exe"; DestDir: {app}
+Source: "lua51.dll"; DestDir: {app}
+Source: "scripts\*"; DestDir: {app}\scripts; Flags: recursesubdirs
+Source: "lib\*"; DestDir: {app}\lib; Flags: recursesubdirs
+
+[Icons]
+Name: "{group}\{#MyAppName}"; Filename: "{app}\{#MyAppName}.exe"
+Name: "{group}\Uninstall {#MyAppName}"; Filename: {uninstallexe}
+]]
+  script = string.gsub(script, "@@1@@", appname)
+  if jit.arch == "x86" then
+    script = string.gsub(script, "@@2@@", ";")
+  else
+    script = string.gsub(script, "@@2@@", "")
+  end
+  return script
+end

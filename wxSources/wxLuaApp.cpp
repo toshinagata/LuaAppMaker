@@ -364,13 +364,27 @@ bool wxLuaStandaloneApp::OnInit()
     //  Replace package.path and package.cpath (to prevent looking outside this app)
     wxString rpath = FindResourcePath();
     wxString lpath = wxT("./?.lua;") +
-        rpath + wxFILE_SEP_PATH + wxT("scripts/?.lua;") +
-        rpath + wxFILE_SEP_PATH + wxT("lib/?.lua");
+        rpath + wxT("/scripts/?.lua;") +
+        rpath + wxT("/lib/?.lua");
+    lpath.Replace(wxT("/"), wxFILE_SEP_PATH, true);
     wxString ext = DyLibExtension();
-    wxString cpath = wxT("./?.lua;") +
-        rpath + wxFILE_SEP_PATH + wxT("scripts/?.") + ext + wxT(";") +
-        rpath + wxFILE_SEP_PATH + wxT("lib/?.") + ext;
-
+    //  On Win32 system, "./lib32" directory is searched before "./", and
+    //  "$(rpath)/lib32/" is searched before "$(rpath)/lib/".
+    //  This allows dlls of the same name can be used for both 64bit and 32bit systems.
+    wxString cpath =
+#if defined(__WXMSW__) && defined(__i386__)
+        wxT("./lib32/?.lua;");
+#else
+        wxT("");
+#endif
+    cpath =
+        cpath + wxT("./?.lua;") +
+        rpath + wxT("/scripts/?.") + ext + wxT(";") +
+#if defined(__WXMSW__) && defined(__i386__)
+        rpath + wxT("/lib32/?.") + ext +
+#endif
+        rpath + wxT("/lib/?.") + ext;
+    cpath.Replace(wxT("/"), wxFILE_SEP_PATH, true);
     m_wxlState.RunString(wxT("package.path = ") + MakeLuaString(lpath));
     m_wxlState.RunString(wxT("package.cpath = ") + MakeLuaString(cpath));
 
@@ -379,7 +393,7 @@ bool wxLuaStandaloneApp::OnInit()
     m_wxlState.RunString(wxT("LuaApp.settingsPath = ") + MakeLuaString(confPath));
 
     //  Import startup definition
-    wxString conf = rpath + wxFILE_SEP_PATH + wxT("lib/startup.lua");
+    wxString conf = rpath + wxFILE_SEP_PATH + wxT("lib") + wxFILE_SEP_PATH + wxT("startup.lua");
     if (wxFileExists(conf)) {
         int rc = m_wxlState.RunFile(conf);
         run_ok = (rc == 0);
@@ -439,7 +453,7 @@ bool wxLuaStandaloneApp::CheckInstance()
 {
     //  Check if the same application is already running
     char *buf, *p;
-    wxString name = wxT("MyApp-") + wxGetUserId();
+    wxString name = FindApplicationName() + wxT("-") + wxGetUserId();
     m_ipcServiceName = new wxString(name);
     m_ipcServiceName->Prepend(wxT("IPC-"));
     m_checker = new wxSingleInstanceChecker(name);
@@ -689,7 +703,11 @@ wxLuaStandaloneApp::OpenPendingFiles()
             wxSetWorkingDirectory(dpath);
             //  Set the package search directory
             wxString lpath = dpath + wxFILE_SEP_PATH + wxT("?.lua;");
-            wxString cpath = dpath + wxFILE_SEP_PATH + wxT("?.") + DyLibExtension() + wxT(";");
+            wxString cpath =
+#if defined(__WXMSW__) && defined(__i386__)
+                dpath + wxFILE_SEP_PATH + wxT("lib32\\?.") + DyLibExtension() + wxT(";") +
+#endif
+                dpath + wxFILE_SEP_PATH + wxT("?.") + DyLibExtension() + wxT(";");
             m_wxlState.RunString(wxT("package.path = ") + MakeLuaString(lpath) + wxT(".. package.path"));
             m_wxlState.RunString(wxT("package.cpath = ") + MakeLuaString(cpath) + wxT(".. package.cpath"));
 
@@ -864,7 +882,7 @@ wxLuaStandaloneApp::OnCreateApplication(wxCommandEvent &event)
         app_name = lua_tolstring(L, -2, NULL);
     if (!lua_isnil(L, -1))
         icon_path = lua_tolstring(L, -1, NULL);
-    lua_pop(L, 2);
+    lua_pop(L, 3);
     if (script_folder == NULL || script_folder[0] == 0)
         return;  /*  Do nothing  */
     if (icon_path == NULL || icon_path[0] == 0)
@@ -945,11 +963,11 @@ wxLuaStandaloneApp::OnCreateApplication(wxCommandEvent &event)
     wxFileName appSrcFName = wxFileName::DirName(FindResourcePath());
     wxString appSrcPath = appSrcFName.GetFullPath();
 
-    DisplayMessage(wxT("scriptFolder = ") + scriptFolder, false);
+    /*DisplayMessage(wxT("scriptFolder = ") + scriptFolder, false);
     DisplayMessage(wxT("iconPath = ") + iconPath, false);
     DisplayMessage(wxT("appName = ") + appName, false);
     DisplayMessage(wxT("appDstPath = ") + appDstPath, false);
-    DisplayMessage(wxT("appSrcPath = ") + appSrcPath, false);
+    DisplayMessage(wxT("appSrcPath = ") + appSrcPath, false);*/
 
     //  Copy executable
     CopyRecursive(appSrcPath, appDstPath, true);
@@ -962,6 +980,19 @@ wxLuaStandaloneApp::OnCreateApplication(wxCommandEvent &event)
     //  Rename executable
     wxString exeNewName = appDstPath + wxFILE_SEP_PATH + appName + wxT(".exe");
     ::wxRenameFile(exeName, exeNewName);
+    //  Create script for Inno Setup
+    m_wxlState.RunString(wxT("return LuaApp.CreateISS(") + MakeLuaString(appName) + wxT(")"), wxT(""), 1);
+    const char *iss_script;
+    if (!lua_isnil(L, -1)) {
+        iss_script = lua_tolstring(L, -1, NULL);
+        wxFile issFile(appDstPath + wxFILE_SEP_PATH + appName + wxT(".iss"), wxFile::write);
+        if (issFile.IsOpened()) {
+            issFile.Write(iss_script, strlen(iss_script));
+            issFile.Close();
+        }
+    }
+    lua_pop(L, 1);
+
 #else
     DisplayMessage(wxT("script_folder = ") + wxString(script_folder ? script_folder : "(nil)") + wxT("\n"), false);
     DisplayMessage(wxT("icon_path = ") + wxString(icon_path ? icon_path : "(nil)") + wxT("\n"), false);
