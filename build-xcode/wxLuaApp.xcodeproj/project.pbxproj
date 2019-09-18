@@ -155,6 +155,7 @@
 		E413720B232BD380006C980A /* win_resources.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = win_resources.h; path = ../wxSources/win_resources.h; sourceTree = "<group>"; };
 		E431887F231258D300B53D02 /* wxlualogo.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = wxlualogo.icns; path = ../wxlua/wxLua/art/wxlualogo.icns; sourceTree = "<group>"; };
 		E48A4A3C2153E902005F88AB /* QTKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QTKit.framework; path = ../../../../../../System/Library/Frameworks/QTKit.framework; sourceTree = "<group>"; };
+		E4A604A12332627E00D7BC85 /* Makefile */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.make; name = Makefile; path = ../Makefile; sourceTree = "<group>"; };
 		E4D6D8B8230ADE4A0008ADE9 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E4D6D8BA230ADEC00008ADE9 /* wxLuaApp.rc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = wxLuaApp.rc; path = ../wxSources/wxLuaApp.rc; sourceTree = "<group>"; };
 		E4D6D8BB230ADEC00008ADE9 /* wxLuaApp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = wxLuaApp.h; path = ../wxSources/wxLuaApp.h; sourceTree = "<group>"; };
@@ -338,6 +339,7 @@
 			isa = PBXGroup;
 			children = (
 				E4888B0B183E4BD800DF5749 /* Sources */,
+				E4A604A12332627E00D7BC85 /* Makefile */,
 				E4D6D8B8230ADE4A0008ADE9 /* Info.plist */,
 				E4FC77CD183E4FDD0064FB2E /* Resources */,
 				29B97323FDCFA39411CA2CEA /* Frameworks */,
@@ -648,6 +650,7 @@
 				8D11072C0486CEB800E47090 /* Sources */,
 				8D11072E0486CEB800E47090 /* Frameworks */,
 				E4817ED0218208ED00986125 /* CopyFiles */,
+				E4A604A22332665E00D7BC85 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -724,6 +727,23 @@
 			shellPath = /bin/sh;
 			shellScript = "if [ ! -f $PROJECT_DIR/build/lib/libluajit-5.1.dylib ]; then\n  make -C $PROJECT_DIR/../LuaJIT-2.0.5 PREFIX=$PROJECT_DIR/build install || exit 1\n  (cd $PROJECT_DIR/build/lib; install_name_tool -id \"@rpath/libluajit-5.1.dylib\" libluajit-5.1.dylib)\n  make -C $PROJECT_DIR/../LuaJIT-2.0.5 clean\nfi\n";
 		};
+		E4A604A22332665E00D7BC85 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if [ \"${BUILD_STYLE:=$CONFIGURATION}\" = \"Release\" ]; then\nmkdir -p \"$PROJECT_DIR/../_latest_binaries\" || exit 1\nrm -rf \"$PROJECT_DIR/../_latest_binaries/${PRODUCT_NAME}.app\" || exit 1\n(cd \"$TARGET_BUILD_DIR\"; cp -a ${PRODUCT_NAME}.app \"$PROJECT_DIR/../_latest_binaries\") || exit 1\nfi\nexit 0\n";
+		};
 		E4CB37171FE4FF42001BB75E /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -735,7 +755,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if [ \"${BUILD_STYLE:=$CONFIGURATION}\" = \"Release\" ]; then\n  (cd \"$PROJECT_DIR/../latest_binaries\" && rm -f \"${PRODUCT_NAME}Mac.zip\" && zip -r \"${PRODUCT_NAME}Mac.zip\" \"${PRODUCT_NAME}\" -x \\*.DS_Store -x \\*.svn*) || exit 1\n#  (cd \"$PROJECT_DIR/../Documents\" && /usr/bin/ruby makedoc.rb && cp -a MolbyDoc \"$PROJECT_DIR/../latest_binaries\") || exit 1\n#  (cd \"$PROJECT_DIR/../latest_binaries\" && zip -r \"${PRODUCT_NAME}Doc.zip\" \"${PRODUCT_NAME}Doc\" -x \\*.DS_Store -x \\*.svn*) || exit 1\n#  (cd \"$PROJECT_DIR/../mswx-build\"; PATH=/usr/local/mingw-w32/bin:$PATH; make setup) || exit 1\nfi\n";
+			shellScript = "if [ \"${BUILD_STYLE:=$CONFIGURATION}\" = \"Release\" ]; then\n  (cd \"$PROJECT_DIR/../_latest_binaries\" && rm -f \"${PROJECT_NAME}Mac.zip\" && zip -r \"${PROJECT_NAME}Mac.zip\" \"${PROJECT_NAME}.app\" -x \\*.DS_Store -x \\*.svn*) || exit 1\n(cd \"$PROJECT_DIR/../build-win/build/release\" && rm -f \"${PROJECT_NAME}Win64.zip\" && zip -r \"${PROJECT_NAME}Win64.zip\" \"${PROJECT_NAME}\" -x \\*.DS_Store -x \\*.svn* && mv -f \"${PROJECT_NAME}Win64.zip\" ../../../_latest_binaries) || exit 1\n  (cd \"$PROJECT_DIR/../build-win32/build/release\" && rm -f \"${PROJECT_NAME}Win32.zip\" && zip -r \"${PROJECT_NAME}Win32.zip\" \"${PROJECT_NAME}\" -x \\*.DS_Store -x \\*.svn* && mv -f \"${PROJECT_NAME}Win32.zip\" ../../../_latest_binaries) || exit 1\n  (cd \"$PROJECT_DIR/../build-win\"; PATH=/usr/local/homebrew/bin:$PATH; make setup) || exit 1\nfi\n";
 		};
 		E4FC7B57183E516E0064FB2E /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;

@@ -209,17 +209,17 @@ endif
 endif
 
 ifeq ($(TARGET_PLATFORM),MSW)
-install: setup
+install: release
 
 setup: build/release/$(PRODUCT_DIR)/$(FINAL_EXECUTABLE)
 	mkdir -p ../_latest_binaries
 ifneq ($(CROSS),)
-	($(WINE_PATH)/wine ../../Inno\ Setup\ 5/ISCC.exe $(APPNAME).iss || exit 1)
+	($(WINE_PATH)/wine ../../Inno\ Setup\ 5/ISCC.exe ../wxSources/$(APPNAME).iss || exit 1)
 else
-	(/c/Program\ Files\ \(x86\)/Inno\ Setup\ 5/iscc $(APPNAME).iss || exit 1)
+	(/c/Program\ Files\ \(x86\)/Inno\ Setup\ 5/iscc ../wxSources/$(APPNAME).iss || exit 1)
 endif
-	mv Output/Setup_$(APPNAME).exe ../_latest_binaries
-	(cd build/release && rm -rf $(MAKEDIR)/../_latest_binaries/$(APPNAME)Win* && mv $(PRODUCT_DIR) $(PRODUCT_DIR)Win && zip -r $(MAKEDIR)/../_latest_binaries/$(APPNAME)Win.zip $(PRODUCT_DIR)Win -x \*.DS_Store \*.svn* && mv $(PRODUCT_DIR)Win $(PRODUCT_DIR))
+#mv Output/Setup_$(APPNAME).exe ../_latest_binaries
+#(cd build/release && rm -rf $(MAKEDIR)/../_latest_binaries/$(APPNAME)Win* && mv $(PRODUCT_DIR) $(PRODUCT_DIR)Win && zip -r $(MAKEDIR)/../_latest_binaries/$(APPNAME)Win.zip $(PRODUCT_DIR)Win -x \*.DS_Store \*.svn* && mv $(PRODUCT_DIR)Win $(PRODUCT_DIR))
 endif
 
 clean:
