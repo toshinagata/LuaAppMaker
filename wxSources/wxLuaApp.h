@@ -109,9 +109,14 @@ public:
     bool                m_mem_bitmap_added;
 //    wxLuaDebugTarget*   m_wxlDebugTarget;
 
+    bool                m_wxmainExecuted;
     int           m_numberOfProcessedFiles;  // Initially -1 (startup)
     wxArrayString m_pendingFilesToOpen;  // Files to be processed by OpenPendingFiles()
 
+#if defined(__WXMAC__)
+    wxArrayString   m_filesGivenByArgv;    // Original files given by argv
+#endif
+    
 #if defined(__WXMSW__)
 public:
     wxSingleInstanceChecker *m_checker;

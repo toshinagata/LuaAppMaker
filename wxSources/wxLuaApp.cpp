@@ -292,7 +292,8 @@ bool wxLuaStandaloneApp::OnInit()
     m_want_console      = false;
 //    m_wxlDebugTarget    = NULL;
     m_mem_bitmap_added  = false;
-    m_numberOfProcessedFiles = -1;
+    m_numberOfProcessedFiles = 0;
+    m_wxmainExecuted    = false;
     
 #if defined(__WXMSW__)
     m_checker = NULL;
@@ -358,7 +359,7 @@ bool wxLuaStandaloneApp::OnInit()
     lua_register_string_ext(L);
     
     //  Initialize "LuaApp" as a shortcut to wx.wxGetApp()
-    //  LuaApp.config is defined as an empty table (which may be overwritten by conf.lua)
+    //  LuaApp.config is defined as an empty table (which may be overwritten later)
     m_wxlState.RunString(wxT("LuaApp = wx.wxGetApp(); LuaApp.config = {}"));
     
     //  Replace package.path and package.cpath (to prevent looking outside this app)
@@ -385,8 +386,13 @@ bool wxLuaStandaloneApp::OnInit()
 #endif
         rpath + wxT("/lib/?.") + ext;
     cpath.Replace(wxT("/"), wxFILE_SEP_PATH, true);
+    
     m_wxlState.RunString(wxT("package.path = ") + MakeLuaString(lpath));
     m_wxlState.RunString(wxT("package.cpath = ") + MakeLuaString(cpath));
+
+    //  If LUA_PATH or LUA_CPATH is defined, then add it
+    m_wxlState.RunString(wxT("local p = os.getenv('LUA_PATH'); package.path = ((p and p..';') or '')..package.path"));
+    m_wxlState.RunString(wxT("local p = os.getenv('LUA_CPATH'); package.cpath = ((p and p..';') or '')..package.cpath"));
 
     //  Configuration file path
     wxString confPath = wxStandardPaths::Get().GetUserConfigDir() + wxFILE_SEP_PATH + FindApplicationName() + wxT("_conf.lua");
@@ -422,26 +428,34 @@ bool wxLuaStandaloneApp::OnInit()
     }
     
     //  Open given files
+    //  The file open mechanism is also used by IPC, so the arguments
+    //  must be combined as a single string
     wxString files;
-    int i;
-    lua_newtable(L);  //  Create a global table "arg"
-    for (i = 1; i < argc; i++) {
-        lua_pushstring(L, argv[i]);
-        lua_rawseti(L, -2, i);
+    for (int i = 1; i < argc; i++) {
         files.append(argv[i]);
         files.append(wxT("\n"));
+    }
+    
+    //  In the Lua world, create a global table "arg"
+    //  and set arg[-1] the path of this application
+    lua_newtable(L);
+    if (argc > 0) {
+        wxString argv0(argv[0]);
+        lua_pushstring(L, (const char *)argv0);
+        lua_rawseti(L, -2, -1);
     }
     lua_setglobal(L, "arg");
 
 #if defined(__WXMAC__)
-    //  In case of MacOS, files are basically opened via Apple Event.
-    //  This line is only for exceptional case in which the executable is
-    //  directly invoked from Terminal.
-    if (argc > 1)
-        RequestOpenFilesByEvent(files);
-#else
-    RequestOpenFilesByEvent(files);
+    //  Record the arguments (these should be ignored in MacOpenFiles)
+    m_filesGivenByArgv.Clear();
+    for (int i = 0; i < argc; i++) {
+        wxString argvi(argv[i]);
+        m_filesGivenByArgv.Add(argvi);
+    }
 #endif
+
+    RequestOpenFilesByEvent(files);
     
     gInitCompleted = true;
     
@@ -666,91 +680,117 @@ wxLuaStandaloneApp::CheckLuaLogicalExpression(wxString str)
 bool
 wxLuaStandaloneApp::OpenPendingFiles()
 {
-    int i, size;
-    int hideConsole = 0;
-    wxFileName dname(FindResourcePath(), wxT("scripts"));
-    dname.MakeAbsolute();
-    wxString dpath = dname.GetFullPath();
     lua_State *L = m_wxlState.GetLuaState();
-    //  Is LuaApp.config.scriptDir defined?
-    m_wxlState.RunString(wxT("return LuaApp.config and LuaApp.config.scriptDir"), wxT(""), 1);
-    if (!lua_isnil(L, -1)) {
-        dpath = wxString(lua_tolstring(L, -1, NULL));
-    }
-    lua_pop(L, 1);
-    size = m_pendingFilesToOpen.Count();
-    if (m_numberOfProcessedFiles < 0) {
-        //  First invocation: look for the lua script from the file list
-        for (i = 0; i < size; i++) {
+    int hideConsole = 0;
+
+    if (!m_wxmainExecuted) {
+
+        //  First invocation: we need to look for the wxmain.lua to execute
+        //  Default path
+        wxFileName dname(FindResourcePath(), wxT("scripts"));
+        dname.MakeAbsolute();
+        wxString dpath = dname.GetFullPath();
+        wxString spath = dpath + wxFILE_SEP_PATH + wxT("wxmain.lua");
+        if (!wxFileName::DirExists(dpath) || !wxFileName::FileExists(spath)) {
+            dpath = wxT("");
+        }
+
+        //  Look for the script file
+        for (int i = 0; i < m_pendingFilesToOpen.GetCount(); i++) {
             wxFileName dname1(m_pendingFilesToOpen[i]);
             dname1.MakeAbsolute();
             wxString dpath1 = dname1.GetFullPath();
-            if (wxFileName::DirExists(dpath1)) {
-                wxString path1 = dpath1 + wxFILE_SEP_PATH + wxT("wxmain.lua");
-                if (wxFileName::FileExists(path1)) {
-                    //  This is the name of the startup script
-                    //  Remove this from the file list
-                    dpath = dpath1;
-                    m_pendingFilesToOpen.RemoveAt(i, 1);
-                    size--;
-                    break;
-                }
+            wxString spath1 = dpath1 + wxFILE_SEP_PATH + wxT("wxmain.lua");
+            if (wxFileName::DirExists(dpath1) && wxFileName::FileExists(spath1)) {
+                //  This is the name of the startup script
+                //  Remove this from the file list
+                dpath = dpath1;
+                spath = spath1;
+                m_pendingFilesToOpen.RemoveAt(i, 1);
+                break;
             }
         }
-        wxString spath = dpath + wxFILE_SEP_PATH + wxT("wxmain.lua");
-        if (wxFileExists(spath)) {
-            //  Set the working directory
-            wxSetWorkingDirectory(dpath);
-            //  Set the package search directory
-            wxString lpath = dpath + wxFILE_SEP_PATH + wxT("?.lua;");
-            wxString cpath =
-#if defined(__WXMSW__) && defined(__i386__)
-                dpath + wxFILE_SEP_PATH + wxT("lib32\\?.") + DyLibExtension() + wxT(";") +
-#endif
-                dpath + wxFILE_SEP_PATH + wxT("?.") + DyLibExtension() + wxT(";");
-            m_wxlState.RunString(wxT("package.path = ") + MakeLuaString(lpath) + wxT(".. package.path"));
-            m_wxlState.RunString(wxT("package.cpath = ") + MakeLuaString(cpath) + wxT(".. package.cpath"));
-
-            //  Load "wxmain.lua"
-            DisplayMessage(wxT("Running wxmain.lua from " + dpath), false);
-            int rc = m_wxlState.RunFile(spath);
-            if (rc == 0) {
-                if (!CheckLuaLogicalExpression(wxT("LuaApp.config.showConsole"))) {
-                    hideConsole = 1;
-                }
-            } else {
-                DisplayMessage(wxlua_LUA_ERR_msg(rc), false);
+        
+        if (wxStrcmp(dpath, wxT("")) == 0) {
+            //  Wait for a script file to be given
+            static bool waitingMessage = false;
+            if (!waitingMessage) {
+                DisplayMessage(wxT("Waiting for the directory containing wxmain.lua to be given."), false);
+                waitingMessage = true;
             }
-        } else {
-            DisplayMessage(wxT("Cannot find wxmain.lua in ") + dpath, false);
-            /*  In this case, other arguments are discarded, and wait until a directory containing
-                wxmain.lua is given  */
-            m_numberOfProcessedFiles = -1;
             m_pendingFilesToOpen.Clear();
             return false;
         }
-        m_numberOfProcessedFiles = 0;
-    }
-    if (size == 0) {
-        //  New file: call LuaApp.NewDocument if defined
-        if (CheckLuaLogicalExpression(wxT("LuaApp.NewDocument"))) {
-            m_wxlState.RunString(wxT("LuaApp.NewDocument()"));
+
+        //  Build 'arg' table in the Lua world
+        lua_getglobal(L, "arg");
+        lua_pushstring(L, (const char *)dpath);
+        lua_rawseti(L, -2, 0);
+        for (int i = 0; i < m_pendingFilesToOpen.GetCount(); i++) {
+            wxString f = m_pendingFilesToOpen[i];
+            lua_pushstring(L, (const char *)f);
+            lua_rawseti(L, -2, i + 1);
         }
-    } else {
-        //  Open given files
-        if (CheckLuaLogicalExpression(wxT("LuaApp.OpenDocument"))) {
-            while (m_pendingFilesToOpen.Count() > 0) {
-                wxString file = m_pendingFilesToOpen[0];
-                m_pendingFilesToOpen.RemoveAt(0);
+        lua_pop(L, 1);
+
+        //  Try to load wxmain.lua
+        //  Set the working directory
+        wxSetWorkingDirectory(dpath);
+        //  Set the package search directory
+        wxString lpath = dpath + wxFILE_SEP_PATH + wxT("?.lua;");
+        wxString cpath =
+#if defined(__WXMSW__) && defined(__i386__)
+        dpath + wxFILE_SEP_PATH + wxT("lib32\\?.") + DyLibExtension() + wxT(";") +
+#endif
+        dpath + wxFILE_SEP_PATH + wxT("?.") + DyLibExtension() + wxT(";");
+        m_wxlState.RunString(wxT("package.path = ") + MakeLuaString(lpath) + wxT(".. package.path"));
+        m_wxlState.RunString(wxT("package.cpath = ") + MakeLuaString(cpath) + wxT(".. package.cpath"));
+        
+        //  Load "wxmain.lua"
+        DisplayMessage(wxT("Running wxmain.lua from " + dpath), false);
+        int rc = m_wxlState.RunFile(spath);
+        if (rc == 0) {
+            if (!CheckLuaLogicalExpression(wxT("LuaApp.config.showConsole"))) {
+                hideConsole = 1;
+            }
+            m_wxmainExecuted = true;
+        } else {
+            DisplayMessage(wxlua_LUA_ERR_msg(rc), false);
+        }
+
+        if (!m_wxmainExecuted) {
+            DisplayMessage(wxT("Waiting for a directory containing wxmain.lua"), false);
+            m_pendingFilesToOpen.Clear();
+            return false;
+        }
+    }
+
+    //  Is LuaApp.OpenDocument defined?
+    if (CheckLuaLogicalExpression(wxT("LuaApp.OpenDocument"))) {
+        //  If yes, then call it for each files
+        //  (except for those beginning with a '-', which is probably an option)
+        for (int i = 0; i < m_pendingFilesToOpen.GetCount(); i++) {
+            wxString f = m_pendingFilesToOpen[i];
+            if (wxStrncmp(f, wxT("-"), 1) != 0) {
                 //  Open file: call LuaApp.OpenDocument if defined
-                m_wxlState.RunString(wxT("LuaApp.OpenDocument(") + MakeLuaString(file) + wxT(")"));
-                i++;
+                m_wxlState.RunString(wxT("LuaApp.OpenDocument(") + MakeLuaString(f) + wxT(")"));
+                m_numberOfProcessedFiles++;
+            }
+        }
+        if (m_numberOfProcessedFiles == 0) {
+            //  We will call LuaApp.NewDocument() if defined
+            if (CheckLuaLogicalExpression(wxT("LuaApp.OpenDocument"))) {
+                m_wxlState.RunString(wxT("LuaApp.NewDocument()"));
+                m_numberOfProcessedFiles++;
             }
         }
     }
-    int count = wxTopLevelWindows.GetCount();
-    if (count > 1 && hideConsole) {
-        if (hideConsole) {
+    m_pendingFilesToOpen.Clear();
+
+    if (hideConsole) {
+        //  Hide the console if any other window is open
+        int count = wxTopLevelWindows.GetCount();
+        if (count > 1) {
             wxCommandEvent *myEvent = new wxCommandEvent(LUAAPP_EVENT, LuaAppEvent_executeLuaScript);
             myEvent->SetString(wxT("LuaApp.luaConsole:Hide()"));
             this->QueueEvent(myEvent);
@@ -763,10 +803,21 @@ wxLuaStandaloneApp::OpenPendingFiles()
 void
 wxLuaStandaloneApp::MacOpenFiles(const wxArrayString &fileNames)
 {
-    int i, size;
+    int i, j, size;
     wxString files;
     size = fileNames.size();
     for (i = 0; i < size; i++) {
+#if defined(__WXMAC__)
+        for (j = m_filesGivenByArgv.GetCount() - 1; j >= 0; j--) {
+            if (wxStrcmp(fileNames[i], m_filesGivenByArgv[j]) == 0)
+                break;
+        }
+        if (j >= 0) {
+            //  Ignore this file, and remove it from m_filesGivenByArgv[j]
+            m_filesGivenByArgv.RemoveAt(j);
+            continue;
+        }
+#endif
         m_pendingFilesToOpen.Add(fileNames[i]);
     }
     OpenPendingFiles();
