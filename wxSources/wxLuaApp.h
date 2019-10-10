@@ -13,7 +13,7 @@
 
 #include <wx/app.h>
 
-//#include "wxlua/debugger/wxldtarg.h"
+#include "wxlua/debugger/wxldtarg.h"
 #include "wxlua/wxlstate.h"
 #include "wxlua/wxlconsole.h"
 
@@ -107,7 +107,6 @@ public:
     bool                m_print_msgdlg;
     bool                m_want_console;
     bool                m_mem_bitmap_added;
-//    wxLuaDebugTarget*   m_wxlDebugTarget;
 
     bool                m_wxmainExecuted;
     int           m_numberOfProcessedFiles;  // Initially -1 (startup)

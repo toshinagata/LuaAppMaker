@@ -290,7 +290,6 @@ bool wxLuaStandaloneApp::OnInit()
     m_dos_stdout        = false;
     m_print_msgdlg      = false;
     m_want_console      = false;
-//    m_wxlDebugTarget    = NULL;
     m_mem_bitmap_added  = false;
     m_numberOfProcessedFiles = 0;
     m_wxmainExecuted    = false;
@@ -304,6 +303,7 @@ bool wxLuaStandaloneApp::OnInit()
 
     bool run_ok    = false; // has the Lua program executed ok
     bool dont_quit = false; // user specified -q switch to not quit
+    bool debug = false;
     
 #if defined(__WXMSW__) && wxCHECK_VERSION(2, 3, 3)
     WSADATA wsaData;
@@ -390,14 +390,14 @@ bool wxLuaStandaloneApp::OnInit()
     m_wxlState.RunString(wxT("package.path = ") + MakeLuaString(lpath));
     m_wxlState.RunString(wxT("package.cpath = ") + MakeLuaString(cpath));
 
-    //  If LUA_PATH or LUA_CPATH is defined, then add it
-    m_wxlState.RunString(wxT("local p = os.getenv('LUA_PATH'); package.path = ((p and p..';') or '')..package.path"));
-    m_wxlState.RunString(wxT("local p = os.getenv('LUA_CPATH'); package.cpath = ((p and p..';') or '')..package.cpath"));
-
     //  Configuration file path
     wxString confPath = wxStandardPaths::Get().GetUserConfigDir() + wxFILE_SEP_PATH + FindApplicationName() + wxT("_conf.lua");
     m_wxlState.RunString(wxT("LuaApp.settingsPath = ") + MakeLuaString(confPath));
 
+    //  Resource path and application name
+    m_wxlState.RunString(wxT("LuaApp.resourcePath = ") + MakeLuaString(FindResourcePath()));
+    m_wxlState.RunString(wxT("LuaApp.applicationName = ") + MakeLuaString(FindApplicationName()));
+    
     //  Import startup definition
     wxString conf = rpath + wxFILE_SEP_PATH + wxT("lib") + wxFILE_SEP_PATH + wxT("startup.lua");
     if (wxFileExists(conf)) {
@@ -432,8 +432,16 @@ bool wxLuaStandaloneApp::OnInit()
     //  must be combined as a single string
     wxString files;
     for (int i = 1; i < argc; i++) {
+        if (strcmp(argv[i], "-debug") == 0) {
+            debug = true;
+        }
         files.append(argv[i]);
         files.append(wxT("\n"));
+    }
+    
+    if (debug) {
+        //  Import miniDebug client
+        m_wxlState.RunString(wxT("LuaApp.debug = require(\"miniDebug\")"));
     }
     
     //  In the Lua world, create a global table "arg"
@@ -446,6 +454,10 @@ bool wxLuaStandaloneApp::OnInit()
     }
     lua_setglobal(L, "arg");
 
+    //  If LUA_PATH or LUA_CPATH is defined, then add it
+    m_wxlState.RunString(wxT("local p = os.getenv('LUA_PATH'); package.path = ((p and p..';') or '')..package.path"));
+    m_wxlState.RunString(wxT("local p = os.getenv('LUA_CPATH'); package.cpath = ((p and p..';') or '')..package.cpath"));
+    
 #if defined(__WXMAC__)
     //  Record the arguments (these should be ignored in MacOpenFiles)
     m_filesGivenByArgv.Clear();
@@ -505,14 +517,6 @@ bool wxLuaStandaloneApp::CheckInstance()
 
 int wxLuaStandaloneApp::OnExit()
 {
-    // If acting as a debuggee, we're done - disconnect from the debugger.
-//    if (m_wxlDebugTarget != NULL)
-//    {
-//        m_wxlDebugTarget->Stop();
-//        delete m_wxlDebugTarget;
-//        m_wxlDebugTarget = NULL;
-//    }
-    
     m_wxlState.CloseLuaState(true);
     m_wxlState.Destroy();
     
@@ -730,6 +734,9 @@ wxLuaStandaloneApp::OpenPendingFiles()
             wxString f = m_pendingFilesToOpen[i];
             lua_pushstring(L, (const char *)f);
             lua_rawseti(L, -2, i + 1);
+            /*  For debug test  */
+            //if (wxStrcmp(m_pendingFilesToOpen[i], wxT("-debug")) == 0)
+            //    lua_sethook(L, luaHookFunc, LUA_MASKLINE, 0);
         }
         lua_pop(L, 1);
 
@@ -753,6 +760,8 @@ wxLuaStandaloneApp::OpenPendingFiles()
             if (!CheckLuaLogicalExpression(wxT("LuaApp.config.showConsole"))) {
                 hideConsole = 1;
             }
+            //  Start debugger client (if not started yet)
+            m_wxlState.RunString(wxT("if LuaApp.debug then LuaApp.debug.start() end"));
             m_wxmainExecuted = true;
         } else {
             DisplayMessage(wxlua_LUA_ERR_msg(rc), false);
