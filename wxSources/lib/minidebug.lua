@@ -12,6 +12,7 @@ local handleOverOrOut = nil  -- HANDLE_OVER, HANDLE_OUT, HANDLE_CFUNC
 local HANDLE_OVER = 1
 local HANDLE_OUT = 2
 local HANDLE_CFUNC = 3
+local baseLevel = 0    -- Usually zero, but if we are stopping at a function call and want to fake that we are just before the call, then this is 1
 
 miniDebug.env = nil
 miniDebug.verbose = nil      -- 1: show message, 2: 1 + debug.log
@@ -71,8 +72,6 @@ local function Output(msg)
   end
   logfile:write(msg)
   logfile:flush()
-  --Send("204 Output OK "..tostring(#msg).."\n")
-  --Send(msg)
 end
 
 local function RemoveBaseDir(str)
@@ -304,7 +303,7 @@ local function ProcessLines(event)
       local expr = buf:match("(.-)%-%-", init)
       val, err = loadstring(expr)
       if val then
-        local env = CaptureVars(4)  --  1: CaptureVars, 2: ProcessLines, 3: Hook, 4: active function
+        local env = CaptureVars(4 + baseLevel)  --  1: CaptureVars, 2: ProcessLines, 3: Hook, 4: active function
         setfenv(val, env)
         val, err = pcall(val)
         if val then
@@ -328,7 +327,7 @@ local function ProcessLines(event)
       end
     elseif com == "STACK" then
       local val = {}
-      for i = 3, 5 do
+      for i = baseLevel + 3, baseLevel + 5 do
         local info = debug.getinfo(i)
         if not info then break end
         local ups, locals, varargs = GetUpvaluesAndLocals(i + 1, info.func)
@@ -379,16 +378,16 @@ local lastCountTime
 
 local function Hook(event, line)
   local info
-  if miniDebug.reportStack and (event == "call" or event == "return") then
+  if miniDebug.reportStack and (miniDebug.reportStack ~= true or event == "call" or event == "return") then
     local msg = ""
     local i, j, info2
     i = 2
     j = StackLevel(2)
-    msg = string.format("overLevel = %s, savedOverLevel = %s\n", tostring(overLevel), ToString(savedOverLevel)) 
+    msg = string.format("event = %s, overLevel = %s, savedOverLevel = %s\n", event,  tostring(overLevel), ToString(savedOverLevel))
     while true do
       info2 = debug.getinfo(i)
       if info2 then
-        msg = msg .. string.format("Stack %d: name = %s, what = %s, currentline = %d\n", j + 2 - i, info2.name, info2.what, info2.currentline)
+        msg = msg .. string.format("Stack %d: name = %s, what = %s, currentline = %d, source = %s\n", j + 2 - i, info2.name, info2.what, info2.currentline, info2.source)
       else
         break
       end
@@ -411,36 +410,47 @@ local function Hook(event, line)
       --  Handle OVER/OUT
       info = debug.getinfo(2)
       local level = StackLevel(2)
-      local level1 = (overLevel < 0 and -overLevel - 1) or overLevel
-      if event == "call" then
-        if level1 < level then
-          --  Save current overLevel and enter a new 'OVER' loop
-          --  Otherwise, we are at the same level (probably tail call): replace the current overLevel
-          table.insert(savedOverLevel, overLevel)
-        end
-        if info.what == "C" then
-          overLevel = -level - 1
-        else
-          overLevel = level
-        end
-        return --  Continue execution
-      else
-        --  Discard overLevel that is higher than the current stack level
-        while level1 > level do
+      local level1 = (overLevel < 0 and (-overLevel - 1)) or overLevel
+      local discardOverLevel = function (level0)
+        while level0 <= level1 do
           overLevel = table.remove(savedOverLevel)
           if not overLevel then break end
-          level1 = (overLevel < 0 and -overLevel - 1) or overLevel
+          level1 = (overLevel < 0 and (-overLevel - 1)) or overLevel
         end
-        if not overLevel then
-          --  We are already out of all 'OVER' loops
-          goto stopHere
+      end
+      if event == "call" then
+        if level < level1 then
+          discardOverLevel(level)
+          if overLevel then
+            table.insert(savedOverLevel, overLevel)
+            overLevel = (info.what == "C" and (-level - 1)) or level
+          else
+            goto stopHere
+          end
+        else
+          if level > level1 then
+            --  Save current overLevel and enter a new 'OVER' loop
+            table.insert(savedOverLevel, overLevel)
+          end
+          --  Replace the current overLevel
+          overLevel = (info.what == "C" and (-level - 1)) or level
         end
-        if #savedOverLevel == 0 and level1 == level and event == "return" then
-          --  We are at the end of 'Lua' loop
-          overLevel = nil
-          willStop = true  --  Stop at the next hook
+      elseif overLevel >= 0 then
+        -- "Lua OVER" mode
+        if event == "return" then
+          discardOverLevel(level)
+          if not overLevel then
+            willStop = true  --  Stop at the next hook
+          end
         end
-        return  --  Continue execution
+      else
+        -- "C OVER" mode
+        if level < level1 then
+          discardOverLevel(level + 1)
+          if not overLevel then
+            goto stopHere
+          end
+        end
       end
     end
     if event == "line" then
@@ -461,6 +471,7 @@ local function Hook(event, line)
     end
     return  --  Don't stop here
   end
+  ::handleOver::
   if handleOverOrOut then
     willStop = false
     if event == "call" then
@@ -488,7 +499,7 @@ local function Hook(event, line)
   end
   ::stopHere::
   if not info then
-    info = debug.getinfo(2)
+    info = debug.getinfo(baseLevel + 2)
     if info.what == "C" then return end  --  Don't stop inside a C function
     if info.source == thisSource then return end  --  Don't stop inside this file
   end
@@ -511,14 +522,19 @@ local function Hook(event, line)
     Send(string.format("202 Paused %s %d\n", source, info.currentline))
   end
   isRunning = false
-  --miniDebug.env = getfenv(2)
-  --print("env = "..ToString(miniDebug.env))
   ProcessLines(event)
-  --miniDebug.env = nil
   isRunning = true
   if not hasInited then
-    --willStop = true  --  Force stop after first instruction
     hasInited = true
+  end
+  if baseLevel == 1 then
+    --  We are faking as if we are 'before' a function call, but in reality we are already
+    --  in a function call. In this case, 'call' event is handled again and execution is continued
+    if miniDebug.verbose then
+      Output(string.format("We are at %d in %s\n", info.currentline, info.source))
+    end
+    baseLevel = 0
+    goto handleOver
   end
 end
 
