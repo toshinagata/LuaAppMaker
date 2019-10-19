@@ -449,32 +449,32 @@ public:
     
 //    virtual ~wxGraphicsContext();
     
-    static wxGraphicsContext* Create( const wxWindowDC& dc);
-    static wxGraphicsContext * Create( const wxMemoryDC& dc);
+    static %gc wxGraphicsContext* Create( const wxWindowDC& dc);
+    static %gc wxGraphicsContext * Create( const wxMemoryDC& dc);
 #if wxUSE_PRINTING_ARCHITECTURE
-    static wxGraphicsContext * Create( const wxPrinterDC& dc);
+    static %gc wxGraphicsContext * Create( const wxPrinterDC& dc);
 #endif
 #if defined(__WXMSW__)
 #if wxUSE_ENH_METAFILE
-    // static wxGraphicsContext * Create( const wxEnhMetaFileDC& dc);
+    // static %gc wxGraphicsContext * Create( const wxEnhMetaFileDC& dc);
 #endif
 #endif
     
-    static wxGraphicsContext* CreateFromNative( void * context );
+    static %gc wxGraphicsContext* CreateFromNative( void * context );
     
-    static wxGraphicsContext* CreateFromNativeWindow( void * window );
+    static %gc wxGraphicsContext* CreateFromNativeWindow( void * window );
     
-    static wxGraphicsContext* Create( wxWindow* window );
+    static %gc wxGraphicsContext* Create( wxWindow* window );
     
 #if wxUSE_IMAGE
     // Create a context for drawing onto a wxImage. The image life time must be
     // greater than that of the context itself as when the context is destroyed
     // it will copy its contents to the specified image.
-    static wxGraphicsContext* Create(wxImage& image);
+    static %gc wxGraphicsContext* Create(wxImage& image);
 #endif // wxUSE_IMAGE
     
     // create a context that can be used for measuring texts only, no drawing allowed
-    static wxGraphicsContext * Create();
+    static %gc wxGraphicsContext * Create();
     
     // begin a new document (relevant only for printing / pdf etc) if there is a progress dialog, message will be shown
     virtual bool StartDoc( const wxString& message );
@@ -757,29 +757,29 @@ public:
     
 //    static wxGraphicsRenderer* GetCairoRenderer();
     // Context
-    virtual wxGraphicsContext * CreateContext( const wxWindowDC& dc);
-    virtual wxGraphicsContext * CreateContext( const wxMemoryDC& dc);
+    virtual %gc wxGraphicsContext * CreateContext( const wxWindowDC& dc);
+    virtual %gc wxGraphicsContext * CreateContext( const wxMemoryDC& dc);
     #if wxUSE_PRINTING_ARCHITECTURE
-    virtual wxGraphicsContext * CreateContext( const wxPrinterDC& dc);
+    virtual %gc wxGraphicsContext * CreateContext( const wxPrinterDC& dc);
     #endif
     #if defined(__WXMSW__)
     #if wxUSE_ENH_METAFILE
-//    virtual wxGraphicsContext * CreateContext( const wxEnhMetaFileDC& dc) = 0;
+//    virtual %gc wxGraphicsContext * CreateContext( const wxEnhMetaFileDC& dc) = 0;
     #endif
     #endif
     
-    virtual wxGraphicsContext * CreateContextFromNativeContext( void * context );
+    virtual %gc wxGraphicsContext * CreateContextFromNativeContext( void * context );
     
-    virtual wxGraphicsContext * CreateContextFromNativeWindow( void * window );
+    virtual %gc wxGraphicsContext * CreateContextFromNativeWindow( void * window );
     
-    virtual wxGraphicsContext * CreateContext( wxWindow* window );
+    virtual %gc wxGraphicsContext * CreateContext( wxWindow* window );
     
     #if wxUSE_IMAGE
-    virtual wxGraphicsContext * CreateContextFromImage(wxImage& image);
+    virtual %gc wxGraphicsContext * CreateContextFromImage(wxImage& image);
     #endif // wxUSE_IMAGE
     
     // create a context that can be used for measuring texts only, no drawing allowed
-    virtual wxGraphicsContext * CreateMeasuringContext();
+    virtual %gc wxGraphicsContext * CreateMeasuringContext();
     
     // Path
     
