@@ -343,6 +343,12 @@ bool wxLuaStandaloneApp::OnInit()
     // See notes for WXLUA_DECLARE_BIND_ALL above.
     WXLUA_IMPLEMENT_BIND_ALL
     
+    // Initialize our own wxLua bindings.
+    {
+        extern WXDLLIMPEXP_BINDWXBASE wxLuaBinding* wxLuaBinding_wxgraphics_init();
+        wxLuaBinding_wxgraphics_init();
+    }
+    
     // When this function returns wxApp:MainLoop() will be called by wxWidgets
     // and so we want the Lua code wx.wxGetApp:MainLoop() to not
     // prematurely start it.
