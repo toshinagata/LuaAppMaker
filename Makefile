@@ -52,16 +52,18 @@ WXBIND_O = wxadv_bind.o wxadv_wxladv.o wxaui_bind.o wxbase_base.o wxbase_bind.o 
   wxhtml_wxlhtml.o wxmedia_bind.o wxnet_bind.o wxpropgrid_bind.o wxrichtext_bind.o wxstc_bind.o \
   wxwebview_bind.o wxxml_bind.o wxxrc_bind.o
 WXLUAAPP_O = wxLuaApp.o ConsoleFrame.o lua_addition.o
+WXBIND_EXTRA_O = wxgraphics_bind.o wxgraphics.o
 LUAGL_O = luagl_const.o luagl_util.o luagl.o luaglu.o
 WXLUA_ALL_O = $(addprefix wxlua/wxLua/modules/wxlua/debug/,$(WXLUA_DEBUG_O)) \
   $(addprefix wxlua/wxLua/modules/wxlua/debugger/,$(WXLUA_DEBUGGER_O)) \
   $(addprefix wxlua/wxLua/modules/wxlua/,$(WXLUA_O)) \
   $(addprefix wxlua/wxLua/modules/wxbind/src/,$(WXBIND_O)) \
-  $(addprefix wxSources/,$(WXLUAAPP_O))
+  $(addprefix wxSources/,$(WXLUAAPP_O)) \
+  $(addprefix wxSources/bindings/generated/,$(WXBIND_EXTRA_O))
 
 OBJECTS = $(WXLUA_ALL_O)
 
-SUBDIRS = wxlua/wxLua/modules/wxlua/debug wxlua/wxLua/modules/wxlua/debugger wxlua/wxLua/modules/wxbind/src wxSources
+SUBDIRS = wxlua/wxLua/modules/wxlua/debug wxlua/wxLua/modules/wxlua/debugger wxlua/wxLua/modules/wxbind/src wxSources/bindings/generated
 
 #  wx libraries
 WXLIB_LIST = core,base,gl,adv
