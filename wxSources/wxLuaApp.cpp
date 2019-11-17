@@ -874,9 +874,14 @@ SetFileExecutable(wxString &fullpath)
 #endif
 }
 
+/*  Copy the destination recursively  */
+/*  If the filename begins with '_' or '.', then it is skipped  */
 static wxString
 CopyRecursive(wxString &src, wxString &dst, bool allowOverwrite)
 {
+    if (src.StartsWith(wxT("_")) || src.StartsWith(wxT("."))) {
+        return wxT("");
+    }
     if (wxFileName::DirExists(src)) {
         if (wxFileName::FileExists(dst)) {
             return wxString::Format(wxT("Cannot copy directory %s over file %s"), (const char *)src, (const char *)dst);
