@@ -7,9 +7,9 @@
 	objects = {
 
 /* Begin PBXAggregateTarget section */
-		E4CB370F1FE4FF0E001BB75E /* wxLuaApp_archive */ = {
+		E4CB370F1FE4FF0E001BB75E /* LuaAppMaker_archive */ = {
 			isa = PBXAggregateTarget;
-			buildConfigurationList = E4CB37101FE4FF0E001BB75E /* Build configuration list for PBXAggregateTarget "wxLuaApp_archive" */;
+			buildConfigurationList = E4CB37101FE4FF0E001BB75E /* Build configuration list for PBXAggregateTarget "LuaAppMaker_archive" */;
 			buildPhases = (
 				E4CB37171FE4FF42001BB75E /* ShellScript */,
 			);
@@ -18,7 +18,7 @@
 				E4CB37191FE50707001BB75E /* PBXTargetDependency */,
 				E447267A232E56A2000600DD /* PBXTargetDependency */,
 			);
-			name = wxLuaApp_archive;
+			name = LuaAppMaker_archive;
 			productName = "Molby (Mac Archive)";
 		};
 /* End PBXAggregateTarget section */
@@ -28,7 +28,7 @@
 		E4318880231258D300B53D02 /* wxlualogo.icns in Resources */ = {isa = PBXBuildFile; fileRef = E431887F231258D300B53D02 /* wxlualogo.icns */; };
 		E46089F8231BD5B400CA06FD /* libluajit-5.1.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = E4D6D8CD230AE2C90008ADE9 /* libluajit-5.1.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		E48A4A3D2153E902005F88AB /* QTKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E48A4A3C2153E902005F88AB /* QTKit.framework */; };
-		E4D6D8C6230ADEC10008ADE9 /* wxLuaApp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E4D6D8BD230ADEC00008ADE9 /* wxLuaApp.cpp */; };
+		E4D6D8C6230ADEC10008ADE9 /* LuaAppMaker.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E4D6D8BD230ADEC00008ADE9 /* LuaAppMaker.cpp */; };
 		E4D6D8C7230ADEC10008ADE9 /* lua_addition.c in Sources */ = {isa = PBXBuildFile; fileRef = E4D6D8BE230ADEC10008ADE9 /* lua_addition.c */; };
 		E4D6D8C8230ADEC10008ADE9 /* ConsoleFrame.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E4D6D8BF230ADEC10008ADE9 /* ConsoleFrame.cpp */; };
 		E4D6D8C9230ADEC10008ADE9 /* textctrl_addition.mm in Sources */ = {isa = PBXBuildFile; fileRef = E4D6D8C0230ADEC10008ADE9 /* textctrl_addition.mm */; };
@@ -151,7 +151,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		8D1107320486CEB800E47090 /* wxLuaApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = wxLuaApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		8D1107320486CEB800E47090 /* LuaAppMaker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LuaAppMaker.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E4137208232BBF8B006C980A /* lib */ = {isa = PBXFileReference; lastKnownFileType = folder; name = lib; path = ../wxSources/lib; sourceTree = "<group>"; };
 		E413720A232BD380006C980A /* win_resources.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = win_resources.cpp; path = ../wxSources/win_resources.cpp; sourceTree = "<group>"; };
 		E413720B232BD380006C980A /* win_resources.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = win_resources.h; path = ../wxSources/win_resources.h; sourceTree = "<group>"; };
@@ -159,16 +159,16 @@
 		E48A4A3C2153E902005F88AB /* QTKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QTKit.framework; path = ../../../../../../System/Library/Frameworks/QTKit.framework; sourceTree = "<group>"; };
 		E4A604A12332627E00D7BC85 /* Makefile */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.make; name = Makefile; path = ../Makefile; sourceTree = "<group>"; };
 		E4D6D8B8230ADE4A0008ADE9 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		E4D6D8BA230ADEC00008ADE9 /* wxLuaApp.rc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = wxLuaApp.rc; path = ../wxSources/wxLuaApp.rc; sourceTree = "<group>"; };
-		E4D6D8BB230ADEC00008ADE9 /* wxLuaApp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = wxLuaApp.h; path = ../wxSources/wxLuaApp.h; sourceTree = "<group>"; };
+		E4D6D8BA230ADEC00008ADE9 /* LuaAppMaker.rc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = LuaAppMaker.rc; path = ../wxSources/LuaAppMaker.rc; sourceTree = "<group>"; };
+		E4D6D8BB230ADEC00008ADE9 /* LuaAppMaker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LuaAppMaker.h; path = ../wxSources/LuaAppMaker.h; sourceTree = "<group>"; };
 		E4D6D8BC230ADEC00008ADE9 /* record_build_date.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; name = record_build_date.sh; path = ../wxSources/record_build_date.sh; sourceTree = "<group>"; };
-		E4D6D8BD230ADEC00008ADE9 /* wxLuaApp.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = wxLuaApp.cpp; path = ../wxSources/wxLuaApp.cpp; sourceTree = "<group>"; };
+		E4D6D8BD230ADEC00008ADE9 /* LuaAppMaker.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = LuaAppMaker.cpp; path = ../wxSources/LuaAppMaker.cpp; sourceTree = "<group>"; };
 		E4D6D8BE230ADEC10008ADE9 /* lua_addition.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = lua_addition.c; path = ../wxSources/lua_addition.c; sourceTree = "<group>"; };
 		E4D6D8BF230ADEC10008ADE9 /* ConsoleFrame.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ConsoleFrame.cpp; path = ../wxSources/ConsoleFrame.cpp; sourceTree = "<group>"; };
 		E4D6D8C0230ADEC10008ADE9 /* textctrl_addition.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = textctrl_addition.mm; path = ../wxSources/textctrl_addition.mm; sourceTree = "<group>"; };
 		E4D6D8C1230ADEC10008ADE9 /* ConsoleFrame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ConsoleFrame.h; path = ../wxSources/ConsoleFrame.h; sourceTree = "<group>"; };
 		E4D6D8C2230ADEC10008ADE9 /* lua_addition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = lua_addition.h; path = ../wxSources/lua_addition.h; sourceTree = "<group>"; };
-		E4D6D8C3230ADEC10008ADE9 /* wxLuaApp.iss */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = wxLuaApp.iss; path = ../wxSources/wxLuaApp.iss; sourceTree = "<group>"; };
+		E4D6D8C3230ADEC10008ADE9 /* LuaAppMaker.iss */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = LuaAppMaker.iss; path = ../wxSources/LuaAppMaker.iss; sourceTree = "<group>"; };
 		E4D6D8CB230ADF320008ADE9 /* buildInfo.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = buildInfo.c; path = build/buildInfo.c; sourceTree = "<group>"; };
 		E4D6D8CD230AE2C90008ADE9 /* libluajit-5.1.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libluajit-5.1.dylib"; path = "build/lib/libluajit-5.1.dylib"; sourceTree = "<group>"; };
 		E4D6D8D6230AE8900008ADE9 /* CMakeLists.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = CMakeLists.txt; sourceTree = "<group>"; };
@@ -335,7 +335,7 @@
 		19C28FACFE9D520D11CA2CBB /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				8D1107320486CEB800E47090 /* wxLuaApp.app */,
+				8D1107320486CEB800E47090 /* LuaAppMaker.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -375,10 +375,10 @@
 				E413720B232BD380006C980A /* win_resources.h */,
 				E4D6D8BC230ADEC00008ADE9 /* record_build_date.sh */,
 				E4D6D8C0230ADEC10008ADE9 /* textctrl_addition.mm */,
-				E4D6D8BD230ADEC00008ADE9 /* wxLuaApp.cpp */,
-				E4D6D8BB230ADEC00008ADE9 /* wxLuaApp.h */,
-				E4D6D8C3230ADEC10008ADE9 /* wxLuaApp.iss */,
-				E4D6D8BA230ADEC00008ADE9 /* wxLuaApp.rc */,
+				E4D6D8BD230ADEC00008ADE9 /* LuaAppMaker.cpp */,
+				E4D6D8BB230ADEC00008ADE9 /* LuaAppMaker.h */,
+				E4D6D8C3230ADEC10008ADE9 /* LuaAppMaker.iss */,
+				E4D6D8BA230ADEC00008ADE9 /* LuaAppMaker.rc */,
 			);
 			name = wxSources;
 			sourceTree = "<group>";
@@ -625,40 +625,40 @@
 /* End PBXGroup section */
 
 /* Begin PBXLegacyTarget section */
-		E4472675232E556F000600DD /* wxLuaApp_win32 */ = {
+		E4472675232E556F000600DD /* LuaAppMaker_win32 */ = {
 			isa = PBXLegacyTarget;
 			buildArgumentsString = "PATH=/usr/local/mingw-w32/bin:$PATH make $(ACTION)";
-			buildConfigurationList = E4472676232E556F000600DD /* Build configuration list for PBXLegacyTarget "wxLuaApp_win32" */;
+			buildConfigurationList = E4472676232E556F000600DD /* Build configuration list for PBXLegacyTarget "LuaAppMaker_win32" */;
 			buildPhases = (
 			);
 			buildToolPath = /usr/bin/env;
 			buildWorkingDirectory = "$(PROJECT_DIR)/../build-win32";
 			dependencies = (
 			);
-			name = wxLuaApp_win32;
+			name = LuaAppMaker_win32;
 			passBuildSettingsInEnvironment = 1;
 			productName = "Molby (Windows)";
 		};
-		E4CB370B1FE2C1F7001BB75E /* wxLuaApp_win */ = {
+		E4CB370B1FE2C1F7001BB75E /* LuaAppMaker_win */ = {
 			isa = PBXLegacyTarget;
 			buildArgumentsString = "PATH=/usr/local/mingw-w32/bin:$PATH make $(ACTION)";
-			buildConfigurationList = E4CB370C1FE2C1F7001BB75E /* Build configuration list for PBXLegacyTarget "wxLuaApp_win" */;
+			buildConfigurationList = E4CB370C1FE2C1F7001BB75E /* Build configuration list for PBXLegacyTarget "LuaAppMaker_win" */;
 			buildPhases = (
 			);
 			buildToolPath = /usr/bin/env;
 			buildWorkingDirectory = "$(PROJECT_DIR)/../build-win";
 			dependencies = (
 			);
-			name = wxLuaApp_win;
+			name = LuaAppMaker_win;
 			passBuildSettingsInEnvironment = 1;
 			productName = "Molby (Windows)";
 		};
 /* End PBXLegacyTarget section */
 
 /* Begin PBXNativeTarget section */
-		8D1107260486CEB800E47090 /* wxLuaApp */ = {
+		8D1107260486CEB800E47090 /* LuaAppMaker */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = C01FCF4A08A954540054247B /* Build configuration list for PBXNativeTarget "wxLuaApp" */;
+			buildConfigurationList = C01FCF4A08A954540054247B /* Build configuration list for PBXNativeTarget "LuaAppMaker" */;
 			buildPhases = (
 				E4FC7B57183E516E0064FB2E /* ShellScript */,
 				E474B7B92160DD2800DF343D /* ShellScript */,
@@ -672,10 +672,10 @@
 			);
 			dependencies = (
 			);
-			name = wxLuaApp;
+			name = LuaAppMaker;
 			productInstallPath = "$(HOME)/Applications";
 			productName = Molby;
-			productReference = 8D1107320486CEB800E47090 /* wxLuaApp.app */;
+			productReference = 8D1107320486CEB800E47090 /* LuaAppMaker.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -695,7 +695,7 @@
 					};
 				};
 			};
-			buildConfigurationList = C01FCF4E08A954540054247B /* Build configuration list for PBXProject "wxLuaApp" */;
+			buildConfigurationList = C01FCF4E08A954540054247B /* Build configuration list for PBXProject "LuaAppMaker" */;
 			compatibilityVersion = "Xcode 3.1";
 			developmentRegion = English;
 			hasScannedForEncodings = 1;
@@ -709,10 +709,10 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				8D1107260486CEB800E47090 /* wxLuaApp */,
-				E4CB370B1FE2C1F7001BB75E /* wxLuaApp_win */,
-				E4472675232E556F000600DD /* wxLuaApp_win32 */,
-				E4CB370F1FE4FF0E001BB75E /* wxLuaApp_archive */,
+				8D1107260486CEB800E47090 /* LuaAppMaker */,
+				E4CB370B1FE2C1F7001BB75E /* LuaAppMaker_win */,
+				E4472675232E556F000600DD /* LuaAppMaker_win32 */,
+				E4CB370F1FE4FF0E001BB75E /* LuaAppMaker_archive */,
 			);
 		};
 /* End PBXProject section */
@@ -831,7 +831,7 @@
 				E4D6D956230AE8910008ADE9 /* wxxrc_bind.cpp in Sources */,
 				E4D6D993230AE8B10008ADE9 /* wxlsock.cpp in Sources */,
 				E4D6D93A230AE8910008ADE9 /* wxcore_gdi.cpp in Sources */,
-				E4D6D8C6230ADEC10008ADE9 /* wxLuaApp.cpp in Sources */,
+				E4D6D8C6230ADEC10008ADE9 /* LuaAppMaker.cpp in Sources */,
 				E4D6D99A230AE8B10008ADE9 /* dummy.cpp in Sources */,
 				E4D6D93E230AE8910008ADE9 /* wxadv_bind.cpp in Sources */,
 				E4D6D941230AE8910008ADE9 /* wxcore_image.cpp in Sources */,
@@ -870,17 +870,17 @@
 /* Begin PBXTargetDependency section */
 		E447267A232E56A2000600DD /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = E4472675232E556F000600DD /* wxLuaApp_win32 */;
+			target = E4472675232E556F000600DD /* LuaAppMaker_win32 */;
 			targetProxy = E4472679232E56A2000600DD /* PBXContainerItemProxy */;
 		};
 		E4CB37141FE4FF23001BB75E /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 8D1107260486CEB800E47090 /* wxLuaApp */;
+			target = 8D1107260486CEB800E47090 /* LuaAppMaker */;
 			targetProxy = E4CB37131FE4FF23001BB75E /* PBXContainerItemProxy */;
 		};
 		E4CB37191FE50707001BB75E /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = E4CB370B1FE2C1F7001BB75E /* wxLuaApp_win */;
+			target = E4CB370B1FE2C1F7001BB75E /* LuaAppMaker_win */;
 			targetProxy = E4CB37181FE50707001BB75E /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -952,7 +952,8 @@
 					100000000,
 				);
 				PRESERVE_DEAD_CODE_INITS_AND_TERMS = NO;
-				PRODUCT_NAME = wxLuaApp;
+				PRODUCT_BUNDLE_IDENTIFIER = com.github.toshinagata.LuaAppMaker;
+				PRODUCT_NAME = LuaAppMaker;
 				SDKROOT = macosx10.6;
 				STRIP_INSTALLED_PRODUCT = NO;
 			};
@@ -1021,7 +1022,8 @@
 					100000000,
 				);
 				PRESERVE_DEAD_CODE_INITS_AND_TERMS = NO;
-				PRODUCT_NAME = wxLuaApp;
+				PRODUCT_BUNDLE_IDENTIFIER = com.github.toshinagata.LuaAppMaker;
+				PRODUCT_NAME = LuaAppMaker;
 				SDKROOT = macosx10.6;
 			};
 			name = Release;
@@ -1248,7 +1250,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		C01FCF4A08A954540054247B /* Build configuration list for PBXNativeTarget "wxLuaApp" */ = {
+		C01FCF4A08A954540054247B /* Build configuration list for PBXNativeTarget "LuaAppMaker" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				C01FCF4B08A954540054247B /* Debug */,
@@ -1257,7 +1259,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		C01FCF4E08A954540054247B /* Build configuration list for PBXProject "wxLuaApp" */ = {
+		C01FCF4E08A954540054247B /* Build configuration list for PBXProject "LuaAppMaker" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				C01FCF4F08A954540054247B /* Debug */,
@@ -1266,7 +1268,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		E4472676232E556F000600DD /* Build configuration list for PBXLegacyTarget "wxLuaApp_win32" */ = {
+		E4472676232E556F000600DD /* Build configuration list for PBXLegacyTarget "LuaAppMaker_win32" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				E4472677232E556F000600DD /* Debug */,
@@ -1275,7 +1277,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		E4CB370C1FE2C1F7001BB75E /* Build configuration list for PBXLegacyTarget "wxLuaApp_win" */ = {
+		E4CB370C1FE2C1F7001BB75E /* Build configuration list for PBXLegacyTarget "LuaAppMaker_win" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				E4CB370D1FE2C1F7001BB75E /* Debug */,
@@ -1284,7 +1286,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		E4CB37101FE4FF0E001BB75E /* Build configuration list for PBXAggregateTarget "wxLuaApp_archive" */ = {
+		E4CB37101FE4FF0E001BB75E /* Build configuration list for PBXAggregateTarget "LuaAppMaker_archive" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				E4CB37111FE4FF0E001BB75E /* Debug */,

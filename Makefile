@@ -1,5 +1,5 @@
 #
-#   Makefile for wxLuaApp
+#   Makefile for LuaAppMaker
 #
 #  Created by Toshi Nagata on 2018/10/02.
 #  Copyright 2018 Toshi Nagata. All rights reserved.
@@ -27,7 +27,7 @@ LUAJIT_DIR = $(PWD)/../LuaJIT-2.0.5
 WX_DIR = $(PWD)/../../wxWidgets-3.0.3
 
 #  Application name
-APPNAME = wxLuaApp
+APPNAME = LuaAppMaker
 
 #  Target platform and cross compile flag
 ifeq ($(TARGET_ARCH),x86_64)

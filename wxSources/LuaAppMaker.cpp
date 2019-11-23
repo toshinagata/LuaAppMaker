@@ -36,7 +36,7 @@
 #include "wxlua/debugger/wxldserv.h"
 #include "wxbind/include/wxcore_bind.h"
 
-#include "wxLuaApp.h"
+#include "LuaAppMaker.h"
 #include "ConsoleFrame.h"
 
 #include "lua_addition.h"

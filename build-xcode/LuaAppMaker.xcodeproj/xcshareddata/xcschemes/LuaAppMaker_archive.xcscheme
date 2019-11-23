@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "1030"
+   LastUpgradeVersion = "0820"
    version = "1.3">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -14,10 +14,10 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "E4472675232E556F000600DD"
-               BuildableName = "wxLuaApp_win32"
-               BlueprintName = "wxLuaApp_win32"
-               ReferencedContainer = "container:wxLuaApp.xcodeproj">
+               BlueprintIdentifier = "E4CB370F1FE4FF0E001BB75E"
+               BuildableName = "LuaAppMaker_archive"
+               BlueprintName = "LuaAppMaker_archive"
+               ReferencedContainer = "container:LuaAppMaker.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -45,10 +45,10 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "E4472675232E556F000600DD"
-            BuildableName = "wxLuaApp_win32"
-            BlueprintName = "wxLuaApp_win32"
-            ReferencedContainer = "container:wxLuaApp.xcodeproj">
+            BlueprintIdentifier = "E4CB370F1FE4FF0E001BB75E"
+            BuildableName = "LuaAppMaker_archive"
+            BlueprintName = "LuaAppMaker_archive"
+            ReferencedContainer = "container:LuaAppMaker.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <AdditionalOptions>
@@ -63,10 +63,10 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "E4472675232E556F000600DD"
-            BuildableName = "wxLuaApp_win32"
-            BlueprintName = "wxLuaApp_win32"
-            ReferencedContainer = "container:wxLuaApp.xcodeproj">
+            BlueprintIdentifier = "E4CB370F1FE4FF0E001BB75E"
+            BuildableName = "LuaAppMaker_archive"
+            BlueprintName = "LuaAppMaker_archive"
+            ReferencedContainer = "container:LuaAppMaker.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
    </ProfileAction>

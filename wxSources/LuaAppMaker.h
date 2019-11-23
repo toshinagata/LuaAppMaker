@@ -8,8 +8,8 @@
 // Licence:     wxWidgets licence
 /////////////////////////////////////////////////////////////////////////////
 
-#ifndef WX_LUAAPP_H
-#define WX_LUAAPP_H
+#ifndef LUAAPPMAKER_H
+#define LUAAPPMAKER_H
 
 #include <wx/app.h>
 
@@ -128,4 +128,4 @@ public:
 
 DECLARE_APP(wxLuaStandaloneApp)
 
-#endif // WX_LUAAPP_H
+#endif // LUAAPPMAKER_H

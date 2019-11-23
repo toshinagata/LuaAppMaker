@@ -21,7 +21,7 @@
 #endif
 
 #include "ConsoleFrame.h"
-#include "wxLuaApp.h"
+#include "LuaAppMaker.h"
 #include "lua_addition.h"
 
 #include "wx/menu.h"

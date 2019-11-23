@@ -1,4 +1,4 @@
-#define MyAppName "wxLuaApp"
+#define MyAppName "LuaAppMaker"
 #define Version ""
 
 [Setup]
