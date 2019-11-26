@@ -24,6 +24,9 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
+		E40785C3238D51F7007DE62B /* wxadd_bind.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E40785C0238D51F6007DE62B /* wxadd_bind.cpp */; };
+		E40785C4238D51F7007DE62B /* wxadd_graphics.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E40785C2238D51F7007DE62B /* wxadd_graphics.cpp */; };
+		E40785C6238D5692007DE62B /* wxadd_types.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E40785C5238D5692007DE62B /* wxadd_types.cpp */; };
 		E4137209232BBF8B006C980A /* lib in Resources */ = {isa = PBXBuildFile; fileRef = E4137208232BBF8B006C980A /* lib */; };
 		E4318880231258D300B53D02 /* wxlualogo.icns in Resources */ = {isa = PBXBuildFile; fileRef = E431887F231258D300B53D02 /* wxlualogo.icns */; };
 		E46089F8231BD5B400CA06FD /* libluajit-5.1.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = E4D6D8CD230AE2C90008ADE9 /* libluajit-5.1.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
@@ -96,8 +99,6 @@
 		E4D6D99B230AE8B10008ADE9 /* wxldebug.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E4D6D981230AE8B10008ADE9 /* wxldebug.cpp */; };
 		E4D6D99C230AE8B10008ADE9 /* wxlobject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E4D6D985230AE8B10008ADE9 /* wxlobject.cpp */; };
 		E4D6D9A023101F240008ADE9 /* filedlg.mm in Sources */ = {isa = PBXBuildFile; fileRef = E4D6D99F23101F240008ADE9 /* filedlg.mm */; };
-		E4DC187C235AE271007A620D /* wxgraphics.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E4DC1879235AE271007A620D /* wxgraphics.cpp */; };
-		E4DC187D235AE271007A620D /* wxgraphics_bind.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E4DC187B235AE271007A620D /* wxgraphics_bind.cpp */; };
 		E4FC7811183E50DC0064FB2E /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4FC7810183E50DC0064FB2E /* Accelerate.framework */; };
 		E4FC7838183E50F00064FB2E /* AGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4FC7837183E50F00064FB2E /* AGL.framework */; };
 		E4FC784C183E51180064FB2E /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4FC7845183E51180064FB2E /* Carbon.framework */; };
@@ -152,6 +153,10 @@
 
 /* Begin PBXFileReference section */
 		8D1107320486CEB800E47090 /* LuaAppMaker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LuaAppMaker.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		E40785C0238D51F6007DE62B /* wxadd_bind.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = wxadd_bind.cpp; path = ../wxSources/bindings/generated/wxadd_bind.cpp; sourceTree = "<group>"; };
+		E40785C1238D51F6007DE62B /* wxadd_bind.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = wxadd_bind.h; path = ../wxSources/bindings/generated/wxadd_bind.h; sourceTree = "<group>"; };
+		E40785C2238D51F7007DE62B /* wxadd_graphics.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = wxadd_graphics.cpp; path = ../wxSources/bindings/generated/wxadd_graphics.cpp; sourceTree = "<group>"; };
+		E40785C5238D5692007DE62B /* wxadd_types.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = wxadd_types.cpp; path = ../wxSources/bindings/generated/wxadd_types.cpp; sourceTree = "<group>"; };
 		E4137208232BBF8B006C980A /* lib */ = {isa = PBXFileReference; lastKnownFileType = folder; name = lib; path = ../wxSources/lib; sourceTree = "<group>"; };
 		E413720A232BD380006C980A /* win_resources.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = win_resources.cpp; path = ../wxSources/win_resources.cpp; sourceTree = "<group>"; };
 		E413720B232BD380006C980A /* win_resources.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = win_resources.h; path = ../wxSources/win_resources.h; sourceTree = "<group>"; };
@@ -288,9 +293,6 @@
 		E4D6D984230AE8B10008ADE9 /* atomic.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = atomic.h; sourceTree = "<group>"; };
 		E4D6D985230AE8B10008ADE9 /* wxlobject.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = wxlobject.cpp; sourceTree = "<group>"; };
 		E4D6D99F23101F240008ADE9 /* filedlg.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = filedlg.mm; path = ../wxSources/filedlg.mm; sourceTree = "<group>"; };
-		E4DC1879235AE271007A620D /* wxgraphics.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = wxgraphics.cpp; path = ../wxSources/bindings/generated/wxgraphics.cpp; sourceTree = "<group>"; };
-		E4DC187A235AE271007A620D /* wxgraphics_bind.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = wxgraphics_bind.h; path = ../wxSources/bindings/generated/wxgraphics_bind.h; sourceTree = "<group>"; };
-		E4DC187B235AE271007A620D /* wxgraphics_bind.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = wxgraphics_bind.cpp; path = ../wxSources/bindings/generated/wxgraphics_bind.cpp; sourceTree = "<group>"; };
 		E4FC7810183E50DC0064FB2E /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = /System/Library/Frameworks/Accelerate.framework; sourceTree = "<absolute>"; };
 		E4FC7837183E50F00064FB2E /* AGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AGL.framework; path = /System/Library/Frameworks/AGL.framework; sourceTree = "<absolute>"; };
 		E4FC7845183E51180064FB2E /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = /System/Library/Frameworks/Carbon.framework; sourceTree = "<absolute>"; };
@@ -577,9 +579,10 @@
 		E4DC1878235AE252007A620D /* bindings */ = {
 			isa = PBXGroup;
 			children = (
-				E4DC187B235AE271007A620D /* wxgraphics_bind.cpp */,
-				E4DC187A235AE271007A620D /* wxgraphics_bind.h */,
-				E4DC1879235AE271007A620D /* wxgraphics.cpp */,
+				E40785C0238D51F6007DE62B /* wxadd_bind.cpp */,
+				E40785C1238D51F6007DE62B /* wxadd_bind.h */,
+				E40785C2238D51F7007DE62B /* wxadd_graphics.cpp */,
+				E40785C5238D5692007DE62B /* wxadd_types.cpp */,
 			);
 			name = bindings;
 			sourceTree = "<group>";
@@ -796,6 +799,7 @@
 				E4D6D923230AE8910008ADE9 /* wxbase_base.cpp in Sources */,
 				E4D6D98D230AE8B10008ADE9 /* wxllua.cpp in Sources */,
 				E4D6D8C7230ADEC10008ADE9 /* lua_addition.c in Sources */,
+				E40785C3238D51F7007DE62B /* wxadd_bind.cpp in Sources */,
 				E4D6D8C8230ADEC10008ADE9 /* ConsoleFrame.cpp in Sources */,
 				E4D6D93F230AE8910008ADE9 /* wxcore_sizer.cpp in Sources */,
 				E4D6D994230AE8B10008ADE9 /* wxluadebugger_bind.cpp in Sources */,
@@ -804,7 +808,6 @@
 				E4D6D995230AE8B10008ADE9 /* lbitlib.c in Sources */,
 				E4D6D988230AE8B10008ADE9 /* Makefile in Sources */,
 				E4D6D92E230AE8910008ADE9 /* wxgl_bind.cpp in Sources */,
-				E4DC187C235AE271007A620D /* wxgraphics.cpp in Sources */,
 				E4D6D929230AE8910008ADE9 /* wxbase_datetime.cpp in Sources */,
 				E4D6D955230AE8910008ADE9 /* wxadv_wxladv.cpp in Sources */,
 				E4D6D946230AE8910008ADE9 /* wxwebview_bind.cpp in Sources */,
@@ -834,10 +837,10 @@
 				E4D6D8C6230ADEC10008ADE9 /* LuaAppMaker.cpp in Sources */,
 				E4D6D99A230AE8B10008ADE9 /* dummy.cpp in Sources */,
 				E4D6D93E230AE8910008ADE9 /* wxadv_bind.cpp in Sources */,
+				E40785C4238D51F7007DE62B /* wxadd_graphics.cpp in Sources */,
 				E4D6D941230AE8910008ADE9 /* wxcore_image.cpp in Sources */,
 				E4D6D94F230AE8910008ADE9 /* wxnet_bind.cpp in Sources */,
 				E4D6D99C230AE8B10008ADE9 /* wxlobject.cpp in Sources */,
-				E4DC187D235AE271007A620D /* wxgraphics_bind.cpp in Sources */,
 				E4D6D8C9230ADEC10008ADE9 /* textctrl_addition.mm in Sources */,
 				E4D6D94A230AE8910008ADE9 /* wxcore_event.cpp in Sources */,
 				E4D6D952230AE8910008ADE9 /* wxcore_windows.cpp in Sources */,
@@ -847,6 +850,7 @@
 				E4D6D987230AE8B10008ADE9 /* wxlstate.cpp in Sources */,
 				E4D6D93B230AE8910008ADE9 /* wxrichtext_bind.cpp in Sources */,
 				E4D6D8CC230ADF320008ADE9 /* buildInfo.c in Sources */,
+				E40785C6238D5692007DE62B /* wxadd_types.cpp in Sources */,
 				E4D6D944230AE8910008ADE9 /* wxcore_dialogs.cpp in Sources */,
 				E4D6D932230AE8910008ADE9 /* wxcore_core.cpp in Sources */,
 				E4D6D937230AE8910008ADE9 /* wxhtml_wxlhtml.cpp in Sources */,

@@ -345,8 +345,8 @@ bool wxLuaStandaloneApp::OnInit()
     
     // Initialize our own wxLua bindings.
     {
-        extern WXDLLIMPEXP_BINDWXBASE wxLuaBinding* wxLuaBinding_wxgraphics_init();
-        wxLuaBinding_wxgraphics_init();
+        extern WXDLLIMPEXP_BINDWXBASE wxLuaBinding* wxLuaBinding_wxadd_init();
+        wxLuaBinding_wxadd_init();
     }
     
     // When this function returns wxApp:MainLoop() will be called by wxWidgets
@@ -1159,3 +1159,30 @@ MyServer::OnAcceptConnection(const wxString &topic)
 }
 
 #endif  // defined(__WXMSW__)
+
+
+#include "wxlua/wxllua.h"
+#include "wxlua/wxlstate.h"
+#include "wxlua/wxlbind.h"
+#include "wxlua/wxlcallb.h"
+
+const char* LUACALL wxlua_getstringtype_addition(lua_State *L, int stack_idx)
+{
+    if (wxlua_isstringtype(L, stack_idx))
+        return lua_tostring(L, stack_idx);
+    else if (wxlua_iswxuserdata(L, stack_idx))
+    {
+        int stack_type = wxluaT_type(L, stack_idx);
+        
+        if (wxluaT_isderivedtype(L, stack_type, *p_wxluatype_wxString) >= 0)
+        {
+            wxString* wxstr = (wxString*)wxlua_touserdata(L, stack_idx, false);
+            wxCHECK_MSG(wxstr, NULL, wxT("Invalid userdata wxString"));
+            return wx2lua(*wxstr);
+        }
+    }
+    
+    wxlua_argerror(L, stack_idx, wxT("a 'string' or 'wxString'"));
+    
+    return NULL;
+}

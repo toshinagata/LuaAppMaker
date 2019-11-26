@@ -6,7 +6,7 @@
 // ----------------------------------------------------------------------------
 
 // ----------------------------------------------------------------------------
-// Overrides for wxgraphics.i
+// Overrides for wxadd_types.i
 // ----------------------------------------------------------------------------
 
 %override wxLua_wxArrayDouble_ToLuaTable
@@ -24,6 +24,72 @@ static int LUACALL wxLua_wxArrayDouble_ToLuaTable(lua_State *L)
     return 1;
 }
 %end
+
+%override wxLua_wxMemoryBuffer_AssignByte
+//     void  AssignByte(int index, unsigned char data);
+static int LUACALL wxLua_wxMemoryBuffer_AssignByte(lua_State *L)
+{
+    // unsigned char data
+    unsigned char data = (unsigned char)wxlua_getuintegertype(L, 3);
+    // int index
+    int index = (int)wxlua_getnumbertype(L, 2);
+    wxASSERT_MSG(index >= 0, "index out of range");
+    // get this
+    wxMemoryBuffer * self = (wxMemoryBuffer *)wxluaT_getuserdatatype(L, 1, wxluatype_wxMemoryBuffer);
+    // get data
+    unsigned char *dptr = (unsigned char *)self->GetWriteBuf(index + 1);
+    wxASSERT_MSG(dptr != NULL, "cannot reallocate buffer");
+    //  Assign
+    dptr[index] = data;
+    if (self->GetDataLen() < index + 1)
+        self->SetDataLen(index + 1);
+    return 0;
+}
+%end
+
+%override wxLua_wxMemoryBuffer_AssignData
+//     void  AssignData(int index, unsigned char *data, size_t len);
+static int LUACALL wxLua_wxMemoryBuffer_AssignData(lua_State *L)
+{
+    // size_t len
+    size_t len = (size_t)wxlua_getuintegertype(L, 4);
+    // unsigned char data
+    wxCharBuffer data = wxlua_getstringtype(L, 3);
+    // int index
+    int index = (int)wxlua_getnumbertype(L, 2);
+    wxASSERT_MSG(index >= 0, "index out of range");
+    // get this
+    wxMemoryBuffer * self = (wxMemoryBuffer *)wxluaT_getuserdatatype(L, 1, wxluatype_wxMemoryBuffer);
+    // get data
+    unsigned char *dptr = (unsigned char *)self->GetWriteBuf(index + len);
+    wxASSERT_MSG(dptr != NULL, "cannot reallocate buffer");
+    // Assign
+    memmove(dptr + index, (unsigned char *)(const char *)data, len);
+    if (self->GetDataLen() < index + len)
+        self->SetDataLen(index + len);
+    return 0;
+}
+%end
+
+%override wxLua_wxMemoryBuffer_Byte
+//     unsigned char Byte(int index);
+static int LUACALL wxLua_wxMemoryBuffer_Byte(lua_State *L)
+{
+    // int index
+    int index = (int)wxlua_getnumbertype(L, 2);
+    // get this
+    wxMemoryBuffer * self = (wxMemoryBuffer *)wxluaT_getuserdatatype(L, 1, wxluatype_wxMemoryBuffer);
+    if (index >= 0 && index < self->GetDataLen()) {
+        unsigned char returns = ((unsigned char *)(self->GetData()))[index];
+        lua_pushnumber(L, returns);
+        return 1;
+    } else return 0;
+}
+%end
+
+// ----------------------------------------------------------------------------
+// Overrides for wxadd_graphics.i
+// ----------------------------------------------------------------------------
 
 %override wxLua_wxAffineMatrix2DBase_Get
 //  void Get() const

@@ -15,7 +15,7 @@ hook_lua_namespace = "wx"
 -- Set the unique C++ "namespace" for the bindings, not a real namespace, but
 --   a string used in declared C++ objects to prevent duplicate names.
 --   See wxLuaBinding::GetBindingName().
-hook_cpp_namespace = "wxgraphics"
+hook_cpp_namespace = "wxadd"
 
 -- ============================================================================
 -- Set the directory to output the bindings to, both C++ header and source files
@@ -92,61 +92,6 @@ hook_cpp_binding_header_includes =
 -- Set any #includes or other C++ code to be placed verbatim at the top of
 --   the single hook_cpp_binding_filename generated cpp file or "" for none
 hook_cpp_binding_source_includes = ""
---[[
-int LUACALL wxlua_pushwxArrayDoubletable(lua_State *L, const wxArrayDouble &doubleArray)
-{
-    size_t idx, count = doubleArray.GetCount();
-    lua_createtable(L, count, 0);
-
-    for (idx = 0; idx < count; ++idx)
-    {
-        lua_pushnumber(L, doubleArray[idx]);
-        lua_rawseti(L, -2, idx + 1);
-    }
-    return idx;
-}
-]]
-
---[=[
-[[
-// wxWidgets >= 2.7 doesn't have static versions of stock GDI objects anymore
-wxColour* wxLua_wxBLACK = NULL;
-wxColour* wxLua_wxWHITE = NULL;
-wxColour* wxLua_wxRED = NULL;
-wxColour* wxLua_wxBLUE = NULL;
-wxColour* wxLua_wxGREEN = NULL;
-wxColour* wxLua_wxCYAN = NULL;
-wxColour* wxLua_wxLIGHT_GREY = NULL;
-wxPen* wxLua_wxRED_PEN = NULL;
-wxPen* wxLua_wxCYAN_PEN = NULL;
-wxPen* wxLua_wxGREEN_PEN = NULL;
-wxPen* wxLua_wxBLACK_PEN = NULL;
-wxPen* wxLua_wxWHITE_PEN = NULL;
-wxPen* wxLua_wxTRANSPARENT_PEN = NULL;
-wxPen* wxLua_wxBLACK_DASHED_PEN = NULL;
-wxPen* wxLua_wxGREY_PEN = NULL;
-wxPen* wxLua_wxMEDIUM_GREY_PEN = NULL;
-wxPen* wxLua_wxLIGHT_GREY_PEN = NULL;
-wxBrush* wxLua_wxBLUE_BRUSH = NULL;
-wxBrush* wxLua_wxGREEN_BRUSH = NULL;
-wxBrush* wxLua_wxWHITE_BRUSH = NULL;
-wxBrush* wxLua_wxBLACK_BRUSH = NULL;
-wxBrush* wxLua_wxGREY_BRUSH = NULL;
-wxBrush* wxLua_wxMEDIUM_GREY_BRUSH = NULL;
-wxBrush* wxLua_wxLIGHT_GREY_BRUSH = NULL;
-wxBrush* wxLua_wxTRANSPARENT_BRUSH = NULL;
-wxBrush* wxLua_wxCYAN_BRUSH = NULL;
-wxBrush* wxLua_wxRED_BRUSH = NULL;
-wxFont* wxLua_wxNORMAL_FONT = NULL;
-wxFont* wxLua_wxSMALL_FONT = NULL;
-wxFont* wxLua_wxITALIC_FONT = NULL;
-wxFont* wxLua_wxSWISS_FONT = NULL;
-wxCursor* wxLua_wxSTANDARD_CURSOR = NULL;
-wxCursor* wxLua_wxHOURGLASS_CURSOR = NULL;
-wxCursor* wxLua_wxCROSS_CURSOR = NULL;
-
-]]
---]=]
 
 -- ============================================================================
 -- Set the bindings directory that contains the *.i interface files
@@ -158,14 +103,15 @@ interface_filepath = "."
 --   The files are loaded from the interface_filepath.
 interface_fileTable =
 {
-    "wxgraphics.i"
+    "wxadd_types.i",
+    "wxadd_graphics.i"
 }
 
 -- ----------------------------------------------------------------------------
 -- A list of files that contain bindings that need to be overridden or empty
 --   table {} for none.
 --   The files are loaded from the interface_filepath.
-override_fileTable = { "wxgraphics_override.hpp" }
+override_fileTable = { "wxadd_override.hpp" }
 
 -- ============================================================================
 -- A table containing filenames of XXX_datatype.lua from other wrappers to

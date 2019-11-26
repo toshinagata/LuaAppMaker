@@ -126,31 +126,6 @@ class %delete wxAffineMatrix2D : public wxAffineMatrix2DBase
    wxAffineMatrix2D();
 };
 
-class %delete wxArrayDouble
-{
-    wxArrayDouble();
-    wxArrayDouble(const wxArrayDouble& array);
-    
-    // %override [Lua table] wxArrayDouble::ToLuaTable() const;
-    // returns a table array of the doubles
-    int ToLuaTable() const;
-    
-    void Add(double val);
-    void Alloc(size_t count);
-    void Clear();
-    void Empty();
-    int  GetCount() const;
-    bool IsEmpty() const;
-    int  Index(double val, bool searchFromEnd = false);
-    void Insert(double val, size_t n, size_t copies = 1);
-    double Item(size_t n);
-    void Remove(double val);
-    void RemoveAt(size_t index);
-    void Shrink();
-    
-    double operator[](size_t nIndex);
-};
-
 class %delete wxGraphicsObject : public wxObject
 {
 public:
