@@ -47,23 +47,21 @@ WXLUA_O = lbitlib.o wxlbind.o wxlcallb.o wxlconsole.o wxllua.o wxlobject.o wxlst
 WXBIND_O = wxadv_bind.o wxadv_wxladv.o wxaui_bind.o wxbase_base.o wxbase_bind.o wxbase_config.o \
   wxbase_data.o wxbase_datetime.o wxbase_file.o wxcore_appframe.o wxcore_bind.o wxcore_clipdrag.o \
   wxcore_controls.o wxcore_core.o wxcore_defsutils.o wxcore_dialogs.o wxcore_event.o wxcore_gdi.o \
-  wxcore_geometry.o wxcore_help.o wxcore_image.o wxcore_mdi.o wxcore_menutool.o wxcore_picker.o \
+  wxcore_geometry.o wxcore_graphics.o wxcore_help.o wxcore_image.o wxcore_mdi.o wxcore_menutool.o wxcore_picker.o \
   wxcore_print.o wxcore_sizer.o wxcore_windows.o wxcore_wxlcore.o wxgl_bind.o wxhtml_bind.o \
   wxhtml_wxlhtml.o wxmedia_bind.o wxnet_bind.o wxpropgrid_bind.o wxrichtext_bind.o wxstc_bind.o \
   wxwebview_bind.o wxxml_bind.o wxxrc_bind.o
 WXLUAAPP_O = LuaAppMaker.o ConsoleFrame.o lua_addition.o
-WXBIND_EXTRA_O = wxadd_bind.o wxadd_graphics.o wxadd_types.o
 LUAGL_O = luagl_const.o luagl_util.o luagl.o luaglu.o
 WXLUA_ALL_O = $(addprefix wxlua/wxLua/modules/wxlua/debug/,$(WXLUA_DEBUG_O)) \
   $(addprefix wxlua/wxLua/modules/wxlua/debugger/,$(WXLUA_DEBUGGER_O)) \
   $(addprefix wxlua/wxLua/modules/wxlua/,$(WXLUA_O)) \
   $(addprefix wxlua/wxLua/modules/wxbind/src/,$(WXBIND_O)) \
   $(addprefix wxSources/,$(WXLUAAPP_O)) \
-  $(addprefix wxSources/bindings/generated/,$(WXBIND_EXTRA_O))
 
 OBJECTS = $(WXLUA_ALL_O)
 
-SUBDIRS = wxlua/wxLua/modules/wxlua/debug wxlua/wxLua/modules/wxlua/debugger wxlua/wxLua/modules/wxbind/src wxSources/bindings/generated
+SUBDIRS = wxlua/wxLua/modules/wxlua/debug wxlua/wxLua/modules/wxlua/debugger wxlua/wxLua/modules/wxbind/src wxSources
 
 #  wx libraries
 WXLIB_LIST = core,base,gl,adv
