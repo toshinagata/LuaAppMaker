@@ -1,10 +1,12 @@
 /////////////////////////////////////////////////////////////////////////////
 // Purpose:     Standalone wxLua application
-// Author:      John Labenski, Francis Irving, J. Winwood
+// Author:      John Labenski, Francis Irving, J. Winwood, Toshi Nagata
 // Created:     16/01/2002
+// Modified:    12/12/2019
 // Copyright:   (c) 2012 John Labenski
 // Copyright:   (c) 2002 Creature Labs. All rights reserved.
 // Copyright:   (c) 2001-2002 Lomtick Software. All rights reserved.
+// Copyright:   (c) 2019 Toshi Nagata
 // Licence:     wxWidgets licence
 /////////////////////////////////////////////////////////////////////////////
 
@@ -46,8 +48,6 @@
 extern "C"
 {
 #include "lualib.h"
-//#include "luagl.h"    //  for LuaGL
-//#include "luaglu.h"   //  for LuaGLU
 }
 
 //  For stat or _stat functions
@@ -137,6 +137,7 @@ static wxString
 FindResourcePath()
 {
 #if defined(__WXMAC__)
+    
     if (resourcePath != NULL)
         return *resourcePath;
     
@@ -162,29 +163,9 @@ FindResourcePath()
         CFRelease(ref);
     }
     return wxEmptyString;
-/*    CFBundleRef mainBundle = CFBundleGetMainBundle();
-    if (mainBundle != NULL) {
-        CFURLRef ref = CFBundleCopyBundleURL(mainBundle);
-        if (ref != NULL) {
-            char buffer[MAXPATHLEN];
-            CFURLRef ref2 = CFURLCreateCopyDeletingLastPathComponent(NULL, ref);
-            if (ref2 != NULL) {
-                if (CFURLGetFileSystemRepresentation(ref2, true, (UInt8 *)buffer, sizeof buffer)) {
-                    wxString dirname((const char *)buffer);
-                    CFRelease(ref2);
-                    CFRelease(ref);
-                    CFRelease(mainBundle);
-                    return dirname;
-                }
-                CFRelease(ref2);
-            }
-            CFRelease(ref);
-        }
-        CFRelease(mainBundle);
-    }
-    return wxEmptyString;
-*/
+
 #elif defined(__WXMSW__)
+
     wxString str;
     wxString argv0 = wxTheApp->argv[0];
 
@@ -352,10 +333,8 @@ bool wxLuaStandaloneApp::OnInit()
     if (!m_wxlState.Ok())
         return false;
     
-    //  Initialize OpenGL bindings
+    //  Define extended string methods
     lua_State *L = m_wxlState.GetLuaState();
-    //luaopen_luagl(L);
-    //luaopen_luaglu(L);
     lua_register_string_ext(L);
     
     //  Initialize "LuaApp" as a shortcut to wx.wxGetApp()
@@ -660,8 +639,6 @@ wxLuaStandaloneApp::RequestOpenFilesByEvent(wxString& files)
 void
 wxLuaStandaloneApp::OnOpenFilesByEvent(wxCommandEvent& event)
 {
-//    if (m_pendingFilesToOpen.Count() == 0)
-//        return;
     if (!gInitCompleted) {
         //  Repost this event and try again later
         wxCommandEvent myEvent(LUAAPP_EVENT, LuaAppEvent_openFiles);
@@ -751,9 +728,6 @@ wxLuaStandaloneApp::OpenPendingFiles()
             wxString f = m_pendingFilesToOpen[i];
             lua_pushstring(L, (const char *)f);
             lua_rawseti(L, -2, i + 1);
-            /*  For debug test  */
-            //if (wxStrcmp(m_pendingFilesToOpen[i], wxT("-debug")) == 0)
-            //    lua_sethook(L, luaHookFunc, LUA_MASKLINE, 0);
         }
         lua_pop(L, 1);
 
@@ -866,14 +840,6 @@ SetFileExecutable(wxString &fullpath)
 {
 #if defined(__WXMSW__)
     //  Do nothing: Windows has no executable bits
-/*    wchar_t *wpath = fullpath.wc_str();
-    struct _stat fileStat;
-    mode_t newmode;
-    if(_wstat(wpath, &fileStat) < 0)
-        return;
-    newmode = fileStat.st_mode | S_IXUSR | S_IXGRP | S_IXOTH;
-    chmod(cpath, newmode);
-*/
 #else
     const char *cpath = fullpath.utf8_str();
     struct stat fileStat;
@@ -1045,12 +1011,6 @@ wxLuaStandaloneApp::OnCreateApplication(wxCommandEvent &event)
     wxFileName appSrcFName = wxFileName::DirName(FindResourcePath());
     wxString appSrcPath = appSrcFName.GetFullPath();
 
-    /*DisplayMessage(wxT("scriptFolder = ") + scriptFolder, false);
-    DisplayMessage(wxT("iconPath = ") + iconPath, false);
-    DisplayMessage(wxT("appName = ") + appName, false);
-    DisplayMessage(wxT("appDstPath = ") + appDstPath, false);
-    DisplayMessage(wxT("appSrcPath = ") + appSrcPath, false);*/
-
     //  Copy executable
     CopyRecursive(appSrcPath, appDstPath, true);
     //  Copy script folder
@@ -1170,30 +1130,3 @@ MyServer::OnAcceptConnection(const wxString &topic)
 }
 
 #endif  // defined(__WXMSW__)
-
-
-#include "wxlua/wxllua.h"
-#include "wxlua/wxlstate.h"
-#include "wxlua/wxlbind.h"
-#include "wxlua/wxlcallb.h"
-
-const char* LUACALL wxlua_getstringtype_addition(lua_State *L, int stack_idx)
-{
-    if (wxlua_isstringtype(L, stack_idx))
-        return lua_tostring(L, stack_idx);
-    else if (wxlua_iswxuserdata(L, stack_idx))
-    {
-        int stack_type = wxluaT_type(L, stack_idx);
-        
-        if (wxluaT_isderivedtype(L, stack_type, *p_wxluatype_wxString) >= 0)
-        {
-            wxString* wxstr = (wxString*)wxlua_touserdata(L, stack_idx, false);
-            wxCHECK_MSG(wxstr, NULL, wxT("Invalid userdata wxString"));
-            return wx2lua(*wxstr);
-        }
-    }
-    
-    wxlua_argerror(L, stack_idx, wxT("a 'string' or 'wxString'"));
-    
-    return NULL;
-}
