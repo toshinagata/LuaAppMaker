@@ -343,12 +343,6 @@ bool wxLuaStandaloneApp::OnInit()
     // See notes for WXLUA_DECLARE_BIND_ALL above.
     WXLUA_IMPLEMENT_BIND_ALL
     
-    // Initialize our own wxLua bindings.
-    {
-        extern WXDLLIMPEXP_BINDWXBASE wxLuaBinding* wxLuaBinding_wxadd_init();
-        wxLuaBinding_wxadd_init();
-    }
-    
     // When this function returns wxApp:MainLoop() will be called by wxWidgets
     // and so we want the Lua code wx.wxGetApp:MainLoop() to not
     // prematurely start it.
@@ -706,21 +700,38 @@ wxLuaStandaloneApp::OpenPendingFiles()
         }
 
         //  Look for the script file
-        for (int i = 0; i < m_pendingFilesToOpen.GetCount(); i++) {
-            wxFileName dname1(m_pendingFilesToOpen[i]);
+        //  (Only for the first given argument)
+        if (m_pendingFilesToOpen.GetCount() > 0) {
+            wxFileName dname1(m_pendingFilesToOpen[0]);
             dname1.MakeAbsolute();
             wxString dpath1 = dname1.GetFullPath();
             wxString spath1 = dpath1 + wxFILE_SEP_PATH + wxT("wxmain.lua");
             if (wxFileName::DirExists(dpath1) && wxFileName::FileExists(spath1)) {
-                //  This is the name of the startup script
-                //  Remove this from the file list
+                //  Directory containing 'wxmain.lua'
                 dpath = dpath1;
                 spath = spath1;
-                m_pendingFilesToOpen.RemoveAt(i, 1);
-                break;
+                m_pendingFilesToOpen.RemoveAt(0, 1);
+            } else if (dpath1.EndsWith(wxT(".lua")) && wxFileName::FileExists(dpath1)) {
+                //  A single file '*.lua'
+                spath = dpath1;
+                dpath = dname1.GetPath();
+                m_pendingFilesToOpen.RemoveAt(0, 1);
+            } else if (wxFileName::DirExists(dpath1)) {
+                //  Directory containing a single file '*.lua'
+                wxDir dir(dpath1);
+                wxString fname;
+                bool found = dir.GetFirst(&fname, wxT("*.lua"));
+                if (found) {
+                    spath1 = dpath1 + wxFILE_SEP_PATH + fname;
+                    found = !dir.GetNext(&fname);  //  Needs to contain only one *.lua file
+                }
+                if (found) {
+                    dpath = dpath1;
+                    spath = spath1;
+                    m_pendingFilesToOpen.RemoveAt(0, 1);
+                }
             }
         }
-        
         if (wxStrcmp(dpath, wxT("")) == 0) {
             //  Wait for a script file to be given
             static bool waitingMessage = false;
