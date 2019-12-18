@@ -987,7 +987,7 @@ wxLuaStandaloneApp::OnCreateApplication(wxCommandEvent &event)
     //  Copy Icon
     wxString iconDstPath = appDstPath + wxT("/Contents/Resources/") + appName + wxT(".icns");
     CopyRecursive(iconPath, iconDstPath, true);
-    //  Remove wxLuaApp icon
+    //  Remove LuaAppMaker icon
     wxString iconOrigPath = appDstPath + wxT("/Contents/Resources/wxlualogo.icns");
     ::wxRemoveFile(iconOrigPath);
     //  Rewrite Info.plist
@@ -996,13 +996,13 @@ wxLuaStandaloneApp::OnCreateApplication(wxCommandEvent &event)
     wxString plistContent;
     plist.ReadAll(&plistContent);
     plist.Close();
-    plistContent.Replace(wxT("wxLuaApp"), appName, true);
+    plistContent.Replace(wxT("LuaAppMaker"), appName, true);
     plistContent.Replace(wxT("wxlualogo.icns"), appName + wxT(".icns"), true);
     wxFile plistOut(plistPath, wxFile::write);
     plistOut.Write(plistContent);
     plistOut.Close();
     //  Rename executable
-    wxString exeName = appDstPath + wxT("/Contents/MacOS/wxLuaApp");
+    wxString exeName = appDstPath + wxT("/Contents/MacOS/LuaAppMaker");
     wxString exeNewName = appDstPath + wxT("/Contents/MacOS/") + appName;
     ::wxRenameFile(exeName, exeNewName);
 
@@ -1017,7 +1017,7 @@ wxLuaStandaloneApp::OnCreateApplication(wxCommandEvent &event)
     wxString scriptDstPath = appDstPath + wxT("scripts");
     CopyRecursive(scriptFolder, scriptDstPath, true);
     //  Replace application icon
-    wxString exeName = appDstPath + wxFILE_SEP_PATH + wxT("wxLuaApp.exe");
+    wxString exeName = appDstPath + wxFILE_SEP_PATH + wxT("LuaAppMaker.exe");
     ReplaceWinAppIcon(exeName, iconPath);
     //  Rename executable
     wxString exeNewName = appDstPath + wxFILE_SEP_PATH + appName + wxT(".exe");
