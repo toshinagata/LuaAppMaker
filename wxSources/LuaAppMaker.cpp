@@ -757,6 +757,9 @@ wxLuaStandaloneApp::OpenPendingFiles()
         } else {
             DisplayMessage(wxlua_LUA_ERR_msg(rc), false);
         }
+        //  Define LuaApp.Reload
+        //  (This function reloads the given lua file, even if RunFile(spath) failed)
+        m_wxlState.RunString(wxT("function LuaApp.Reload() dofile(") + MakeLuaString(spath) + ") end");
 
         if (!m_wxmainExecuted) {
             DisplayMessage(wxT("Waiting for a directory containing wxmain.lua"), false);
@@ -765,8 +768,20 @@ wxLuaStandaloneApp::OpenPendingFiles()
         }
     }
 
-    //  Is LuaApp.OpenDocument defined?
-    if (CheckLuaLogicalExpression(wxT("LuaApp.OpenDocument"))) {
+    if (CheckLuaLogicalExpression(wxT("LuaApp.OpenMultipleDocuments"))) {
+        //  Is LuaApp.OpenMultipleDocuments defined?
+        //  If yes, then call it with all files as a single argument
+        wxString args = wxT("({");
+        int n = m_pendingFilesToOpen.GetCount();
+        for (int i = 0; i < n; i++) {
+            args = args + MakeLuaString(m_pendingFilesToOpen[i]);
+            if (i < n - 1)
+                args = args + wxT(",");
+        }
+        args = args + wxT("})");
+        m_wxlState.RunString(wxT("LuaApp.OpenMultipleDocuments") + args);
+    } else if (CheckLuaLogicalExpression(wxT("LuaApp.OpenDocument"))) {
+        //  Is LuaApp.OpenDocument defined?
         //  If yes, then call it for each files
         //  (except for those beginning with a '-', which is probably an option)
         for (int i = 0; i < m_pendingFilesToOpen.GetCount(); i++) {
@@ -779,7 +794,7 @@ wxLuaStandaloneApp::OpenPendingFiles()
         }
         if (m_numberOfProcessedFiles == 0) {
             //  We will call LuaApp.NewDocument() if defined
-            if (CheckLuaLogicalExpression(wxT("LuaApp.OpenDocument"))) {
+            if (CheckLuaLogicalExpression(wxT("LuaApp.NewDocument"))) {
                 m_wxlState.RunString(wxT("LuaApp.NewDocument()"));
                 m_numberOfProcessedFiles++;
             }
