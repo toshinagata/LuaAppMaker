@@ -15,13 +15,31 @@ local HANDLE_CFUNC = 3
 local baseLevel = 0    -- Usually zero, but if we are stopping at a function call and want to fake that we are just before the call, then this is 1
 
 miniDebug.env = nil
-miniDebug.verbose = nil      -- 1: show message, 2: 1 + debug.log
+miniDebug.verbose = nil      -- 1: show message, 2: 1 + $HOME/luaappmaker_debug_X.log
 
 LuaApp.config.showConsole = true
 
 local thisSource = debug.getinfo(1).source
 
 local socket = nil --  The socket to connect with the server
+
+local function Output(msg)
+  if not miniDebug.verbose or miniDebug.verbose < 2 then return end
+  if not logfile then
+    local i = 1
+    local name
+    while true do
+      name = os.getenv("HOME") .. "/luaappmaker_debug_" .. tostring(i) .. ".log"
+      local fh = io.open(name, "r")
+      if not fh then break end
+      io.close(fh)
+      i = i + 1
+    end
+    logfile = io.open(name, "w")
+  end
+  logfile:write(msg)
+  logfile:flush()
+end
 
 local buffer = ""
 local function Receive(nbytes)
@@ -41,6 +59,7 @@ local function Receive(nbytes)
     end
     if miniDebug.verbose and #buf > 0 then
       print("(In)  " .. buf)
+      Output("(In)  " .. buf)
     end
     return buf
   end
@@ -51,6 +70,7 @@ local function Send(msg)
   if socket and socket:Ok() and socket:IsConnected() then
     if miniDebug.verbose then
       print("(Out) " .. msg)
+      Output("(Out) " .. msg)
     end
     socket:Write(msg)
     local n = socket:LastCount()
@@ -64,14 +84,6 @@ local function Send(msg)
       n = socket:LastCount()
     end
   end
-end
-
-local function Output(msg)
-  if not logfile then
-    logfile = io.open(basedir .. "debug.log", "w")
-  end
-  logfile:write(msg)
-  logfile:flush()
 end
 
 local function RemoveBaseDir(str)
@@ -247,7 +259,9 @@ local function ProcessLines(event)
         end
         breakpoints[line][file] = true
       end
-      Send("200 OK\n")
+      if not isRunning then
+        Send("200 OK\n")
+      end
     elseif com == "DELB" then
       local file, line = buf:match("%s*(.-)%s+(%d+)", init)
       if file and line then
@@ -262,7 +276,9 @@ local function ProcessLines(event)
           end
         end
       end
-      Send("200 OK\n")
+      if not isRunning then
+        Send("200 OK\n")
+      end
     elseif com == "LOAD" then
       local count, file = buf:match("%s*(%d+)%s+(.*)", init)
       count = tonumber(count)
@@ -305,12 +321,12 @@ local function ProcessLines(event)
       if val then
         local env = CaptureVars(4 + baseLevel)  --  1: CaptureVars, 2: ProcessLines, 3: Hook, 4: active function
         setfenv(val, env)
-        val, err = pcall(val)
-        if val then
-          val = err
+        local values = {pcall(val)}
+        if table.remove(values, 1) then
+          val = values
           err = nil
         else
-          err = "pcall error: " .. err
+          err = "pcall error: " .. values[1]
           val = nil
         end
       else
@@ -320,8 +336,13 @@ local function ProcessLines(event)
         Send(string.format("401 ERROR %d\n", #err + 1))
         Send(err .. "\n")
       else
-        local s = ToString(val)
-        local res = string.format("return {%q}", s)
+        local s = "{"
+        for i, v in ipairs(val) do
+          s = s .. ToString(v)
+          if i < #val then s = s .. "," end
+        end
+        s = s .. "}"
+        local res = string.format("do local _=%s;return _;end", s)
         Send(string.format("200 OK %d\n", #res + 1))
         Send(res .. "\n")
       end
@@ -340,9 +361,16 @@ local function ProcessLines(event)
         for k, v in pairs(locals) do
           locals[k] = {v, select(2, pcall(tostring, v))}
         end
-        table.insert(val, {{info.name, info.source, info.linedefined, info.currentline, info.what, info.namewhat, info.short_src}, locals, ups})
+        local source = info.source
+        local short_src = info.short_src
+        if source and #source > 1 and source:sub(1, 1) == "@" then
+          --  File name
+          source = RemoveBaseDir(source)
+          short_src = source
+        end
+        table.insert(val, {{info.name, source, info.linedefined, info.currentline, info.what, info.namewhat, short_src}, locals, ups})
       end
-      local res = "return "..ToString(val)
+      local res = "do local _="..ToString(val)..";return _;end"
       Send("200 OK " .. res .. "\n")
       if miniDebug.reportStackValue then
         Output("Responce to STACK: "..res.."\n")
