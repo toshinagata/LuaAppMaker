@@ -317,16 +317,35 @@ local function ProcessLines(event)
     elseif com == "EXEC" then
       local val, err
       local expr = buf:match("(.-)%-%-", init)
+      --  Is there a level specification?
+      local level, expr2 = expr:match("^ return @(%d+) (.*)")
+      if level then
+        level = tonumber(level)
+        expr = "return "..expr2
+      else
+        level, expr2 = expr:match("^ @(%d+) (.*)")
+        if level then
+          level = tonumber(level)
+          expr = expr2
+        else
+          level = 1
+        end
+      end
       val, err = loadstring(expr)
       if val then
-        local env = CaptureVars(4 + baseLevel)  --  1: CaptureVars, 2: ProcessLines, 3: Hook, 4: active function
-        setfenv(val, env)
-        local values = {pcall(val)}
-        if table.remove(values, 1) then
-          val = values
-          err = nil
+        local env = CaptureVars(3 + level + baseLevel)  --  1: CaptureVars, 2: ProcessLines, 3: Hook, 4: active function
+        if env then
+          setfenv(val, env)
+          local values = {pcall(val)}
+          if table.remove(values, 1) then
+            val = values
+            err = nil
+          else
+            err = "pcall error: " .. values[1]
+            val = nil
+          end
         else
-          err = "pcall error: " .. values[1]
+          err = "setfenv error: no env for level " .. tostring(level)
           val = nil
         end
       else
