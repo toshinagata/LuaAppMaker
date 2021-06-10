@@ -548,7 +548,9 @@ local function Hook(event, line)
   if not info then
     info = debug.getinfo(baseLevel + 2)
     if info.what == "C" then return end  --  Don't stop inside a C function
-    if info.source == thisSource then return end  --  Don't stop inside this file
+    if info.source == thisSource and info.currentline ~= miniDebug.errorHookLine then
+      return  --  Don't stop inside this file (unless we are on the errorHookLine)
+    end
   end
   --  Discard 'OVER' loop
   overLevel = nil
@@ -556,17 +558,21 @@ local function Hook(event, line)
   handleOverOrOut = nil
   if hasInited then
     local source = info.source
-    if source:sub(1, 1) == "@" then
+    local currentline = info.currentline
+    if source == thisSource and currentline == miniDebug.errorHookLine then
+      --  We're handling runtime error; fake as if we are on the line where the runtime error occurred
+      local errorInfo = debug.getinfo(4)
+      source = errorInfo.source
+      currentline = errorInfo.currentline
+    end
+    if source:sub(1, 1) == "@" and source:sub(2, #basedir + 1) == basedir then
       --  Remove @ and basedir
-      source = source:sub(2, -1)
-      if source:sub(1, #basedir) == basedir then
-        source = source:sub(#basedir + 1, -1)
-      end
+      source = source:sub(#basedir + 2, -1)
     end
     if miniDebug.reportPause then
-      Output(string.format("Paused at %d in %s\n", info.currentline, source))
+      Output(string.format("Paused at %d in %s\n", currentline, source))
     end
-    Send(string.format("202 Paused %s %d\n", source, info.currentline))
+    Send(string.format("202 Paused %s %d\n", source, currentline))
   end
   isRunning = false
   ProcessLines(event)
@@ -613,6 +619,21 @@ end
 local function start()
   if hasInited then return end
   LuaApp.config.showConsole = true
+  if miniDebug.traceback == nil then
+    --  Hook debug.traceback
+    miniDebug.traceback = debug.traceback
+    local info = debug.getinfo(1)
+    debug.traceback = function (errorMessage)
+      miniDebug.errorMessage = errorMessage
+      local retval = miniDebug.traceback(errorMessage)  --  Break on this line
+      return retval
+    end
+    --  Hook on runtime error; register the breakpoint
+    miniDebug.errorHookLine = info.currentline + 3
+    miniDebug.errorHookFile = info.source
+    breakpoints[miniDebug.errorHookLine] = breakpoints[miniDebug.errorHookLine] or {}
+    breakpoints[miniDebug.errorHookLine][miniDebug.errorHookFile] = true
+  end
   StartClient()
   debug.sethook(Hook, "crl", 10000)
 end
