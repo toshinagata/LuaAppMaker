@@ -128,4 +128,7 @@ public:
 
 DECLARE_APP(wxLuaStandaloneApp)
 
+extern const char *gLastBuildString;
+extern const char *gVersionString;
+
 #endif // LUAAPPMAKER_H

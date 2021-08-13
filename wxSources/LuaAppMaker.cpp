@@ -377,6 +377,10 @@ bool wxLuaStandaloneApp::OnInit()
     m_wxlState.RunString(wxT("LuaApp.resourcePath = ") + MakeLuaString(FindResourcePath()));
     m_wxlState.RunString(wxT("LuaApp.applicationName = ") + MakeLuaString(FindApplicationName()));
     
+    //  Build date and version string
+    m_wxlState.RunString(wxT("LuaApp.buildDate = ") + MakeLuaString(gLastBuildString));
+    m_wxlState.RunString(wxT("LuaApp.version = ") + MakeLuaString(gVersionString));
+
     //  Import startup definition
     wxString conf = rpath + wxFILE_SEP_PATH + wxT("lib") + wxFILE_SEP_PATH + wxT("startup.lua");
     if (wxFileExists(conf)) {
@@ -449,7 +453,7 @@ bool wxLuaStandaloneApp::OnInit()
     RequestOpenFilesByEvent(files);
     
     gInitCompleted = true;
-    
+
     return true;
 }
 
