@@ -28,14 +28,14 @@
 		E4318880231258D300B53D02 /* wxlualogo.icns in Resources */ = {isa = PBXBuildFile; fileRef = E431887F231258D300B53D02 /* wxlualogo.icns */; };
 		E447D9C0239338AD00E1A0BA /* wxcore_graphics.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E447D9BF239338AD00E1A0BA /* wxcore_graphics.cpp */; };
 		E447D9C12393394700E1A0BA /* wxllua.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E4D6D969230AE8B10008ADE9 /* wxllua.cpp */; };
-		E46089F8231BD5B400CA06FD /* libluajit-5.1.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = E4D6D8CD230AE2C90008ADE9 /* libluajit-5.1.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		E4547DE726C56DDA00479283 /* libluajit-5.1.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = E4547DE626C56DDA00479283 /* libluajit-5.1.dylib */; };
+		E4547DE826C5F40000479283 /* libluajit-5.1.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = E4547DE626C56DDA00479283 /* libluajit-5.1.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		E48A4A3D2153E902005F88AB /* QTKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E48A4A3C2153E902005F88AB /* QTKit.framework */; };
 		E4D6D8C6230ADEC10008ADE9 /* LuaAppMaker.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E4D6D8BD230ADEC00008ADE9 /* LuaAppMaker.cpp */; };
 		E4D6D8C7230ADEC10008ADE9 /* lua_addition.c in Sources */ = {isa = PBXBuildFile; fileRef = E4D6D8BE230ADEC10008ADE9 /* lua_addition.c */; };
 		E4D6D8C8230ADEC10008ADE9 /* ConsoleFrame.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E4D6D8BF230ADEC10008ADE9 /* ConsoleFrame.cpp */; };
 		E4D6D8C9230ADEC10008ADE9 /* textctrl_addition.mm in Sources */ = {isa = PBXBuildFile; fileRef = E4D6D8C0230ADEC10008ADE9 /* textctrl_addition.mm */; };
 		E4D6D8CC230ADF320008ADE9 /* buildInfo.c in Sources */ = {isa = PBXBuildFile; fileRef = E4D6D8CB230ADF320008ADE9 /* buildInfo.c */; };
-		E4D6D8CE230AE2C90008ADE9 /* libluajit-5.1.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = E4D6D8CD230AE2C90008ADE9 /* libluajit-5.1.dylib */; };
 		E4D6D923230AE8910008ADE9 /* wxbase_base.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E4D6D8ED230AE8900008ADE9 /* wxbase_base.cpp */; };
 		E4D6D924230AE8910008ADE9 /* wxcore_print.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E4D6D8EE230AE8900008ADE9 /* wxcore_print.cpp */; };
 		E4D6D926230AE8910008ADE9 /* wxbase_data.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E4D6D8F0230AE8900008ADE9 /* wxbase_data.cpp */; };
@@ -143,7 +143,7 @@
 			dstPath = lib;
 			dstSubfolderSpec = 7;
 			files = (
-				E46089F8231BD5B400CA06FD /* libluajit-5.1.dylib in CopyFiles */,
+				E4547DE826C5F40000479283 /* libluajit-5.1.dylib in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -156,6 +156,7 @@
 		E413720B232BD380006C980A /* win_resources.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = win_resources.h; path = ../wxSources/win_resources.h; sourceTree = "<group>"; };
 		E431887F231258D300B53D02 /* wxlualogo.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = wxlualogo.icns; path = ../wxlua/wxLua/art/wxlualogo.icns; sourceTree = "<group>"; };
 		E447D9BF239338AD00E1A0BA /* wxcore_graphics.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = wxcore_graphics.cpp; sourceTree = "<group>"; };
+		E4547DE626C56DDA00479283 /* libluajit-5.1.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libluajit-5.1.dylib"; path = "build/lib/libluajit-5.1.dylib"; sourceTree = "<group>"; };
 		E48A4A3C2153E902005F88AB /* QTKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QTKit.framework; path = ../../../../../../System/Library/Frameworks/QTKit.framework; sourceTree = "<group>"; };
 		E4A604A12332627E00D7BC85 /* Makefile */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.make; name = Makefile; path = ../Makefile; sourceTree = "<group>"; };
 		E4D6D8B8230ADE4A0008ADE9 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -170,7 +171,6 @@
 		E4D6D8C2230ADEC10008ADE9 /* lua_addition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = lua_addition.h; path = ../wxSources/lua_addition.h; sourceTree = "<group>"; };
 		E4D6D8C3230ADEC10008ADE9 /* LuaAppMaker.iss */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = LuaAppMaker.iss; path = ../wxSources/LuaAppMaker.iss; sourceTree = "<group>"; };
 		E4D6D8CB230ADF320008ADE9 /* buildInfo.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = buildInfo.c; path = build/buildInfo.c; sourceTree = "<group>"; };
-		E4D6D8CD230AE2C90008ADE9 /* libluajit-5.1.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libluajit-5.1.dylib"; path = "build/lib/libluajit-5.1.dylib"; sourceTree = "<group>"; };
 		E4D6D8D6230AE8900008ADE9 /* CMakeLists.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = CMakeLists.txt; sourceTree = "<group>"; };
 		E4D6D8D8230AE8900008ADE9 /* wxadv_bind.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = wxadv_bind.h; sourceTree = "<group>"; };
 		E4D6D8D9230AE8900008ADE9 /* wxaui_bind.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = wxaui_bind.h; sourceTree = "<group>"; };
@@ -309,7 +309,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E48A4A3D2153E902005F88AB /* QTKit.framework in Frameworks */,
-				E4D6D8CE230AE2C90008ADE9 /* libluajit-5.1.dylib in Frameworks */,
+				E4547DE726C56DDA00479283 /* libluajit-5.1.dylib in Frameworks */,
 				E4FC7811183E50DC0064FB2E /* Accelerate.framework in Frameworks */,
 				E4FC7838183E50F00064FB2E /* AGL.framework in Frameworks */,
 				E4FC784C183E51180064FB2E /* Carbon.framework in Frameworks */,
@@ -583,7 +583,7 @@
 		E4FC780D183E50AF0064FB2E /* Linked Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				E4D6D8CD230AE2C90008ADE9 /* libluajit-5.1.dylib */,
+				E4547DE626C56DDA00479283 /* libluajit-5.1.dylib */,
 				E48A4A3C2153E902005F88AB /* QTKit.framework */,
 				E4FC7CAC183F953E0064FB2E /* AudioToolbox.framework */,
 				E4FC7810183E50DC0064FB2E /* Accelerate.framework */,
@@ -728,7 +728,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if [ ! -f $PROJECT_DIR/build/lib/libluajit-5.1.dylib ]; then\n  make -C $PROJECT_DIR/../LuaJIT-2.0.5 PREFIX=$PROJECT_DIR/build install || exit 1\n  (cd $PROJECT_DIR/build/lib; install_name_tool -id \"@rpath/libluajit-5.1.dylib\" libluajit-5.1.dylib)\n  make -C $PROJECT_DIR/../LuaJIT-2.0.5 clean\nfi\n";
+			shellScript = "# LUAJIT_VERSION is given as a user-defined setting in the Xcode build settings\nLUAJIT_DIR=LuaJIT-$LUAJIT_VERSION\n\nif [ ! -f $PROJECT_DIR/build/lib/libluajit-5.1.a ]; then\n  make -C $PROJECT_DIR/../$LUAJIT_DIR  PREFIX=$PROJECT_DIR/build install || exit 1\n  (cd $PROJECT_DIR/build/lib; install_name_tool -id \"@rpath/libluajit-5.1.dylib\" libluajit-5.1.dylib)\n  make -C $PROJECT_DIR/../$LUAJIT_DIR clean\nfi\n";
 		};
 		E4A604A22332665E00D7BC85 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -895,7 +895,7 @@
 				HEADER_SEARCH_PATHS = (
 					"$(PROJECT_DIR)/../../wxWidgets-3.0.3/include",
 					"$(PROJECT_DIR)/../../wxWidgets-3.0.3/build-osx/lib/wx/include/osx_cocoa-unicode-static-3.0",
-					"$(PROJECT_DIR)/build/include/luajit-2.0",
+					"$(PROJECT_DIR)/../LuaJIT-$(LUAJIT_VERSION)/src",
 					"$(PROJECT_DIR)/../wxlua/wxLua/modules/wxbind/include",
 					"$(PROJECT_DIR)/../wxlua/wxLua/modules/wxbind/setup",
 					"$(PROJECT_DIR)/../wxlua/wxLua/modules",
@@ -910,6 +910,7 @@
 					"$(PROJECT_DIR)/../../wxWidgets-3.0.3/build-osx/lib",
 					"$(PROJECT_DIR)/build/lib",
 				);
+				LUAJIT_VERSION = "2.1.0-beta3";
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				OTHER_CFLAGS = (
 					"-D_FILE_OFFSET_BITS=64",
@@ -966,7 +967,7 @@
 				HEADER_SEARCH_PATHS = (
 					"$(PROJECT_DIR)/../../wxWidgets-3.0.3/include",
 					"$(PROJECT_DIR)/../../wxWidgets-3.0.3/build-osx/lib/wx/include/osx_cocoa-unicode-static-3.0",
-					"$(PROJECT_DIR)/build/include/luajit-2.0",
+					"$(PROJECT_DIR)/../LuaJIT-$(LUAJIT_VERSION)/src",
 					"$(PROJECT_DIR)/../wxlua/wxLua/modules/wxbind/include",
 					"$(PROJECT_DIR)/../wxlua/wxLua/modules/wxbind/setup",
 					"$(PROJECT_DIR)/../wxlua/wxLua/modules",
@@ -980,6 +981,7 @@
 					"$(PROJECT_DIR)/../../wxWidgets-3.0.3/build-osx/lib",
 					"$(PROJECT_DIR)/build/lib",
 				);
+				LUAJIT_VERSION = "2.1.0-beta3";
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				OTHER_CFLAGS = (
 					"-D_FILE_OFFSET_BITS=64",

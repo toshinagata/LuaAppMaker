@@ -20,7 +20,10 @@ PWD ?= $(shell pwd)
 WXLUA_DIR = $(PWD)/..
 
 #  LuaJIT directory
-LUAJIT_DIR = $(PWD)/../LuaJIT-2.0.5
+LUAJIT_VERSION = 2.1.0-beta3
+#LUAJIT_VERSION = 2.0.5
+
+LUAJIT_DIR = $(PWD)/../LuaJIT-$(LUAJIT_VERSION)
 
 #  wxWidgets base directory
 #  (Depends on your installation)
