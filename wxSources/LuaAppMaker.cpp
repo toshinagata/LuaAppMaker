@@ -600,13 +600,22 @@ void wxLuaStandaloneApp::OnQuitCommand(wxCommandEvent &event)
     }
     //  Pass 2: close all windows except for LuaConsole
     for (i = 0; i < n; i++) {
-        if (windows[i] != wxDynamicCast(sConsoleFrame, wxWindow)) {
+        if (sConsoleFrame != NULL && windows[i] == wxDynamicCast(sConsoleFrame, wxWindow))
+            continue;  //  Skip this
+        if (windows[i]->IsKindOf(wxCLASSINFO(wxDialog))) {
+            //  Dialogs will be destroyed without wxCloseEvent
+            if (!windows[i]->Destroy())
+                return;  /*  Cannot close this dialog  */
+        } else {
             if (!windows[i]->Close())
                 return;  /*  Cannot close this window  */
         }
     }
     //  Pass 3: close LuaConsole
-    sConsoleFrame->Close();
+    if (sConsoleFrame != NULL) {
+        sConsoleFrame->Close();
+        sConsoleFrame = NULL;
+    }
     free(windows);
 }
 
