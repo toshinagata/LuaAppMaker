@@ -228,17 +228,19 @@ ConsoleFrame::OnIdle(wxIdleEvent &event)
 {
     if (IsShown())
         return;
-    if (CheckIfNoOtherWindowsAreOpen())
-        Close();
+    if (CheckIfNoOtherWindowsAreOpen()) {
+        wxCommandEvent myEvent(wxEVT_COMMAND_MENU_SELECTED, wxID_EXIT);
+        wxPostEvent(wxTheApp, myEvent);
+    }
 }
 
 void
 ConsoleFrame::OnCloseWindow(wxCloseEvent &event)
 {
-    if (CheckIfNoOtherWindowsAreOpen()) {
-        wxFrame::OnCloseWindow(event);
-        return;
-    }
+//    if (CheckIfNoOtherWindowsAreOpen()) {
+//        wxFrame::OnCloseWindow(event);
+//        return;
+//    }
 
 	//  Do not delete this window; it may be reopened later
 	this->Hide();

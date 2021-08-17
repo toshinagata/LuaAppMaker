@@ -370,10 +370,20 @@ bool wxLuaStandaloneApp::OnInit()
     m_wxlState.RunString(wxT("package.cpath = ") + MakeLuaString(cpath));
 
     //  Configuration file path
-    wxString confPath = wxStandardPaths::Get().GetUserConfigDir() + wxFILE_SEP_PATH + FindApplicationName() + wxT("_conf.lua");
+    wxString confDirPath = wxStandardPaths::Get().GetUserConfigDir() + wxFILE_SEP_PATH + wxT("LuaAppMaker");
+    if (!wxDirExists(confDirPath)) {
+        //  Try to create the configuration directory
+        //  (Even if it fails, we will just ignore)
+        wxMkdir(confDirPath);
+    }
+    m_wxlState.RunString(wxT("LuaApp.settingsDirPath = ") + MakeLuaString(confDirPath));
+    
+    //  Settings file: may be replaced later
+    wxString confPath = confDirPath + wxFILE_SEP_PATH + FindApplicationName() + wxT("_conf.lua");
     m_wxlState.RunString(wxT("LuaApp.settingsPath = ") + MakeLuaString(confPath));
 
     //  Resource path and application name
+    //  (May be replaced later)
     m_wxlState.RunString(wxT("LuaApp.resourcePath = ") + MakeLuaString(FindResourcePath()));
     m_wxlState.RunString(wxT("LuaApp.applicationName = ") + MakeLuaString(FindApplicationName()));
     
@@ -391,8 +401,8 @@ bool wxLuaStandaloneApp::OnInit()
     //  Start console
     m_want_console = true;
     sConsoleFrame = ConsoleFrame::CreateConsoleFrame(NULL);
-    sConsoleFrame->Show(true);
     SetTopWindow(sConsoleFrame);
+    sConsoleFrame->Show(true);
 
     //  Set LuaApp.luaConsole as the console frame
     wxFrame *consoleFrame = wxDynamicCast(sConsoleFrame, wxFrame);
@@ -613,7 +623,7 @@ void wxLuaStandaloneApp::OnQuitCommand(wxCommandEvent &event)
     }
     //  Pass 3: close LuaConsole
     if (sConsoleFrame != NULL) {
-        sConsoleFrame->Close();
+        sConsoleFrame->Destroy();
         sConsoleFrame = NULL;
     }
     free(windows);
@@ -679,33 +689,43 @@ wxLuaStandaloneApp::OpenPendingFiles()
 
     if (!m_wxmainExecuted) {
 
+        bool isEmbedded = false;
+        wxString appName;
+
         //  First invocation: we need to look for the wxmain.lua to execute
-        //  Default path
+        //  Embedded script
         wxFileName dname(FindResourcePath(), wxT("scripts"));
         dname.MakeAbsolute();
         wxString dpath = dname.GetFullPath();
         wxString spath = dpath + wxFILE_SEP_PATH + wxT("wxmain.lua");
-        if (!wxFileName::DirExists(dpath) || !wxFileName::FileExists(spath)) {
+        if (wxFileName::DirExists(dpath) && wxFileName::FileExists(spath)) {
+            isEmbedded = true;
+        } else {
             dpath = wxT("");
         }
 
         //  Look for the script file
         //  (Only for the first given argument)
-        if (m_pendingFilesToOpen.GetCount() > 0) {
+        wxString dpath1;
+        if (!isEmbedded && m_pendingFilesToOpen.GetCount() > 0) {
             wxFileName dname1(m_pendingFilesToOpen[0]);
             dname1.MakeAbsolute();
-            wxString dpath1 = dname1.GetFullPath();
+            dpath1 = dname1.GetFullPath();
             wxString spath1 = dpath1 + wxFILE_SEP_PATH + wxT("wxmain.lua");
             if (wxFileName::DirExists(dpath1) && wxFileName::FileExists(spath1)) {
                 //  Directory containing 'wxmain.lua'
                 dpath = dpath1;
                 spath = spath1;
+                //  Regard the directory name as the application name
+                appName = dname1.GetName();
                 m_pendingFilesToOpen.RemoveAt(0, 1);
             } else if (dpath1.EndsWith(wxT(".lua")) && wxFileName::FileExists(dpath1)) {
                 //  A single file '*.lua'
                 spath = dpath1;
                 dpath = dname1.GetPath();
                 m_pendingFilesToOpen.RemoveAt(0, 1);
+                //  Regard the base name as the application name
+                appName = dname1.GetName();
             } else if (wxFileName::DirExists(dpath1)) {
                 //  Directory containing a single file '*.lua'
                 wxDir dir(dpath1);
@@ -719,6 +739,8 @@ wxLuaStandaloneApp::OpenPendingFiles()
                     dpath = dpath1;
                     spath = spath1;
                     m_pendingFilesToOpen.RemoveAt(0, 1);
+                    //  Regard the directory name as the application name
+                    appName = dname1.GetName();
                 }
             }
         }
@@ -735,7 +757,7 @@ wxLuaStandaloneApp::OpenPendingFiles()
 
         //  Build 'arg' table in the Lua world
         lua_getglobal(L, "arg");
-        lua_pushstring(L, (const char *)dpath);
+        lua_pushstring(L, (const char *)dpath1);
         lua_rawseti(L, -2, 0);
         for (int i = 0; i < m_pendingFilesToOpen.GetCount(); i++) {
             wxString f = m_pendingFilesToOpen[i];
@@ -743,6 +765,14 @@ wxLuaStandaloneApp::OpenPendingFiles()
             lua_rawseti(L, -2, i + 1);
         }
         lua_pop(L, 1);
+
+        //  Replace application name, resource path and configuration file
+        if (wxStrcmp(appName, wxT("")) != 0) {
+            wxString confName = wxFILE_SEP_PATH + appName + wxT("_conf.lua");
+            m_wxlState.RunString(wxT("LuaApp.settingsPath = LuaApp.settingsDirPath .. ") + MakeLuaString(confName));
+            m_wxlState.RunString(wxT("LuaApp.applicationName = ") + MakeLuaString(appName));
+            m_wxlState.RunString(wxT("LuaApp.resourcePath = ") + MakeLuaString(dpath));
+        }
 
         //  Try to load wxmain.lua
         //  Set the working directory
