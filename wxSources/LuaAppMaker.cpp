@@ -914,9 +914,6 @@ SetFileExecutable(wxString &fullpath)
 static wxString
 CopyRecursive(wxString &src, wxString &dst, bool allowOverwrite)
 {
-    if (src.StartsWith(wxT("_")) || src.StartsWith(wxT("."))) {
-        return wxT("");
-    }
     if (wxFileName::DirExists(src)) {
         if (wxFileName::FileExists(dst)) {
             return wxString::Format(wxT("Cannot copy directory %s over file %s"), (const char *)src, (const char *)dst);
@@ -931,9 +928,11 @@ CopyRecursive(wxString &src, wxString &dst, bool allowOverwrite)
         wxString name;
         if (dir.GetFirst(&name)) {
             do {
-                wxString src1 = src + wxFILE_SEP_PATH + name;
-                wxString dst1 = dst + wxFILE_SEP_PATH + name;
-                CopyRecursive(src1, dst1, allowOverwrite);
+                if (!name.StartsWith(wxT("_")) && !name.StartsWith(wxT("."))) {
+                    wxString src1 = src + wxFILE_SEP_PATH + name;
+                    wxString dst1 = dst + wxFILE_SEP_PATH + name;
+                    CopyRecursive(src1, dst1, allowOverwrite);
+                }
             } while (dir.GetNext(&name));
         }
     } else if (wxFileName::FileExists(src)) {
