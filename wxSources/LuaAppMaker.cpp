@@ -306,6 +306,9 @@ bool wxLuaStandaloneApp::OnInit()
     Connect(LuaAppEvent_executeLuaScript, LUAAPP_EVENT, wxCommandEventHandler(wxLuaStandaloneApp::OnExecuteLuaScript));
     Connect(wxID_EXIT, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(wxLuaStandaloneApp::OnQuitCommand));
     Connect(MyID_CREATE_APP, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(wxLuaStandaloneApp::OnCreateApplication));
+    Connect(wxID_OPEN, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(wxLuaStandaloneApp::OnOpen));
+    Connect(wxID_ABOUT, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(wxLuaStandaloneApp::OnAbout));
+    Connect(wxEVT_UPDATE_UI, wxUpdateUIEventHandler(wxLuaStandaloneApp::OnUpdateUI));
     Connect(wxEVT_LUA_PRINT, wxLuaEventHandler(wxLuaStandaloneApp::OnLua));
     Connect(wxEVT_LUA_ERROR, wxLuaEventHandler(wxLuaStandaloneApp::OnLua));
 
@@ -890,6 +893,95 @@ void
 wxLuaStandaloneApp::MacNewFile()
 {
     OpenPendingFiles();
+}
+
+void
+wxLuaStandaloneApp::OnOpen(wxCommandEvent &event)
+{
+    if (m_wxmainExecuted)
+        return;
+
+    wxString result = ::wxFileSelector(wxT("Select Lua file"), wxT(""), wxT(""), wxT("lua"), wxT("Lua files(*.lua)|*.lua|All files(*.*)|*.*"), wxFD_OPEN | wxFD_FILE_MUST_EXIST);
+    if (!result.empty()) {
+        m_pendingFilesToOpen.Clear();
+        m_pendingFilesToOpen.Add(result);
+        OpenPendingFiles();
+    }
+}
+
+void
+wxLuaStandaloneApp::OnUpdateUI(wxUpdateUIEvent& event)
+{
+    int uid = event.GetId();
+    if (uid == wxID_OPEN) {
+        if (!m_wxmainExecuted)
+            event.Enable(true);
+        else
+            event.Enable(false);
+        return;
+    } else if (uid == wxID_NEW) {
+        event.Enable(false);
+    } else event.Skip();
+}
+
+void
+wxLuaStandaloneApp::OnPaintIconPanel(wxPaintEvent &event)
+{
+    static wxBitmap *wxlogo_bitmap = NULL;
+    wxWindow *target = wxDynamicCast(event.GetEventObject(), wxWindow);
+    if (target) {
+        wxPaintDC dc(target);
+        dc.SetUserScale(96.0/128.0, 96.0/128.0);
+        if (wxlogo_bitmap == NULL)
+            wxlogo_bitmap = new wxBitmap(wxlualogo_xpm, wxBITMAP_TYPE_XPM);
+        dc.DrawBitmap(*wxlogo_bitmap, 0, 0, true);
+    }
+}
+
+void
+wxLuaStandaloneApp::OnAbout(wxCommandEvent &event)
+{
+    wxDialog dialog(NULL, -1, wxT("About LuaAppMaker"), wxDefaultPosition, wxDefaultSize, wxCAPTION);
+    wxWindow *icon_panel = new wxWindow(&dialog, -1, wxDefaultPosition, wxSize(96, 96));
+    icon_panel->Connect(wxEVT_PAINT, wxPaintEventHandler(wxLuaStandaloneApp::OnPaintIconPanel));
+    wxStaticText *text1 = new wxStaticText(&dialog, -1, "LuaAppMaker");
+    wxStaticText *text2 = new wxStaticText(&dialog, -1, "Copyright © Toshi Nagata, 2019-2021");
+    wxStaticText *text3 = new wxStaticText(&dialog, -1, "Built with:");
+    wxStaticText *text4 = new wxStaticText(&dialog, -1, "wxLua v3.1.0.0 (John Labenski, Paul Kulchenko)");
+    wxStaticText *text5 = new wxStaticText(&dialog, -1, "wxWidgets v3.0.3 (Julian Smart and wxWidgets Team)");
+    wxStaticText *text6 = new wxStaticText(&dialog, -1, "LuaJIT v2.1 beta3 (Mike Pall)");
+    wxBoxSizer *vsizer = new wxBoxSizer(wxVERTICAL);
+    wxSizer *bsizer = dialog.CreateSeparatedButtonSizer(wxOK);
+    vsizer->Add(icon_panel, 0, wxCENTER | wxALL, 10);
+    vsizer->Add(text1, 0, wxCENTER | wxALL, 10);
+    vsizer->Add(text2, 0, wxCENTER | wxALL, 6);
+    vsizer->Add(400, 6, 0, wxEXPAND);
+    vsizer->Add(text3, 0, wxCENTER | wxALL, 2);
+    vsizer->Add(text4, 0, wxCENTER | wxALL, 2);
+    vsizer->Add(text5, 0, wxCENTER | wxALL, 2);
+    vsizer->Add(text6, 0, wxCENTER | wxALL, 2);
+    vsizer->Add(bsizer, 0, wxCENTER | wxALL, 6);
+    int size1, size2, size3;
+#if __WXMSW__
+    size1 = 14;
+    size2 = 10;
+    size3 = 8;
+#else
+    size1 = 18;
+    size2 = 14;
+    size3 = 12;
+#endif
+    wxFont font1(size1, wxFONTFAMILY_SWISS, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD);
+    wxFont font2(size2, wxFONTFAMILY_SWISS, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD);
+    wxFont font3(size3, wxFONTFAMILY_SWISS, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD);
+    text1->SetFont(font1);
+    text2->SetFont(font2);
+    text3->SetFont(font3);
+    text4->SetFont(font3);
+    text5->SetFont(font3);
+    text6->SetFont(font3);
+    dialog.SetSizerAndFit(vsizer);
+    dialog.ShowModal();
 }
 
 #if 0

@@ -95,6 +95,11 @@ public:
     virtual void MacOpenFiles(const wxArrayString &fileNames);
     virtual void MacNewFile();
     
+    void OnOpen(wxCommandEvent &event);
+    void OnAbout(wxCommandEvent &event);
+    void OnUpdateUI(wxUpdateUIEvent &event);
+    void OnPaintIconPanel(wxPaintEvent &event);
+
 #if defined(__WXMSW__)
     bool CheckInstance();
 #endif
