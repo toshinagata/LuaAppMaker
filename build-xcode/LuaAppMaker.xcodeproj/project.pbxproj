@@ -648,7 +648,7 @@
 			buildConfigurationList = C01FCF4A08A954540054247B /* Build configuration list for PBXNativeTarget "LuaAppMaker" */;
 			buildPhases = (
 				E4FC7B57183E516E0064FB2E /* ShellScript */,
-				E474B7B92160DD2800DF343D /* ShellScript */,
+				E474B7B92160DD2800DF343D /* Run Script */,
 				8D1107290486CEB800E47090 /* Resources */,
 				8D11072C0486CEB800E47090 /* Sources */,
 				8D11072E0486CEB800E47090 /* Frameworks */,
@@ -717,18 +717,19 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		E474B7B92160DD2800DF343D /* ShellScript */ = {
+		E474B7B92160DD2800DF343D /* Run Script */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
+			name = "Run Script";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "# LUAJIT_VERSION is given as a user-defined setting in the Xcode build settings\nLUAJIT_DIR=LuaJIT-$LUAJIT_VERSION\n\nif [ ! -f $PROJECT_DIR/build/lib/libluajit-5.1.a ]; then\n  make -C $PROJECT_DIR/../$LUAJIT_DIR  PREFIX=$PROJECT_DIR/build install || exit 1\n  (cd $PROJECT_DIR/build/lib; install_name_tool -id \"@rpath/libluajit-5.1.dylib\" libluajit-5.1.dylib)\n  make -C $PROJECT_DIR/../$LUAJIT_DIR clean\nfi\n";
+			shellScript = "# LUAJIT_VERSION is given as a user-defined setting in the Xcode build settings\nexport LUAJIT_DIR=LuaJIT-$LUAJIT_VERSION\nexport TARGET_PLATFORM=MAC\nif [ ! -f $PROJECT_DIR/build/lib/libluajit-5.1.dylib ]; then \n  sh ../wxSources/build_luajit.sh\nfi\n";
 		};
 		E4A604A22332665E00D7BC85 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;

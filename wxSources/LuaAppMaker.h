@@ -37,7 +37,7 @@ class MyClient: public wxClient
 public:
     MyClient();
     ~MyClient();
-    void Disconnect();
+    bool Disconnect();
     wxConnectionBase *OnMakeConnection();
     MyClientConnection *m_clientConnection;
 };
@@ -46,7 +46,7 @@ class MyServerConnection: public wxConnection
 {
 public:
     virtual bool OnDisconnect();
-    virtual bool OnExecute(const wxString& topic, const void *data, size_t size, wxIPCFormat format);
+    virtual bool OnExec(const wxString& topic, const wxString& data);
 };
 
 class MyServer: public wxServer
@@ -54,7 +54,7 @@ class MyServer: public wxServer
 public:
     MyServer();
     ~MyServer();
-    void Disconnect();
+    bool Disconnect();
     wxConnectionBase *OnAcceptConnection(const wxString& topic);
     MyServerConnection *m_serverConnection;
 };
@@ -81,7 +81,7 @@ public:
     void OnExecuteLuaScript(wxCommandEvent &event);
     void OnQuitCommand(wxCommandEvent &event);
 
-    void RequestOpenFilesByEvent(wxString& files);
+    void RequestOpenFilesByEvent(const wxString& files);
     void OnOpenFilesByEvent(wxCommandEvent& event);
     bool OpenPendingFiles();
     bool CheckLuaLogicalExpression(wxString str);

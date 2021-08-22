@@ -32,14 +32,30 @@ WX_DIR = $(PWD)/../../wxWidgets-3.0.3
 #  Application name
 APPNAME = LuaAppMaker
 
-#  Target platform and cross compile flag
-ifeq ($(TARGET_ARCH),x86_64)
-CROSS=mingw64
+ifeq (,$(findstring Windows,$(OS)))
+  HOST_SYS:= $(shell uname -s)
 else
-CROSS=mingw32
+  HOST_SYS= Windows
 endif
 
-PATH_PREFIX=/usr/local/homebrew/bin/
+ifeq ($(TARGET_PLATFORM),MSW)
+  TARGET_SYS= Windows
+else
+  ifeq ($(TARGET_PLATFORM),MAC)
+    TARGET_SYS= Darwin
+  endif
+endif
+
+#  Target platform and cross compile flag
+ifneq ($(TARGET_SYS),$(HOST_SYS))
+  ifeq ($(TARGET_ARCH),x86_64)
+    CROSS=mingw64
+  else
+    CROSS=mingw32
+  endif
+else
+  CROSS=
+endif
 
 #  Object files
 
@@ -71,7 +87,22 @@ WXLIB_LIST = core,base,gl,adv
 
 ifeq ($(TARGET_PLATFORM),MSW)
  CPP_EXTRA_FLAGS = -I$(LUAJIT_DIR)/src -I../wxlua/wxLua -I../wxlua/wxLua/modules -I../wxlua/wxLua/modules/wxbind/include -I../wxlua/wxLua/modules/wxbind/setup -DLUA_COMPAT_MODULE -fpermissive
- ifneq ($(CROSS),)
+ ifeq ($(CROSS),)
+  ifeq ($(TARGET_ARCH),i686)
+   BUILD_DIR = build-win32
+   TOOL_PREFIX = i686-w64-mingw32-
+   PATH_PREFIX=/mingw32/bin/
+   LIB_SUFFIX = -3.0-i686-w64-mingw32
+   HOST_CC = "gcc"
+   LUAJIT_HOSTCC_FLAGS = "HOST_XCFLAGS=-I. -DLUAJIT_OS=LUAJIT_OS_WINDOWS"
+  else
+   BUILD_DIR = build-win
+   TOOL_PREFIX = x86_64-w64-mingw32-
+   PATH_PREFIX=/mingw64/bin/
+   LIB_SUFFIX = -3.0-x86_64-w64-mingw32
+  endif
+ else
+  PATH_PREFIX=/usr/local/homebrew/bin/
   ifeq ($(TARGET_ARCH),i686)
    BUILD_DIR = build-win32
    TOOL_PREFIX = i686-w64-mingw32-
@@ -87,8 +118,6 @@ ifeq ($(TARGET_PLATFORM),MSW)
    endif
   endif
   WINE_PATH=/Applications/EasyWine.app/Contents/Resources/wine/bin
- else
-  LIB_SUFFIX = -3.0
  endif
  WX_LIB_DIR = $(WX_DIR)/$(BUILD_DIR)/lib
  WX_ARCH_DIR = $(WX_LIB_DIR)/wx/include/$(TOOL_PREFIX)msw-unicode-static-3.0
@@ -114,7 +143,7 @@ ifeq ($(MAKECMDGOALS),debug)
  DEBUG = 1
 endif
 
-ifeq ($(BUILD_CONFIGURATION),Debug)
+ifeq ($(CONFIGURATION),Debug)
  DEBUG = 1
 endif
 
@@ -137,7 +166,10 @@ export CC
 export CPP
 export AR
 export TARGET_PLATFORM
+export TARGET_ARCH
 export RANLIB
+export LUAJIT_VERSION
+export PATH_PREFIX
 
 release: all
 
@@ -179,17 +211,13 @@ $(DESTPREFIX)/%.o : $(WXLUA_DIR)/%.c
 
 ifeq ($(TARGET_PLATFORM),MSW)
 $(WIN_FOPEN_O) : $(WXLUA_DIR)/wxSources/win_fopen.c
-	mkdir -p build/lib
+	@mkdir -p build/lib
 	$(CC) -c $< -o $@ $(CFLAGS)
 endif
 
-$(LUAJIT_LIB) : $(WIN_FOPEN_O)
 ifeq ($(TARGET_PLATFORM),MSW)
-	make -C $(LUAJIT_DIR) HOST_CC=$(HOST_CC) CFLAGS="" LDFLAGS="" TARGET_SHLDFLAGS="$(PWD)/$(WIN_FOPEN_O)" TARGET_FLAGS="-static-libgcc" CROSS=$(PATH_PREFIX)$(TOOL_PREFIX) $(LUAJIT_HOSTCC_FLAGS) TARGET_SYS=Windows || exit 1
-	mkdir -p build/lib/lua
-	cp $(LUAJIT_DIR)/src/lua51.dll build/lib
-	cp -R $(LUAJIT_DIR)/src/jit build/lib/lua
-	make -C $(LUAJIT_DIR) HOST_CC=$(HOST_CC) CFLAGS="" LDFLAGS="" TARGET_FLAGS="-static-libgcc" CROSS=$(PATH_PREFIX)$(TOOL_PREFIX) TARGET_SYS=Windows clean
+$(LUAJIT_LIB) : $(WIN_FOPEN_O)
+	(PATH=$(PATH_PREFIX):$(PATH); sh ../wxSources/build_luajit.sh) || exit 1
 endif
 
 ALL_OBJECTS = $(OBJECTS) $(EXTRA_OBJECTS) $(RESOURCE)

@@ -155,7 +155,7 @@ FindResourcePath()
     if (ref != NULL) {
         UInt8 buffer[MAXPATHLEN];
         if (CFURLGetFileSystemRepresentation(ref, true, buffer, sizeof buffer)) {
-            wxString dirname((const char *)buffer);
+            wxString dirname((const char *)buffer, wxConvUTF8);
             CFRelease(ref);
             *resourcePath = dirname;
             return dirname;
@@ -180,7 +180,7 @@ FindResourcePath()
     {
         char *p = strdup(argv0.utf8_str());
         fix_dosish_path(p);
-        wxString argv0_fixed(p, wxConvFile);
+        wxString argv0_fixed(p, wxConvUTF8);
         argv0 = argv0_fixed;
     }
     //  Is it an absolute path?
@@ -353,15 +353,18 @@ bool wxLuaStandaloneApp::OnInit()
     //  This allows dlls of the same name can be used for both 64bit and 32bit systems.
     wxString cpath =
 #if defined(__WXMSW__) && defined(__i386__)
-        wxT("./lib32/?.lua;");
+        wxT("./lib32/?.") + ext + wxT(";");
 #else
         wxT("");
 #endif
     cpath =
-        cpath + wxT("./?.lua;") +
+        cpath + wxT("./?.") + ext + wxT(";") +
+#if defined(__WXMSW__) && defined(__i386__)
+        rpath + wxT("/scripts/lib32/?.") + ext + wxT(";") +
+#endif
         rpath + wxT("/scripts/?.") + ext + wxT(";") +
 #if defined(__WXMSW__) && defined(__i386__)
-        rpath + wxT("/lib32/?.") + ext +
+        rpath + wxT("/lib32/?.") + ext + wxT(";") +
 #endif
         rpath + wxT("/lib/?.") + ext;
     cpath.Replace(wxT("/"), wxFILE_SEP_PATH, true);
@@ -442,7 +445,7 @@ bool wxLuaStandaloneApp::OnInit()
     lua_newtable(L);
     if (argc > 0) {
         wxString argv0(argv[0]);
-        lua_pushstring(L, (const char *)argv0);
+        lua_pushstring(L, argv0.ToUTF8());
         lua_rawseti(L, -2, -1);
     }
     lua_setglobal(L, "arg");
@@ -640,7 +643,7 @@ void wxLuaStandaloneApp::OnExecuteLuaScript(wxCommandEvent &event)
 #endif
 
 void
-wxLuaStandaloneApp::RequestOpenFilesByEvent(wxString& files)
+wxLuaStandaloneApp::RequestOpenFilesByEvent(const wxString& files)
 {
     //  Open files by IPC request
     int start, end;
@@ -992,13 +995,13 @@ wxLuaStandaloneApp::OnCreateApplication(wxCommandEvent &event)
         return;  /*  Do nothing  */
     if (icon_path == NULL || icon_path[0] == 0)
         return;  /*  Do nothing  */
-    wxString scriptFolder(script_folder);
-    wxString iconPath(icon_path);
-    
+    wxString scriptFolder(script_folder, wxConvUTF8);
+    wxString iconPath(icon_path, wxConvUTF8);
+
     //  Replace the script folder name with app_name
     wxFileName scriptFolderFName = wxFileName::DirName(scriptFolder);
     scriptFolderFName.RemoveLastDir();
-    wxString appName(app_name);
+    wxString appName(app_name, wxConvUTF8);
 #if defined(__WXMAC__)
     wxString appNameExt = appName + wxT(".app");
 #else
@@ -1036,7 +1039,7 @@ wxLuaStandaloneApp::OnCreateApplication(wxCommandEvent &event)
         DisplayMessage(wxT("ERROR: Cannot get application path"), false);
         return;
     }
-    wxString appSrcPath(app_src_path);
+    wxString appSrcPath(app_src_path, wxConvUTF8);
     CopyRecursive(appSrcPath, appDstPath, true);
     //  Copy script folder
     wxString scriptDstPath = appDstPath + wxT("/Contents/Resources/scripts");
@@ -1110,7 +1113,7 @@ wxString *gIPCServiceName = NULL;
 bool
 MyClientConnection::OnDisconnect()
 {
-    wxGetApp().m_client->Disconnect();
+    return wxGetApp().m_client->Disconnect();
 }
 
 MyClient::MyClient()
@@ -1123,13 +1126,15 @@ MyClient::~MyClient()
     Disconnect();
 }
 
-void
+bool
 MyClient::Disconnect()
 {
+    bool retval = true;
     if (m_clientConnection != NULL) {
-        m_clientConnection->Disconnect();
+        retval = m_clientConnection->Disconnect();
         m_clientConnection = NULL;
     }
+    return retval;
 }
 
 wxConnectionBase *
@@ -1143,15 +1148,14 @@ MyClient::OnMakeConnection()
 bool
 MyServerConnection::OnDisconnect()
 {
-    wxGetApp().m_server->Disconnect();
+    return wxGetApp().m_server->Disconnect();
 }
 
 bool
-MyServerConnection::OnExecute(const wxString& topic, const void *data, size_t size, wxIPCFormat format)
+MyServerConnection::OnExec(const wxString& topic, const wxString& data)
 {
     if (topic == MYAPP_IPC_TOPIC) {
-        wxString files((wxChar *)data);
-        wxGetApp().RequestOpenFilesByEvent(files);
+        wxGetApp().RequestOpenFilesByEvent(data);
         return true;
     } else return false;
 }
@@ -1166,13 +1170,15 @@ MyServer::~MyServer()
     Disconnect();
 }
 
-void
+bool
 MyServer::Disconnect()
 {
+    bool retval = true;
     if (m_serverConnection != NULL) {
-        m_serverConnection->Disconnect();
+        retval = m_serverConnection->Disconnect();
         m_serverConnection = NULL;
     }
+    return retval;
 }
 
 wxConnectionBase *

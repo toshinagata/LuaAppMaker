@@ -55,6 +55,7 @@
 
 #define MAX_NR_BUNDLES 1000
 
+/*
 char *types[25]=
 {
     "NULL","RT_CURSOR","RT_BITMAP","RT_ICON","RT_MENU","RT_DIALOG","RT_STRING","RT_FONTDIR","RT_FONT",
@@ -62,13 +63,14 @@ char *types[25]=
     "RT_GROUP_ICON","NULL","RT_VERSION","RT_DLGINCLUDE","NULL","RT_PLUGPLAY","RT_VXD","RT_ANICURSOR", //21 de la 0
     "RT_ANIICON","RT_HTML","RT_MANIFEST"
 };
+*/
 
 WORD nMaxID=0;
 HANDLE hFile, hFileEx;
 HINSTANCE currentUI;
 UINT currentLangId;
 
-CHAR *szReplaceFile={"Replace.txt"};
+//CHAR *szReplaceFile={"Replace.txt"};
 
 //id-urile bundleurilor GROUP_ICON
 typedef struct
@@ -142,12 +144,12 @@ typedef struct
 
 using namespace std;
 
-int filter(unsigned int code, struct _EXCEPTION_POINTERS *ep,CHAR *fileName)
+int filter(unsigned int code, struct _EXCEPTION_POINTERS *ep, WCHAR *fileName)
 {
     
     if (code == EXCEPTION_ACCESS_VIOLATION)
     {
-        MessageBoxA( hWndMain, "Eroare LoadLibrary: verifica daca exista fisierul", fileName, MB_OK );
+        MessageBoxW( hWndMain, L"Eroare LoadLibrary: verifica daca exista fisierul", fileName, MB_OK );
         CloseHandle(hFile);
         FreeLibrary(currentUI);
         
@@ -165,7 +167,7 @@ int filter(unsigned int code, struct _EXCEPTION_POINTERS *ep,CHAR *fileName)
     
 }
 
-LPICONIMAGE* ExtractIcoFromFile(LPSTR filename,LPICONDIR pIconDir)
+LPICONIMAGE* ExtractIcoFromFileW(LPWSTR filename,LPICONDIR pIconDir)
 {
     BOOL res=true;
     HANDLE    hFile1 = NULL, hFile2=NULL, hFile3=NULL;
@@ -178,9 +180,9 @@ LPICONIMAGE* ExtractIcoFromFile(LPSTR filename,LPICONDIR pIconDir)
     int i;
     
     
-    if( (hFile1 = CreateFileA( filename, GENERIC_READ, 0, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL )) == INVALID_HANDLE_VALUE )
+    if( (hFile1 = CreateFileW( filename, GENERIC_READ, 0, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL )) == INVALID_HANDLE_VALUE )
     {
-        MessageBoxA( hWndMain, "Error Opening File for Reading", filename, MB_OK );
+        MessageBoxW( hWndMain, L"Error Opening File for Reading", filename, MB_OK );
         return NULL;
     }
     
@@ -190,11 +192,11 @@ LPICONIMAGE* ExtractIcoFromFile(LPSTR filename,LPICONDIR pIconDir)
     ReadFile( hFile1, &(pIconDir->idCount), sizeof( WORD ), &dwBytesRead, NULL );
     
 #ifdef WRICOFILE
-    hFile2 = CreateFileA("replicaICO.ico", GENERIC_READ | GENERIC_WRITE,0,(LPSECURITY_ATTRIBUTES) NULL,
+    hFile2 = CreateFileW(L"replicaICO.ico", GENERIC_READ | GENERIC_WRITE,0,(LPSECURITY_ATTRIBUTES) NULL,
                          CREATE_ALWAYS,FILE_ATTRIBUTE_NORMAL,(HANDLE) NULL);
     if (hFile2 == INVALID_HANDLE_VALUE)
     {
-        MessageBoxA( hWndMain, "Error Opening File for Reading", "replicaICO.ico", MB_OK );
+        MessageBoxW( hWndMain, L"Error Opening File for Reading", L"replicaICO.ico", MB_OK );
         return NULL;
     }
     WriteFile(hFile2, &(pIconDir->idReserved),dwBytesRead, &cbWritten, NULL);
@@ -237,7 +239,7 @@ LPICONIMAGE* ExtractIcoFromFile(LPSTR filename,LPICONDIR pIconDir)
     return arrayIconImage;
 }
 
-BOOL ReplaceIconResource(LPSTR lpFileName, LPCTSTR lpName, UINT langId, LPICONDIR pIconDir,    LPICONIMAGE* pIconImage)
+BOOL ReplaceIconResourceW(LPWSTR lpFileName, LPCWSTR lpName, UINT langId, LPICONDIR pIconDir,    LPICONIMAGE* pIconImage)
 {
     BOOL res=true;
     HANDLE    hFile3=NULL;
@@ -250,8 +252,8 @@ BOOL ReplaceIconResource(LPSTR lpFileName, LPCTSTR lpName, UINT langId, LPICONDI
     WORD cbRes=0;
     int i;
     
-    hUi = LoadLibraryExA(lpFileName,NULL,DONT_RESOLVE_DLL_REFERENCES | LOAD_LIBRARY_AS_DATAFILE);
-    HRSRC hRsrc = FindResourceEx(hUi, RT_GROUP_ICON, lpName,langId);
+    hUi = LoadLibraryExW(lpFileName,NULL,DONT_RESOLVE_DLL_REFERENCES | LOAD_LIBRARY_AS_DATAFILE);
+    HRSRC hRsrc = FindResourceExW(hUi, RT_GROUP_ICON, lpName,langId);
     //nu stiu de ce returneaza 104 wtf???
     //cbRes=SizeofResource( hUi, hRsrc );
     
@@ -355,37 +357,37 @@ BOOL ReplaceIconResource(LPSTR lpFileName, LPCTSTR lpName, UINT langId, LPICONDI
     
     
     
-    _chmod((char*)lpFileName,_S_IWRITE);
-    hUpdate = BeginUpdateResourceA(lpFileName, FALSE); //false sa nu stearga resursele neupdated
+    _wchmod((wchar_t *)lpFileName,_S_IWRITE);
+    hUpdate = BeginUpdateResourceW(lpFileName, FALSE); //false sa nu stearga resursele neupdated
     if(hUpdate==NULL)
     {
         
-        MessageBoxA( hWndMain, "eroare BeginUpdateResource", lpFileName, MB_OK );
+        MessageBoxW( hWndMain, L"eroare BeginUpdateResource", lpFileName, MB_OK );
         res=false;
     }
     //aici e cu lang NEUTRAL
     //res=UpdateResource(hUpdate,RT_GROUP_ICON,MAKEINTRESOURCE(6000),langId,lpGrpIconDir,cbRes);
-    res=UpdateResource(hUpdate,RT_GROUP_ICON,lpName,langId,temp,cbRes);
+    res=UpdateResourceW(hUpdate,RT_GROUP_ICON,lpName,langId,temp,cbRes);
     if(res==false)
-        MessageBoxA( hWndMain, "eroare UpdateResource RT_GROUP_ICON", lpFileName, MB_OK );
+        MessageBoxW( hWndMain, L"eroare UpdateResource RT_GROUP_ICON", lpFileName, MB_OK );
     
     for(i=0;i<lpGrpIconDir->idCount;i++)
     {
-        res=UpdateResource(hUpdate,RT_ICON,MAKEINTRESOURCE(lpGrpIconDir->idEntries[i].nID),langId,pIconImage[i],lpGrpIconDir->idEntries[i].dwBytesInRes);
+        res=UpdateResourceW(hUpdate,RT_ICON,MAKEINTRESOURCE(lpGrpIconDir->idEntries[i].nID),langId,pIconImage[i],lpGrpIconDir->idEntries[i].dwBytesInRes);
         if(res==false)
-            MessageBoxA( hWndMain, "eroare UpdateResource RT_ICON", lpFileName, MB_OK );
+            MessageBoxW( hWndMain, L"eroare UpdateResource RT_ICON", lpFileName, MB_OK );
     }
     
     for(i=lpGrpIconDir->idCount;i<lpInitGrpIconDir->idCount;i++)
     {
-        res=UpdateResource(hUpdate,RT_ICON,MAKEINTRESOURCE(lpInitGrpIconDir->idEntries[i].nID),langId,"",0);
+        res=UpdateResourceW(hUpdate,RT_ICON,MAKEINTRESOURCE(lpInitGrpIconDir->idEntries[i].nID),langId,(void *)"",0);
         if(res==false)
-            MessageBoxA( hWndMain, "eroare stergere resurse vechi", lpFileName, MB_OK );
+            MessageBoxW( hWndMain, L"eroare stergere resurse vechi", lpFileName, MB_OK );
         
     }
     
-    if(!EndUpdateResource(hUpdate,FALSE)) //false ->resource updates will take effect.
-        MessageBoxA( hWndMain, "eroare EndUpdateResource", lpFileName, MB_OK );
+    if(!EndUpdateResourceW(hUpdate,FALSE)) //false ->resource updates will take effect.
+        MessageBoxW( hWndMain, L"eroare EndUpdateResource", lpFileName, MB_OK );
     
     
     //    FreeResource(hGlobal);
@@ -396,13 +398,13 @@ BOOL ReplaceIconResource(LPSTR lpFileName, LPCTSTR lpName, UINT langId, LPICONDI
     return res;
 }
 
-BOOL EnumLangsFunc(HANDLE hModule,LPCTSTR lpType, LPCTSTR lpName,WORD wLang,LONG lParam)
+BOOL EnumLangsFuncW(HANDLE hModule,LPCWSTR lpType, LPCWSTR lpName,WORD wLang,LONG lParam)
 {
     currentLangId=(UINT)wLang;
     return true;
 }
 
-BOOL EnumNamesFunc(HANDLE hModule, LPCTSTR lpType, LPTSTR lpName, LONG lParam)
+BOOL EnumNamesFuncW(HANDLE hModule, LPCWSTR lpType, LPWSTR lpName, LONG lParam)
 {
     
     
@@ -417,7 +419,7 @@ BOOL EnumNamesFunc(HANDLE hModule, LPCTSTR lpType, LPTSTR lpName, LONG lParam)
         
         if(lpType==RT_GROUP_ICON)
         {
-            EnumResourceLanguages((HMODULE)hModule,lpType,lpName,(ENUMRESLANGPROC)EnumLangsFunc,0);
+            EnumResourceLanguagesW((HMODULE)hModule,lpType,lpName,(ENUMRESLANGPROCW)EnumLangsFuncW,0);
             pBundles[cBundles].nBundles=(USHORT)lpName;
             pBundles[cBundles].nLangId=(USHORT)currentLangId;
             cBundles++;
@@ -430,18 +432,18 @@ BOOL EnumNamesFunc(HANDLE hModule, LPCTSTR lpType, LPTSTR lpName, LONG lParam)
 
 //////callback function pentru enumerate types//////
 //(module handle, address of res type, extra pram)//
-BOOL EnumTypesFunc(HANDLE hModule, LPTSTR lpType, LONG lParam)
+BOOL EnumTypesFuncW(HANDLE hModule, LPWSTR lpType, LONG lParam)
 {
-    LPSTR szBuffer;
-    szBuffer=(LPSTR)new CHAR[300];    // print buffer for EnumResourceTypes
+    LPWSTR szBuffer;
+    szBuffer=(LPWSTR)new CHAR[300];    // print buffer for EnumResourceTypes
     
     
     ///// Find the names of all resources of type String. //////
     if(lpType==RT_ICON||lpType==RT_GROUP_ICON) //e string
     {
-        if(EnumResourceNames((HINSTANCE)hModule,lpType,(ENUMRESNAMEPROC)EnumNamesFunc,0)==false)
+        if(EnumResourceNamesW((HINSTANCE)hModule,lpType,(ENUMRESNAMEPROCW)EnumNamesFuncW,0)==false)
         {
-            MessageBoxA( hWndMain, "eroare EnumResourceNames","RT_ICON||RT_GROUP_ICON", MB_OK );
+            MessageBoxW( hWndMain, L"eroare EnumResourceNames", L"RT_ICON||RT_GROUP_ICON", MB_OK );
             return false;
         }
     }
@@ -449,17 +451,17 @@ BOOL EnumTypesFunc(HANDLE hModule, LPTSTR lpType, LONG lParam)
     return true;
 }
 
-BOOL CProcFile(LPSTR lpSrcFileName)
+BOOL CProcFile(LPWSTR lpSrcFileName)
 {
     HINSTANCE hui;
     
     
     //hui=LoadLibraryA(fileName);
     
-    hui = LoadLibraryExA(lpSrcFileName,NULL,DONT_RESOLVE_DLL_REFERENCES | LOAD_LIBRARY_AS_DATAFILE);
+    hui = LoadLibraryExW(lpSrcFileName,NULL,DONT_RESOLVE_DLL_REFERENCES | LOAD_LIBRARY_AS_DATAFILE);
     if (hui == NULL)
     {
-        MessageBoxA( hWndMain, "Eroare LoadLibrary: verifica daca exista fisierul", lpSrcFileName, MB_OK );
+        MessageBoxW( hWndMain, L"Eroare LoadLibrary: verifica daca exista fisierul", lpSrcFileName, MB_OK );
         //DWORD dwLastError = GetLastError();
         //wprintf(L"failed with error %d: \n", dwLastError);
         return false;
@@ -470,7 +472,7 @@ BOOL CProcFile(LPSTR lpSrcFileName)
         currentUI=hui;
     }
     
-    if(EnumResourceTypes(hui,(ENUMRESTYPEPROC)EnumTypesFunc,0)==false)
+    if(EnumResourceTypesW(hui,(ENUMRESTYPEPROCW)EnumTypesFuncW,0)==false)
     {
         _tprintf(_T("eroare enum res types\n"));
         return 0;
@@ -488,14 +490,14 @@ BOOL CProcFile(LPSTR lpSrcFileName)
 int
 ReplaceWinAppIcon(wxString &appPath, wxString &iconPath)
 {
-    LPSTR appFileName = appPath.mb_str();
-    LPSTR iconFileName = iconPath.mb_str();
+    LPCWSTR appFileName = appPath.wc_str();
+    LPCWSTR iconFileName = iconPath.wc_str();
     ICONDIR iconDir;
     LPICONIMAGE *iconImage;
     BOOL result;
-    iconImage = ExtractIcoFromFile(iconFileName, &iconDir);
+    iconImage = ExtractIcoFromFileW((wchar_t *)iconFileName, &iconDir);
     /*  The icon name "myicon" is defined in wxLuaApp.rc  */
-    result = ReplaceIconResource(appFileName, TEXT("MYICON"), MAKELANGID(LANG_ENGLISH, SUBLANG_DEFAULT), &iconDir, iconImage);
+    result = ReplaceIconResourceW((wchar_t *)appFileName, L"MYICON", MAKELANGID(LANG_ENGLISH, SUBLANG_DEFAULT), &iconDir, iconImage);
     delete iconImage;
     return result;
 }
