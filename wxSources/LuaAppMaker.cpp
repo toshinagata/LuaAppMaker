@@ -33,10 +33,12 @@
 #include <wx/fs_mem.h>
 #include <wx/image.h>
 #include <wx/filefn.h>
+#include <wx/webview.h>
 
 #include "wxlua/wxlua.h"
 #include "wxlua/debugger/wxldserv.h"
 #include "wxbind/include/wxcore_bind.h"
+#include "wxbind/include/wxwebview_bind.h"
 
 #include "LuaAppMaker.h"
 #include "ConsoleFrame.h"
@@ -124,6 +126,47 @@ fix_dosish_path(char *p)
 {
 }
 #endif
+
+//  wxWebView addition
+//  wxWebView::RegisterHandler is missing in wxLua, so we define a support function here
+//  wxwebview.wxWebView.RegisterHandler("type") translates to
+//  wxWebView::RegiserHandler(wxSharedPtr<wxWebViewHandler>(new wxWebViewFSHandler("type")))
+//  I am not sure whether this implementation is appropriate... (toshinagata 2021/8/26)
+static int
+registerHandlerToWebView(lua_State *L)
+{
+    // wxwebview.RegisterHandler(wview, name)
+    // Get the webview
+    wxWebView *webview = (wxWebView *)wxluaT_getuserdatatype(L, 1, wxluatype_wxWebView);
+    // const wxString name
+    const wxString name = wxlua_getwxStringtype(L, 2);
+    webview->RegisterHandler(wxSharedPtr<wxWebViewHandler>(new wxWebViewFSHandler(name)));
+    return 0;
+}
+
+//  wxMemoryFSHandler addition: this is one override of AddFile, but we define
+//  a support function with a different name
+static int addBinaryFileToMemoryFSHandler(lua_State *L)
+{
+    // const string-like data (may be a lua string, wxString, or wxMemoryBuffer)
+    size_t len = 0;
+    unsigned char *data = (unsigned char *)wxlua_getstringtypelen(L, 2, &len);
+    if (wxlua_isstringtype(L, 2) || (wxlua_iswxuserdata(L, 2) &&  (wxluaT_isderivedtype(L, 2, *p_wxluatype_wxString) >= 0))) {
+        // String type
+         len++;
+    }
+    // const wxString filename
+    const wxString filename = wxlua_getwxStringtype(L, 1);
+    // const wxString Mimetype (optional)
+    if (lua_gettop(L) >= 3) {
+        const wxString mimetype = wxlua_getwxStringtype(L, 3);
+        wxMemoryFSHandler::AddFileWithMimeType(filename, data, len, mimetype);
+    } else {
+        // call AddFile without mimetype
+        wxMemoryFSHandler::AddFile(filename, data, len);
+    }
+    return 0;
+}
 
 //  Cache the results of FindResourcePath()
 static wxString *resourcePath = NULL;
@@ -298,9 +341,12 @@ bool wxLuaStandaloneApp::OnInit()
 #endif
     
     wxInitAllImageHandlers();
-    wxFileSystem::AddHandler(new wxMemoryFSHandler);
-    wxMemoryFSHandler::AddFile(wxT("wxLua"), wxBitmap(wxlualogo_xpm), wxBITMAP_TYPE_XPM);
-    m_mem_bitmap_added = true;
+    
+    // Don't use wxMemoryFSHandler for this purpose
+    // Instead, we keep the bitmap as LuaApp.wxLuaIcon (later)
+    //wxFileSystem::AddHandler(new wxMemoryFSHandler);
+    //wxMemoryFSHandler::AddFile(wxT("wxLua"), wxBitmap(wxlualogo_xpm), wxBITMAP_TYPE_XPM);
+    //m_mem_bitmap_added = true;
  
     Connect(LuaAppEvent_openFiles, LUAAPP_EVENT, wxCommandEventHandler(wxLuaStandaloneApp::OnOpenFilesByEvent));
     Connect(LuaAppEvent_executeLuaScript, LUAAPP_EVENT, wxCommandEventHandler(wxLuaStandaloneApp::OnExecuteLuaScript));
@@ -397,6 +443,16 @@ bool wxLuaStandaloneApp::OnInit()
     m_wxlState.RunString(wxT("LuaApp.buildDate = ") + MakeLuaString(gLastBuildString));
     m_wxlState.RunString(wxT("LuaApp.version = ") + MakeLuaString(gVersionString));
 
+    //  wxLua icon
+    wxBitmap *iconBitmap = new wxBitmap(wxlualogo_xpm);
+    if (iconBitmap != NULL) {
+        lua_getglobal(L, "LuaApp");
+        wxluaO_addgcobject(L, iconBitmap, wxluatype_wxBitmap);
+        wxluaT_pushuserdatatype(L, iconBitmap, wxluatype_wxBitmap);
+        lua_setfield(L, -2, "wxLuaIcon");
+        lua_pop(L, 1);
+    }
+    
     //  Import startup definition
     wxString conf = rpath + wxFILE_SEP_PATH + wxT("lib") + wxFILE_SEP_PATH + wxT("startup.lua");
     if (wxFileExists(conf)) {
@@ -414,6 +470,7 @@ bool wxLuaStandaloneApp::OnInit()
     wxFrame *consoleFrame = wxDynamicCast(sConsoleFrame, wxFrame);
     if (consoleFrame != NULL) {
         lua_getglobal(L, "LuaApp");
+        wxluaO_addgcobject(L, consoleFrame, wxluatype_wxFrame);
         wxluaT_pushuserdatatype(L, consoleFrame, wxluatype_wxFrame);
         lua_setfield(L, -2, "luaConsole");
         lua_pop(L, 1);
@@ -457,6 +514,21 @@ bool wxLuaStandaloneApp::OnInit()
     m_wxlState.RunString(wxT("local p = os.getenv('LUA_PATH'); package.path = ((p and p..';') or '')..package.path"));
     m_wxlState.RunString(wxT("local p = os.getenv('LUA_CPATH'); package.cpath = ((p and p..';') or '')..package.cpath"));
     
+    {
+        //  Implement wxWebView::RegisterHandler (as wxwebview.RegisterHandler)
+        lua_getglobal(L, "wxwebview");
+        lua_pushcfunction(L, registerHandlerToWebView);
+        lua_setfield(L, -2, "RegisterHandler");
+        lua_pop(L, 1);
+
+        //  Implement wxMemoryFSHandler::AddBinaryFile
+        lua_getglobal(L, "wx");
+        lua_getfield(L, -1, "wxMemoryFSHandler");
+        lua_pushcfunction(L, addBinaryFileToMemoryFSHandler);
+        lua_setfield(L, -2, "AddBinaryFile");
+        lua_pop(L, 2);
+    }
+
 #if defined(__WXMAC__)
     //  Record the arguments (these should be ignored in MacOpenFiles)
     m_filesGivenByArgv.Clear();

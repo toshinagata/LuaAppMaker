@@ -125,7 +125,7 @@ utf8_from_sjis(lua_State *L)
         goto error_conv;
     }
     lua_pop(L, 1);
-    lua_pushlstring(L, utf8, utf8len);
+    lua_pushlstring(L, utf8, strlen(utf8));
     free(wide);
     free(utf8);
     return 1;
@@ -190,7 +190,7 @@ utf8_to_sjis(lua_State *L)
         goto error_conv;
     }
     lua_pop(L, 1);
-    lua_pushlstring(L, sjis, sjislen);
+    lua_pushlstring(L, sjis, strlen(sjis));
     free(wide);
     free(sjis);
     return 1;
