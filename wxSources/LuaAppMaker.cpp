@@ -844,13 +844,16 @@ wxLuaStandaloneApp::OpenPendingFiles()
         }
         lua_pop(L, 1);
 
-        //  Replace application name, resource path and configuration file
+        //  Replace application name and configuration file
         if (wxStrcmp(appName, wxT("")) != 0) {
             wxString confName = wxFILE_SEP_PATH + appName + wxT("_conf.lua");
             m_wxlState.RunString(wxT("LuaApp.settingsPath = LuaApp.settingsDirPath .. ") + MakeLuaString(confName));
             m_wxlState.RunString(wxT("LuaApp.applicationName = ") + MakeLuaString(appName));
-            m_wxlState.RunString(wxT("LuaApp.resourcePath = ") + MakeLuaString(dpath));
         }
+
+        //  Set the resourcePath to the 'working directory'
+        //  (The directory that contains the main lua file)
+        m_wxlState.RunString(wxT("LuaApp.resourcePath = ") + MakeLuaString(dpath));
 
         //  Try to load wxmain.lua
         //  Set the working directory
