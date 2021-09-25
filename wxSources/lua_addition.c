@@ -21,6 +21,8 @@
 #include <windows.h>
 #elif defined(__APPLE__)
 #include <CoreFoundation/CoreFoundation.h>
+#elif defined(__GLIBC__)
+#include <iconv.h>
 #endif
 
 #if 0
@@ -149,9 +151,41 @@ utf8_from_sjis(lua_State *L)
     free(utf8);
     CFRelease(ref);
     return 1;
+    
+#elif defined(__GLIBC__)
+
+    char *inbuf = (char *)sjis;
+    size_t ret;
+    size_t inbytesleft, outbytesleft, outbufsize;
+    char *outbuf, *outbuf_p;
+    iconv_t cd;
+    cd = iconv_open("UTF-8", "cp932");
+    if (cd != (iconv_t)-1) {
+        inbytesleft = strlen(inbuf);
+        outbufsize = inbytesleft * 3;  /*  Sufficiently large  */
+        outbuf = (char *)malloc(outbufsize + 1);
+        if (outbuf != NULL) {
+            outbytesleft = outbufsize;
+            outbuf_p = outbuf;
+            ret = iconv(cd, &inbuf, &inbytesleft, &outbuf_p, &outbytesleft);
+            if (ret == (size_t)-1) {
+                free(outbuf);
+                goto error_conv;
+            }
+            *outbuf_p = 0;
+            lua_pop(L, 1);
+            lua_pushlstring(L, outbuf, outbuf_p - outbuf);
+            free(outbuf);
+            iconv_close(cd);
+            return 1;
+        }
+        iconv_close(cd);
+    }
 #endif
+
 error_conv:
     luaL_error(L, "Cannot convert");
+    return 0;
 error_alloc:
     luaL_error(L, "Cannot get string");
     return 0;
@@ -214,9 +248,42 @@ utf8_to_sjis(lua_State *L)
     free(sjis);
     CFRelease(ref);
     return 1;
+
+#elif defined(__GLIBC__)
+    
+    char *inbuf = (char *)utf8;
+    size_t ret;
+    size_t inbytesleft, outbytesleft, outbufsize;
+    char *outbuf, *outbuf_p;
+    iconv_t cd;
+    cd = iconv_open("cp932", "UTF-8");
+    if (cd != (iconv_t)-1) {
+        inbytesleft = strlen(inbuf);
+        outbufsize = inbytesleft * 2;  /*  Sufficiently large  */
+        outbuf = (char *)malloc(outbufsize + 1);
+        if (outbuf != NULL) {
+            outbytesleft = outbufsize;
+            outbuf_p = outbuf;
+            ret = iconv(cd, &inbuf, &inbytesleft, &outbuf_p, &outbytesleft);
+            if (ret == (size_t)-1) {
+                free(outbuf);
+                goto error_conv;
+            }
+            *outbuf_p = 0;
+            lua_pop(L, 1);
+            lua_pushlstring(L, outbuf, outbuf_p - outbuf);
+            free(outbuf);
+            iconv_close(cd);
+            return 1;
+        }
+        iconv_close(cd);
+    }
+
 #endif
+
 error_conv:
     luaL_error(L, "Cannot convert");
+    return 0;
 error_alloc:
     luaL_error(L, "Cannot get string");
     return 0;

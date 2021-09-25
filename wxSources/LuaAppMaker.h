@@ -12,6 +12,7 @@
 #define LUAAPPMAKER_H
 
 #include <wx/app.h>
+#include <wx/process.h>
 
 #include "wxlua/debugger/wxldtarg.h"
 #include "wxlua/wxlstate.h"
@@ -132,6 +133,42 @@ public:
 };
 
 DECLARE_APP(wxLuaStandaloneApp)
+
+//  A support class for wxProcess
+//  When the process terminates, the exit status is kept inside the object
+class wxBetterProcess : public wxProcess
+{
+public:
+    wxBetterProcess(wxEvtHandler *parent, int id) : wxProcess(parent, id)
+    {
+        m_status = 0;
+        m_terminated = false;
+        m_killSignal = wxSIGNONE;
+    }
+    wxBetterProcess(int flags) : wxProcess(flags)
+    {
+        m_status = 0;
+        m_terminated = false;
+        m_killSignal = wxSIGNONE;
+    }
+    virtual ~wxBetterProcess() {}
+    virtual void OnTerminate(int pid, int status);
+    wxKillError KillProcess(wxSignal sig = wxSIGTERM, int flags = wxKILL_NOCHILDREN);
+    int PutLine(wxString str);
+    int GetLine(wxString &outStr);
+    int GetErrorLine(wxString &outStr);
+    void CloseOutput();
+    bool IsTerminated() { return m_terminated; }
+    int GetStatus() { return m_status; }
+    int GetKillSignal() { return m_killSignal; }
+protected:
+    bool m_terminated;
+    int m_status;
+    int m_killSignal;
+    wxMemoryBuffer m_stdout;
+    wxMemoryBuffer m_stderr;
+    wxMemoryBuffer m_stdin;
+};
 
 extern const char *gLastBuildString;
 extern const char *gVersionString;

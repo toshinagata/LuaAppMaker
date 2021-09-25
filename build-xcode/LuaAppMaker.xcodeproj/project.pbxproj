@@ -15,6 +15,7 @@
 			);
 			dependencies = (
 				E4CB37141FE4FF23001BB75E /* PBXTargetDependency */,
+				E480333826F23A3C0064D1F5 /* PBXTargetDependency */,
 				E4CB37191FE50707001BB75E /* PBXTargetDependency */,
 				E447267A232E56A2000600DD /* PBXTargetDependency */,
 			);
@@ -26,11 +27,102 @@
 /* Begin PBXBuildFile section */
 		E4137209232BBF8B006C980A /* lib in Resources */ = {isa = PBXBuildFile; fileRef = E4137208232BBF8B006C980A /* lib */; };
 		E4318880231258D300B53D02 /* wxlualogo.icns in Resources */ = {isa = PBXBuildFile; fileRef = E431887F231258D300B53D02 /* wxlualogo.icns */; };
+		E4401B6726DE6B1C005B15E9 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4401B6626DE6B1C005B15E9 /* AVFoundation.framework */; };
+		E4401B6926DE6B4E005B15E9 /* AVKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4401B6826DE6B4E005B15E9 /* AVKit.framework */; };
+		E4401B6B26DE6B91005B15E9 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4401B6A26DE6B91005B15E9 /* CoreMedia.framework */; };
 		E447D9C0239338AD00E1A0BA /* wxcore_graphics.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E447D9BF239338AD00E1A0BA /* wxcore_graphics.cpp */; };
 		E447D9C12393394700E1A0BA /* wxllua.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E4D6D969230AE8B10008ADE9 /* wxllua.cpp */; };
 		E4547DE726C56DDA00479283 /* libluajit-5.1.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = E4547DE626C56DDA00479283 /* libluajit-5.1.dylib */; };
 		E4547DE826C5F40000479283 /* libluajit-5.1.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = E4547DE626C56DDA00479283 /* libluajit-5.1.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		E480333A26F61FA20064D1F5 /* ProgressDialog.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E480333926F61FA20064D1F5 /* ProgressDialog.cpp */; };
+		E480333B26F61FA20064D1F5 /* ProgressDialog.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E480333926F61FA20064D1F5 /* ProgressDialog.cpp */; };
 		E48A4A3D2153E902005F88AB /* QTKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E48A4A3C2153E902005F88AB /* QTKit.framework */; };
+		E4C8B4EE26DE527E00F6F42D /* lib in Resources */ = {isa = PBXBuildFile; fileRef = E4137208232BBF8B006C980A /* lib */; };
+		E4C8B4EF26DE527E00F6F42D /* wxlualogo.icns in Resources */ = {isa = PBXBuildFile; fileRef = E431887F231258D300B53D02 /* wxlualogo.icns */; };
+		E4C8B4F126DE527E00F6F42D /* wxbase_base.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E4D6D8ED230AE8900008ADE9 /* wxbase_base.cpp */; };
+		E4C8B4F226DE527E00F6F42D /* lua_addition.c in Sources */ = {isa = PBXBuildFile; fileRef = E4D6D8BE230ADEC10008ADE9 /* lua_addition.c */; };
+		E4C8B4F326DE527E00F6F42D /* ConsoleFrame.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E4D6D8BF230ADEC10008ADE9 /* ConsoleFrame.cpp */; };
+		E4C8B4F426DE527E00F6F42D /* wxcore_sizer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E4D6D909230AE8900008ADE9 /* wxcore_sizer.cpp */; };
+		E4C8B4F526DE527E00F6F42D /* wxluadebugger_bind.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E4D6D977230AE8B10008ADE9 /* wxluadebugger_bind.cpp */; };
+		E4C8B4F626DE527E00F6F42D /* wxcore_menutool.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E4D6D918230AE8900008ADE9 /* wxcore_menutool.cpp */; };
+		E4C8B4F726DE527E00F6F42D /* wxmedia_bind.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E4D6D91B230AE8900008ADE9 /* wxmedia_bind.cpp */; };
+		E4C8B4F826DE527E00F6F42D /* lbitlib.c in Sources */ = {isa = PBXBuildFile; fileRef = E4D6D978230AE8B10008ADE9 /* lbitlib.c */; };
+		E4C8B4F926DE527E00F6F42D /* Makefile in Sources */ = {isa = PBXBuildFile; fileRef = E4D6D960230AE8B10008ADE9 /* Makefile */; };
+		E4C8B4FA26DE527E00F6F42D /* wxgl_bind.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E4D6D8F8230AE8900008ADE9 /* wxgl_bind.cpp */; };
+		E4C8B4FB26DE527E00F6F42D /* wxbase_datetime.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E4D6D8F3230AE8900008ADE9 /* wxbase_datetime.cpp */; };
+		E4C8B4FC26DE527E00F6F42D /* wxadv_wxladv.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E4D6D91F230AE8900008ADE9 /* wxadv_wxladv.cpp */; };
+		E4C8B4FD26DE527E00F6F42D /* wxwebview_bind.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E4D6D910230AE8900008ADE9 /* wxwebview_bind.cpp */; };
+		E4C8B4FE26DE527E00F6F42D /* wxbase_bind.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E4D6D900230AE8900008ADE9 /* wxbase_bind.cpp */; };
+		E4C8B4FF26DE527E00F6F42D /* wxcore_geometry.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E4D6D90C230AE8900008ADE9 /* wxcore_geometry.cpp */; };
+		E4C8B50026DE527E00F6F42D /* dummy.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E4D6D972230AE8B10008ADE9 /* dummy.cpp */; };
+		E4C8B50126DE527E00F6F42D /* wxxml_bind.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E4D6D8FD230AE8900008ADE9 /* wxxml_bind.cpp */; };
+		E4C8B50226DE527E00F6F42D /* wxcore_picker.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E4D6D903230AE8900008ADE9 /* wxcore_picker.cpp */; };
+		E4C8B50326DE527E00F6F42D /* wxbase_data.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E4D6D8F0230AE8900008ADE9 /* wxbase_data.cpp */; };
+		E4C8B50426DE527E00F6F42D /* wxbase_file.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E4D6D91E230AE8900008ADE9 /* wxbase_file.cpp */; };
+		E4C8B50526DE527E00F6F42D /* Makefile in Sources */ = {isa = PBXBuildFile; fileRef = E4D6D96F230AE8B10008ADE9 /* Makefile */; };
+		E4C8B50626DE527E00F6F42D /* wxlconsole.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E4D6D964230AE8B10008ADE9 /* wxlconsole.cpp */; };
+		E4C8B50726DE527E00F6F42D /* dummy.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E4D6D968230AE8B10008ADE9 /* dummy.cpp */; };
+		E4C8B50826DE527E00F6F42D /* wxhtml_bind.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E4D6D90A230AE8900008ADE9 /* wxhtml_bind.cpp */; };
+		E4C8B50926DE527E00F6F42D /* wxlstack.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E4D6D97F230AE8B10008ADE9 /* wxlstack.cpp */; };
+		E4C8B50A26DE527E00F6F42D /* wxpropgrid_bind.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E4D6D8F1230AE8900008ADE9 /* wxpropgrid_bind.cpp */; };
+		E4C8B50B26DE527E00F6F42D /* wxcore_help.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E4D6D8F6230AE8900008ADE9 /* wxcore_help.cpp */; };
+		E4C8B50C26DE527E00F6F42D /* wxcore_wxlcore.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E4D6D8F5230AE8900008ADE9 /* wxcore_wxlcore.cpp */; };
+		E4C8B50D26DE527E00F6F42D /* Makefile in Sources */ = {isa = PBXBuildFile; fileRef = E4D6D97D230AE8B10008ADE9 /* Makefile */; };
+		E4C8B50E26DE527E00F6F42D /* wxcore_mdi.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E4D6D912230AE8900008ADE9 /* wxcore_mdi.cpp */; };
+		E4C8B50F26DE527E00F6F42D /* Makefile in Sources */ = {isa = PBXBuildFile; fileRef = E4D6D8FF230AE8900008ADE9 /* Makefile */; };
+		E4C8B51026DE527E00F6F42D /* wxcore_print.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E4D6D8EE230AE8900008ADE9 /* wxcore_print.cpp */; };
+		E4C8B51126DE527E00F6F42D /* wxstc_bind.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E4D6D8F2230AE8900008ADE9 /* wxstc_bind.cpp */; };
+		E4C8B51226DE527E00F6F42D /* wxxrc_bind.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E4D6D920230AE8900008ADE9 /* wxxrc_bind.cpp */; };
+		E4C8B51326DE527E00F6F42D /* wxlsock.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E4D6D975230AE8B10008ADE9 /* wxlsock.cpp */; };
+		E4C8B51426DE527E00F6F42D /* wxcore_gdi.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E4D6D904230AE8900008ADE9 /* wxcore_gdi.cpp */; };
+		E4C8B51526DE527E00F6F42D /* LuaAppMaker.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E4D6D8BD230ADEC00008ADE9 /* LuaAppMaker.cpp */; };
+		E4C8B51626DE527E00F6F42D /* dummy.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E4D6D980230AE8B10008ADE9 /* dummy.cpp */; };
+		E4C8B51726DE527E00F6F42D /* wxadv_bind.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E4D6D908230AE8900008ADE9 /* wxadv_bind.cpp */; };
+		E4C8B51826DE527E00F6F42D /* wxcore_image.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E4D6D90B230AE8900008ADE9 /* wxcore_image.cpp */; };
+		E4C8B51926DE527E00F6F42D /* wxnet_bind.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E4D6D919230AE8900008ADE9 /* wxnet_bind.cpp */; };
+		E4C8B51A26DE527E00F6F42D /* wxlobject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E4D6D985230AE8B10008ADE9 /* wxlobject.cpp */; };
+		E4C8B51B26DE527E00F6F42D /* textctrl_addition.mm in Sources */ = {isa = PBXBuildFile; fileRef = E4D6D8C0230ADEC10008ADE9 /* textctrl_addition.mm */; };
+		E4C8B51C26DE527E00F6F42D /* wxcore_event.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E4D6D914230AE8900008ADE9 /* wxcore_event.cpp */; };
+		E4C8B51D26DE527E00F6F42D /* wxllua.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E4D6D969230AE8B10008ADE9 /* wxllua.cpp */; };
+		E4C8B51E26DE527E00F6F42D /* wxcore_windows.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E4D6D91C230AE8900008ADE9 /* wxcore_windows.cpp */; };
+		E4C8B51F26DE527E00F6F42D /* dummy.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E4D6D915230AE8900008ADE9 /* dummy.cpp */; };
+		E4C8B52026DE527E00F6F42D /* wxldserv.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E4D6D974230AE8B10008ADE9 /* wxldserv.cpp */; };
+		E4C8B52126DE527E00F6F42D /* wxldebug.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E4D6D981230AE8B10008ADE9 /* wxldebug.cpp */; };
+		E4C8B52226DE527E00F6F42D /* wxlstate.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E4D6D95F230AE8B10008ADE9 /* wxlstate.cpp */; };
+		E4C8B52326DE527E00F6F42D /* wxrichtext_bind.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E4D6D905230AE8900008ADE9 /* wxrichtext_bind.cpp */; };
+		E4C8B52426DE527E00F6F42D /* wxcore_graphics.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E447D9BF239338AD00E1A0BA /* wxcore_graphics.cpp */; };
+		E4C8B52526DE527E00F6F42D /* buildInfo.c in Sources */ = {isa = PBXBuildFile; fileRef = E4D6D8CB230ADF320008ADE9 /* buildInfo.c */; };
+		E4C8B52626DE527E00F6F42D /* wxcore_dialogs.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E4D6D90E230AE8900008ADE9 /* wxcore_dialogs.cpp */; };
+		E4C8B52726DE527E00F6F42D /* wxcore_core.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E4D6D8FC230AE8900008ADE9 /* wxcore_core.cpp */; };
+		E4C8B52826DE527E00F6F42D /* wxhtml_wxlhtml.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E4D6D901230AE8900008ADE9 /* wxhtml_wxlhtml.cpp */; };
+		E4C8B52926DE527E00F6F42D /* wxbase_config.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E4D6D907230AE8900008ADE9 /* wxbase_config.cpp */; };
+		E4C8B52A26DE527E00F6F42D /* wxcore_bind.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E4D6D902230AE8900008ADE9 /* wxcore_bind.cpp */; };
+		E4C8B52B26DE527E00F6F42D /* wxcore_appframe.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E4D6D8F7230AE8900008ADE9 /* wxcore_appframe.cpp */; };
+		E4C8B52C26DE527E00F6F42D /* wxlbind.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E4D6D97A230AE8B10008ADE9 /* wxlbind.cpp */; };
+		E4C8B52D26DE527E00F6F42D /* wxlua_bind.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E4D6D961230AE8B10008ADE9 /* wxlua_bind.cpp */; };
+		E4C8B52E26DE527E00F6F42D /* wxcore_defsutils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E4D6D8F9230AE8900008ADE9 /* wxcore_defsutils.cpp */; };
+		E4C8B52F26DE527E00F6F42D /* filedlg.mm in Sources */ = {isa = PBXBuildFile; fileRef = E4D6D99F23101F240008ADE9 /* filedlg.mm */; };
+		E4C8B53026DE527E00F6F42D /* wxaui_bind.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E4D6D921230AE8900008ADE9 /* wxaui_bind.cpp */; };
+		E4C8B53126DE527E00F6F42D /* wxcore_clipdrag.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E4D6D8FA230AE8900008ADE9 /* wxcore_clipdrag.cpp */; };
+		E4C8B53226DE527E00F6F42D /* wxlcallb.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E4D6D966230AE8B10008ADE9 /* wxlcallb.cpp */; };
+		E4C8B53326DE527E00F6F42D /* wxldtarg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E4D6D970230AE8B10008ADE9 /* wxldtarg.cpp */; };
+		E4C8B53426DE527E00F6F42D /* wxcore_controls.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E4D6D90D230AE8900008ADE9 /* wxcore_controls.cpp */; };
+		E4C8B53626DE527E00F6F42D /* QTKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E48A4A3C2153E902005F88AB /* QTKit.framework */; };
+		E4C8B53726DE527E00F6F42D /* libluajit-5.1.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = E4547DE626C56DDA00479283 /* libluajit-5.1.dylib */; };
+		E4C8B53826DE527E00F6F42D /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4FC7810183E50DC0064FB2E /* Accelerate.framework */; };
+		E4C8B53926DE527E00F6F42D /* AGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4FC7837183E50F00064FB2E /* AGL.framework */; };
+		E4C8B53A26DE527E00F6F42D /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4FC7845183E51180064FB2E /* Carbon.framework */; };
+		E4C8B53B26DE527E00F6F42D /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4FC7846183E51180064FB2E /* Cocoa.framework */; };
+		E4C8B53C26DE527E00F6F42D /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4FC7847183E51180064FB2E /* GLUT.framework */; };
+		E4C8B53D26DE527E00F6F42D /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4FC7848183E51180064FB2E /* IOKit.framework */; };
+		E4C8B53E26DE527E00F6F42D /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4FC7849183E51180064FB2E /* OpenGL.framework */; };
+		E4C8B53F26DE527E00F6F42D /* QuickTime.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4FC784A183E51180064FB2E /* QuickTime.framework */; };
+		E4C8B54026DE527E00F6F42D /* System.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4FC784B183E51180064FB2E /* System.framework */; };
+		E4C8B54126DE527E00F6F42D /* AppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4FC7A15183E51570064FB2E /* AppKit.framework */; };
+		E4C8B54226DE527E00F6F42D /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4FC7A16183E51570064FB2E /* Foundation.framework */; };
+		E4C8B54326DE527E00F6F42D /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4FC7B58183E53710064FB2E /* WebKit.framework */; };
+		E4C8B54426DE527E00F6F42D /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4FC7CAC183F953E0064FB2E /* AudioToolbox.framework */; };
+		E4C8B54626DE527E00F6F42D /* libluajit-5.1.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = E4547DE626C56DDA00479283 /* libluajit-5.1.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		E4D6D8C6230ADEC10008ADE9 /* LuaAppMaker.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E4D6D8BD230ADEC00008ADE9 /* LuaAppMaker.cpp */; };
 		E4D6D8C7230ADEC10008ADE9 /* lua_addition.c in Sources */ = {isa = PBXBuildFile; fileRef = E4D6D8BE230ADEC10008ADE9 /* lua_addition.c */; };
 		E4D6D8C8230ADEC10008ADE9 /* ConsoleFrame.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E4D6D8BF230ADEC10008ADE9 /* ConsoleFrame.cpp */; };
@@ -96,7 +188,6 @@
 		E4D6D99A230AE8B10008ADE9 /* dummy.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E4D6D980230AE8B10008ADE9 /* dummy.cpp */; };
 		E4D6D99B230AE8B10008ADE9 /* wxldebug.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E4D6D981230AE8B10008ADE9 /* wxldebug.cpp */; };
 		E4D6D99C230AE8B10008ADE9 /* wxlobject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E4D6D985230AE8B10008ADE9 /* wxlobject.cpp */; };
-		E4D6D9A023101F240008ADE9 /* filedlg.mm in Sources */ = {isa = PBXBuildFile; fileRef = E4D6D99F23101F240008ADE9 /* filedlg.mm */; };
 		E4FC7811183E50DC0064FB2E /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4FC7810183E50DC0064FB2E /* Accelerate.framework */; };
 		E4FC7838183E50F00064FB2E /* AGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4FC7837183E50F00064FB2E /* AGL.framework */; };
 		E4FC784C183E51180064FB2E /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4FC7845183E51180064FB2E /* Carbon.framework */; };
@@ -119,6 +210,13 @@
 			proxyType = 1;
 			remoteGlobalIDString = E4472675232E556F000600DD;
 			remoteInfo = wxLuaApp_win32;
+		};
+		E480333726F23A3C0064D1F5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 29B97313FDCFA39411CA2CEA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = E4C8B4EA26DE527E00F6F42D;
+			remoteInfo = "LuaAppMaker Legacy";
 		};
 		E4CB37131FE4FF23001BB75E /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -147,6 +245,16 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		E4C8B54526DE527E00F6F42D /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = lib;
+			dstSubfolderSpec = 7;
+			files = (
+				E4C8B54626DE527E00F6F42D /* libluajit-5.1.dylib in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
@@ -155,10 +263,17 @@
 		E413720A232BD380006C980A /* win_resources.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = win_resources.cpp; path = ../wxSources/win_resources.cpp; sourceTree = "<group>"; };
 		E413720B232BD380006C980A /* win_resources.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = win_resources.h; path = ../wxSources/win_resources.h; sourceTree = "<group>"; };
 		E431887F231258D300B53D02 /* wxlualogo.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = wxlualogo.icns; path = ../wxlua/wxLua/art/wxlualogo.icns; sourceTree = "<group>"; };
+		E4401B6626DE6B1C005B15E9 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.11.sdk/System/Library/Frameworks/AVFoundation.framework; sourceTree = DEVELOPER_DIR; };
+		E4401B6826DE6B4E005B15E9 /* AVKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVKit.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.11.sdk/System/Library/Frameworks/AVKit.framework; sourceTree = DEVELOPER_DIR; };
+		E4401B6A26DE6B91005B15E9 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.11.sdk/System/Library/Frameworks/CoreMedia.framework; sourceTree = DEVELOPER_DIR; };
 		E447D9BF239338AD00E1A0BA /* wxcore_graphics.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = wxcore_graphics.cpp; sourceTree = "<group>"; };
 		E4547DE626C56DDA00479283 /* libluajit-5.1.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libluajit-5.1.dylib"; path = "build/lib/libluajit-5.1.dylib"; sourceTree = "<group>"; };
+		E480333926F61FA20064D1F5 /* ProgressDialog.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ProgressDialog.cpp; path = ../wxSources/ProgressDialog.cpp; sourceTree = "<group>"; };
+		E480333C26F61FAE0064D1F5 /* ProgressDialog.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = ProgressDialog.h; path = ../wxSources/ProgressDialog.h; sourceTree = "<group>"; };
 		E48A4A3C2153E902005F88AB /* QTKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QTKit.framework; path = ../../../../../../System/Library/Frameworks/QTKit.framework; sourceTree = "<group>"; };
 		E4A604A12332627E00D7BC85 /* Makefile */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.make; name = Makefile; path = ../Makefile; sourceTree = "<group>"; };
+		E4C8B54B26DE527E00F6F42D /* LuaAppMaker Legacy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "LuaAppMaker Legacy.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		E4C8B54C26DE527E00F6F42D /* LuaAppMaker copy-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "LuaAppMaker copy-Info.plist"; path = "/Users/toshi_n/Development/wxMyProjects/LuaAppMaker/build-xcode/LuaAppMaker copy-Info.plist"; sourceTree = "<absolute>"; };
 		E4D6D8B8230ADE4A0008ADE9 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E4D6D8BA230ADEC00008ADE9 /* LuaAppMaker.rc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = LuaAppMaker.rc; path = ../wxSources/LuaAppMaker.rc; sourceTree = "<group>"; };
 		E4D6D8BB230ADEC00008ADE9 /* LuaAppMaker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LuaAppMaker.h; path = ../wxSources/LuaAppMaker.h; sourceTree = "<group>"; };
@@ -308,6 +423,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E4401B6726DE6B1C005B15E9 /* AVFoundation.framework in Frameworks */,
+				E4401B6926DE6B4E005B15E9 /* AVKit.framework in Frameworks */,
 				E48A4A3D2153E902005F88AB /* QTKit.framework in Frameworks */,
 				E4547DE726C56DDA00479283 /* libluajit-5.1.dylib in Frameworks */,
 				E4FC7811183E50DC0064FB2E /* Accelerate.framework in Frameworks */,
@@ -318,11 +435,34 @@
 				E4FC784F183E51180064FB2E /* IOKit.framework in Frameworks */,
 				E4FC7850183E51180064FB2E /* OpenGL.framework in Frameworks */,
 				E4FC7851183E51180064FB2E /* QuickTime.framework in Frameworks */,
+				E4401B6B26DE6B91005B15E9 /* CoreMedia.framework in Frameworks */,
 				E4FC7852183E51180064FB2E /* System.framework in Frameworks */,
 				E4FC7A17183E51570064FB2E /* AppKit.framework in Frameworks */,
 				E4FC7A18183E51570064FB2E /* Foundation.framework in Frameworks */,
 				E4FC7B59183E53710064FB2E /* WebKit.framework in Frameworks */,
 				E4FC7CAD183F953E0064FB2E /* AudioToolbox.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E4C8B53526DE527E00F6F42D /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E4C8B53626DE527E00F6F42D /* QTKit.framework in Frameworks */,
+				E4C8B53726DE527E00F6F42D /* libluajit-5.1.dylib in Frameworks */,
+				E4C8B53826DE527E00F6F42D /* Accelerate.framework in Frameworks */,
+				E4C8B53926DE527E00F6F42D /* AGL.framework in Frameworks */,
+				E4C8B53A26DE527E00F6F42D /* Carbon.framework in Frameworks */,
+				E4C8B53B26DE527E00F6F42D /* Cocoa.framework in Frameworks */,
+				E4C8B53C26DE527E00F6F42D /* GLUT.framework in Frameworks */,
+				E4C8B53D26DE527E00F6F42D /* IOKit.framework in Frameworks */,
+				E4C8B53E26DE527E00F6F42D /* OpenGL.framework in Frameworks */,
+				E4C8B53F26DE527E00F6F42D /* QuickTime.framework in Frameworks */,
+				E4C8B54026DE527E00F6F42D /* System.framework in Frameworks */,
+				E4C8B54126DE527E00F6F42D /* AppKit.framework in Frameworks */,
+				E4C8B54226DE527E00F6F42D /* Foundation.framework in Frameworks */,
+				E4C8B54326DE527E00F6F42D /* WebKit.framework in Frameworks */,
+				E4C8B54426DE527E00F6F42D /* AudioToolbox.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -333,6 +473,7 @@
 			isa = PBXGroup;
 			children = (
 				8D1107320486CEB800E47090 /* LuaAppMaker.app */,
+				E4C8B54B26DE527E00F6F42D /* LuaAppMaker Legacy.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -346,6 +487,7 @@
 				E4FC77CD183E4FDD0064FB2E /* Resources */,
 				29B97323FDCFA39411CA2CEA /* Frameworks */,
 				19C28FACFE9D520D11CA2CBB /* Products */,
+				E4C8B54C26DE527E00F6F42D /* LuaAppMaker copy-Info.plist */,
 			);
 			name = Molby;
 			sourceTree = "<group>";
@@ -373,6 +515,8 @@
 				E4D6D8C0230ADEC10008ADE9 /* textctrl_addition.mm */,
 				E4D6D8BD230ADEC00008ADE9 /* LuaAppMaker.cpp */,
 				E4D6D8BB230ADEC00008ADE9 /* LuaAppMaker.h */,
+				E480333926F61FA20064D1F5 /* ProgressDialog.cpp */,
+				E480333C26F61FAE0064D1F5 /* ProgressDialog.h */,
 				E4D6D8C3230ADEC10008ADE9 /* LuaAppMaker.iss */,
 				E4D6D8BA230ADEC00008ADE9 /* LuaAppMaker.rc */,
 			);
@@ -583,6 +727,9 @@
 		E4FC780D183E50AF0064FB2E /* Linked Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				E4401B6A26DE6B91005B15E9 /* CoreMedia.framework */,
+				E4401B6826DE6B4E005B15E9 /* AVKit.framework */,
+				E4401B6626DE6B1C005B15E9 /* AVFoundation.framework */,
 				E4547DE626C56DDA00479283 /* libluajit-5.1.dylib */,
 				E48A4A3C2153E902005F88AB /* QTKit.framework */,
 				E4FC7CAC183F953E0064FB2E /* AudioToolbox.framework */,
@@ -665,6 +812,28 @@
 			productReference = 8D1107320486CEB800E47090 /* LuaAppMaker.app */;
 			productType = "com.apple.product-type.application";
 		};
+		E4C8B4EA26DE527E00F6F42D /* LuaAppMaker Legacy */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E4C8B54826DE527E00F6F42D /* Build configuration list for PBXNativeTarget "LuaAppMaker Legacy" */;
+			buildPhases = (
+				E4C8B4EB26DE527E00F6F42D /* ShellScript */,
+				E4C8B4EC26DE527E00F6F42D /* Run Script */,
+				E4C8B4ED26DE527E00F6F42D /* Resources */,
+				E4C8B4F026DE527E00F6F42D /* Sources */,
+				E4C8B53526DE527E00F6F42D /* Frameworks */,
+				E4C8B54526DE527E00F6F42D /* CopyFiles */,
+				E4C8B54726DE527E00F6F42D /* ShellScript */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "LuaAppMaker Legacy";
+			productInstallPath = "$(HOME)/Applications";
+			productName = Molby;
+			productReference = E4C8B54B26DE527E00F6F42D /* LuaAppMaker Legacy.app */;
+			productType = "com.apple.product-type.application";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -697,6 +866,7 @@
 			projectRoot = "";
 			targets = (
 				8D1107260486CEB800E47090 /* LuaAppMaker */,
+				E4C8B4EA26DE527E00F6F42D /* LuaAppMaker Legacy */,
 				E4CB370B1FE2C1F7001BB75E /* LuaAppMaker_win */,
 				E4472675232E556F000600DD /* LuaAppMaker_win32 */,
 				E4CB370F1FE4FF0E001BB75E /* LuaAppMaker_archive */,
@@ -711,6 +881,15 @@
 			files = (
 				E4137209232BBF8B006C980A /* lib in Resources */,
 				E4318880231258D300B53D02 /* wxlualogo.icns in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E4C8B4ED26DE527E00F6F42D /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E4C8B4EE26DE527E00F6F42D /* lib in Resources */,
+				E4C8B4EF26DE527E00F6F42D /* wxlualogo.icns in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -748,6 +927,50 @@
 			shellPath = /bin/sh;
 			shellScript = "if [ \"${BUILD_STYLE:=$CONFIGURATION}\" = \"Release\" ]; then\nmkdir -p \"$PROJECT_DIR/../_latest_binaries\" || exit 1\nrm -rf \"$PROJECT_DIR/../_latest_binaries/${PRODUCT_NAME}.app\" || exit 1\n(cd \"$TARGET_BUILD_DIR\"; cp -a ${PRODUCT_NAME}.app \"$PROJECT_DIR/../_latest_binaries\") || exit 1\nfi\nexit 0\n";
 		};
+		E4C8B4EB26DE527E00F6F42D /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "cd $PROJECT_DIR; mkdir -p build; sh ../wxSources/record_build_date.sh --with-svn-status >build/buildInfo.c\n";
+		};
+		E4C8B4EC26DE527E00F6F42D /* Run Script */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Run Script";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# LUAJIT_VERSION is given as a user-defined setting in the Xcode build settings\nexport LUAJIT_DIR=LuaJIT-$LUAJIT_VERSION\nexport TARGET_PLATFORM=MAC\nif [ ! -f $PROJECT_DIR/build/lib/libluajit-5.1.dylib ]; then \n  sh ../wxSources/build_luajit.sh\nfi\n";
+		};
+		E4C8B54726DE527E00F6F42D /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if [ \"${BUILD_STYLE:=$CONFIGURATION}\" = \"Release\" ]; then\nmkdir -p \"$PROJECT_DIR/../_latest_binaries\" || exit 1\nrm -rf \"$PROJECT_DIR/../_latest_binaries/${PRODUCT_NAME}.app\" || exit 1\n(cd \"$TARGET_BUILD_DIR\"; cp -a \"${PRODUCT_NAME}.app\" \"$PROJECT_DIR/../_latest_binaries\") || exit 1\nfi\nexit 0\n";
+		};
 		E4CB37171FE4FF42001BB75E /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -759,7 +982,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if [ \"${BUILD_STYLE:=$CONFIGURATION}\" = \"Release\" ]; then\n  (cd \"$PROJECT_DIR/../_latest_binaries\" && rm -f \"${PROJECT_NAME}Mac.zip\" && zip -r \"${PROJECT_NAME}Mac.zip\" \"${PROJECT_NAME}.app\" -x \\*.DS_Store -x \\*.svn*) || exit 1\n(cd \"$PROJECT_DIR/../build-win/build/release\" && rm -f \"${PROJECT_NAME}Win64.zip\" && zip -r \"${PROJECT_NAME}Win64.zip\" \"${PROJECT_NAME}\" -x \\*.DS_Store -x \\*.svn* && mv -f \"${PROJECT_NAME}Win64.zip\" ../../../_latest_binaries) || exit 1\n  (cd \"$PROJECT_DIR/../build-win32/build/release\" && rm -f \"${PROJECT_NAME}Win32.zip\" && zip -r \"${PROJECT_NAME}Win32.zip\" \"${PROJECT_NAME}\" -x \\*.DS_Store -x \\*.svn* && mv -f \"${PROJECT_NAME}Win32.zip\" ../../../_latest_binaries) || exit 1\n  (cd \"$PROJECT_DIR/../build-win\"; PATH=/usr/local/homebrew/bin:$PATH; make setup) || exit 1\nfi\n";
+			shellScript = "if [ \"${BUILD_STYLE:=$CONFIGURATION}\" = \"Release\" ]; then\n  (cd \"$PROJECT_DIR/../_latest_binaries\" && rm -f \"${PROJECT_NAME}Mac.zip\" && zip -r \"${PROJECT_NAME}Mac.zip\" \"${PROJECT_NAME}.app\" -x \\*.DS_Store -x \\*.svn*) || exit 1\n  (cd \"$PROJECT_DIR/../_latest_binaries\" && rm -f \"${PROJECT_NAME}LegacyMac.zip\" && zip -r \"${PROJECT_NAME}LegacyMac.zip\" \"${PROJECT_NAME} Legacy.app\" -x \\*.DS_Store -x \\*.svn*) || exit 1\n  (cd \"$PROJECT_DIR/../build-win/build/release\" && rm -f \"${PROJECT_NAME}Win64.zip\" && zip -r \"${PROJECT_NAME}Win64.zip\" \"${PROJECT_NAME}\" -x \\*.DS_Store -x \\*.svn* && mv -f \"${PROJECT_NAME}Win64.zip\" ../../../_latest_binaries) || exit 1\n  (cd \"$PROJECT_DIR/../build-win32/build/release\" && rm -f \"${PROJECT_NAME}Win32.zip\" && zip -r \"${PROJECT_NAME}Win32.zip\" \"${PROJECT_NAME}\" -x \\*.DS_Store -x \\*.svn* && mv -f \"${PROJECT_NAME}Win32.zip\" ../../../_latest_binaries) || exit 1\n  (cd \"$PROJECT_DIR/../build-win\"; PATH=/usr/local/homebrew/bin:$PATH; make setup) || exit 1\nfi\n";
 		};
 		E4FC7B57183E516E0064FB2E /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -807,6 +1030,7 @@
 				E4D6D940230AE8910008ADE9 /* wxhtml_bind.cpp in Sources */,
 				E4D6D999230AE8B10008ADE9 /* wxlstack.cpp in Sources */,
 				E4D6D927230AE8910008ADE9 /* wxpropgrid_bind.cpp in Sources */,
+				E480333A26F61FA20064D1F5 /* ProgressDialog.cpp in Sources */,
 				E4D6D92C230AE8910008ADE9 /* wxcore_help.cpp in Sources */,
 				E4D6D92B230AE8910008ADE9 /* wxcore_wxlcore.cpp in Sources */,
 				E4D6D998230AE8B10008ADE9 /* Makefile in Sources */,
@@ -843,12 +1067,87 @@
 				E4D6D996230AE8B10008ADE9 /* wxlbind.cpp in Sources */,
 				E4D6D989230AE8B10008ADE9 /* wxlua_bind.cpp in Sources */,
 				E4D6D92F230AE8910008ADE9 /* wxcore_defsutils.cpp in Sources */,
-				E4D6D9A023101F240008ADE9 /* filedlg.mm in Sources */,
 				E4D6D957230AE8910008ADE9 /* wxaui_bind.cpp in Sources */,
 				E4D6D930230AE8910008ADE9 /* wxcore_clipdrag.cpp in Sources */,
 				E4D6D98B230AE8B10008ADE9 /* wxlcallb.cpp in Sources */,
 				E4D6D990230AE8B10008ADE9 /* wxldtarg.cpp in Sources */,
 				E4D6D943230AE8910008ADE9 /* wxcore_controls.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E4C8B4F026DE527E00F6F42D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E4C8B4F126DE527E00F6F42D /* wxbase_base.cpp in Sources */,
+				E4C8B4F226DE527E00F6F42D /* lua_addition.c in Sources */,
+				E4C8B4F326DE527E00F6F42D /* ConsoleFrame.cpp in Sources */,
+				E4C8B4F426DE527E00F6F42D /* wxcore_sizer.cpp in Sources */,
+				E4C8B4F526DE527E00F6F42D /* wxluadebugger_bind.cpp in Sources */,
+				E4C8B4F626DE527E00F6F42D /* wxcore_menutool.cpp in Sources */,
+				E4C8B4F726DE527E00F6F42D /* wxmedia_bind.cpp in Sources */,
+				E4C8B4F826DE527E00F6F42D /* lbitlib.c in Sources */,
+				E4C8B4F926DE527E00F6F42D /* Makefile in Sources */,
+				E4C8B4FA26DE527E00F6F42D /* wxgl_bind.cpp in Sources */,
+				E4C8B4FB26DE527E00F6F42D /* wxbase_datetime.cpp in Sources */,
+				E4C8B4FC26DE527E00F6F42D /* wxadv_wxladv.cpp in Sources */,
+				E4C8B4FD26DE527E00F6F42D /* wxwebview_bind.cpp in Sources */,
+				E480333B26F61FA20064D1F5 /* ProgressDialog.cpp in Sources */,
+				E4C8B4FE26DE527E00F6F42D /* wxbase_bind.cpp in Sources */,
+				E4C8B4FF26DE527E00F6F42D /* wxcore_geometry.cpp in Sources */,
+				E4C8B50026DE527E00F6F42D /* dummy.cpp in Sources */,
+				E4C8B50126DE527E00F6F42D /* wxxml_bind.cpp in Sources */,
+				E4C8B50226DE527E00F6F42D /* wxcore_picker.cpp in Sources */,
+				E4C8B50326DE527E00F6F42D /* wxbase_data.cpp in Sources */,
+				E4C8B50426DE527E00F6F42D /* wxbase_file.cpp in Sources */,
+				E4C8B50526DE527E00F6F42D /* Makefile in Sources */,
+				E4C8B50626DE527E00F6F42D /* wxlconsole.cpp in Sources */,
+				E4C8B50726DE527E00F6F42D /* dummy.cpp in Sources */,
+				E4C8B50826DE527E00F6F42D /* wxhtml_bind.cpp in Sources */,
+				E4C8B50926DE527E00F6F42D /* wxlstack.cpp in Sources */,
+				E4C8B50A26DE527E00F6F42D /* wxpropgrid_bind.cpp in Sources */,
+				E4C8B50B26DE527E00F6F42D /* wxcore_help.cpp in Sources */,
+				E4C8B50C26DE527E00F6F42D /* wxcore_wxlcore.cpp in Sources */,
+				E4C8B50D26DE527E00F6F42D /* Makefile in Sources */,
+				E4C8B50E26DE527E00F6F42D /* wxcore_mdi.cpp in Sources */,
+				E4C8B50F26DE527E00F6F42D /* Makefile in Sources */,
+				E4C8B51026DE527E00F6F42D /* wxcore_print.cpp in Sources */,
+				E4C8B51126DE527E00F6F42D /* wxstc_bind.cpp in Sources */,
+				E4C8B51226DE527E00F6F42D /* wxxrc_bind.cpp in Sources */,
+				E4C8B51326DE527E00F6F42D /* wxlsock.cpp in Sources */,
+				E4C8B51426DE527E00F6F42D /* wxcore_gdi.cpp in Sources */,
+				E4C8B51526DE527E00F6F42D /* LuaAppMaker.cpp in Sources */,
+				E4C8B51626DE527E00F6F42D /* dummy.cpp in Sources */,
+				E4C8B51726DE527E00F6F42D /* wxadv_bind.cpp in Sources */,
+				E4C8B51826DE527E00F6F42D /* wxcore_image.cpp in Sources */,
+				E4C8B51926DE527E00F6F42D /* wxnet_bind.cpp in Sources */,
+				E4C8B51A26DE527E00F6F42D /* wxlobject.cpp in Sources */,
+				E4C8B51B26DE527E00F6F42D /* textctrl_addition.mm in Sources */,
+				E4C8B51C26DE527E00F6F42D /* wxcore_event.cpp in Sources */,
+				E4C8B51D26DE527E00F6F42D /* wxllua.cpp in Sources */,
+				E4C8B51E26DE527E00F6F42D /* wxcore_windows.cpp in Sources */,
+				E4C8B51F26DE527E00F6F42D /* dummy.cpp in Sources */,
+				E4C8B52026DE527E00F6F42D /* wxldserv.cpp in Sources */,
+				E4C8B52126DE527E00F6F42D /* wxldebug.cpp in Sources */,
+				E4C8B52226DE527E00F6F42D /* wxlstate.cpp in Sources */,
+				E4C8B52326DE527E00F6F42D /* wxrichtext_bind.cpp in Sources */,
+				E4C8B52426DE527E00F6F42D /* wxcore_graphics.cpp in Sources */,
+				E4C8B52526DE527E00F6F42D /* buildInfo.c in Sources */,
+				E4C8B52626DE527E00F6F42D /* wxcore_dialogs.cpp in Sources */,
+				E4C8B52726DE527E00F6F42D /* wxcore_core.cpp in Sources */,
+				E4C8B52826DE527E00F6F42D /* wxhtml_wxlhtml.cpp in Sources */,
+				E4C8B52926DE527E00F6F42D /* wxbase_config.cpp in Sources */,
+				E4C8B52A26DE527E00F6F42D /* wxcore_bind.cpp in Sources */,
+				E4C8B52B26DE527E00F6F42D /* wxcore_appframe.cpp in Sources */,
+				E4C8B52C26DE527E00F6F42D /* wxlbind.cpp in Sources */,
+				E4C8B52D26DE527E00F6F42D /* wxlua_bind.cpp in Sources */,
+				E4C8B52E26DE527E00F6F42D /* wxcore_defsutils.cpp in Sources */,
+				E4C8B52F26DE527E00F6F42D /* filedlg.mm in Sources */,
+				E4C8B53026DE527E00F6F42D /* wxaui_bind.cpp in Sources */,
+				E4C8B53126DE527E00F6F42D /* wxcore_clipdrag.cpp in Sources */,
+				E4C8B53226DE527E00F6F42D /* wxlcallb.cpp in Sources */,
+				E4C8B53326DE527E00F6F42D /* wxldtarg.cpp in Sources */,
+				E4C8B53426DE527E00F6F42D /* wxcore_controls.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -859,6 +1158,11 @@
 			isa = PBXTargetDependency;
 			target = E4472675232E556F000600DD /* LuaAppMaker_win32 */;
 			targetProxy = E4472679232E56A2000600DD /* PBXContainerItemProxy */;
+		};
+		E480333826F23A3C0064D1F5 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = E4C8B4EA26DE527E00F6F42D /* LuaAppMaker Legacy */;
+			targetProxy = E480333726F23A3C0064D1F5 /* PBXContainerItemProxy */;
 		};
 		E4CB37141FE4FF23001BB75E /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -879,7 +1183,7 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = "$(ARCHS_STANDARD)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++98";
-				CLANG_CXX_LIBRARY = "libstdc++";
+				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_LINK_OBJC_RUNTIME = NO;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
@@ -894,8 +1198,8 @@
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				GCC_VERSION = "";
 				HEADER_SEARCH_PATHS = (
-					"$(PROJECT_DIR)/../../wxWidgets-3.0.3/include",
-					"$(PROJECT_DIR)/../../wxWidgets-3.0.3/build-osx/lib/wx/include/osx_cocoa-unicode-static-3.0",
+					"$(PROJECT_DIR)/../../wxWidgets-3.1.5/include",
+					"$(PROJECT_DIR)/../../wxWidgets-3.1.5/build-osx/lib/wx/include/osx_cocoa-unicode-static-3.1",
 					"$(PROJECT_DIR)/../LuaJIT-$(LUAJIT_VERSION)/src",
 					"$(PROJECT_DIR)/../wxlua/wxLua/modules/wxbind/include",
 					"$(PROJECT_DIR)/../wxlua/wxLua/modules/wxbind/setup",
@@ -908,11 +1212,11 @@
 				LD_NO_PIE = NO;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/../Resources/lib";
 				LIBRARY_SEARCH_PATHS = (
-					"$(PROJECT_DIR)/../../wxWidgets-3.0.3/build-osx/lib",
+					"$(PROJECT_DIR)/../../wxWidgets-3.1.5/build-osx/lib",
 					"$(PROJECT_DIR)/build/lib",
 				);
 				LUAJIT_VERSION = "2.1.0-beta3";
-				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				OTHER_CFLAGS = (
 					"-D_FILE_OFFSET_BITS=64",
 					"-D__WXMAC__",
@@ -922,13 +1226,13 @@
 					"-DMacOS",
 				);
 				OTHER_LDFLAGS = (
-					"-lwx_osx_cocoau-3.0",
-					"-lwx_osx_cocoau_gl-3.0",
-					"-lwxregexu-3.0",
-					"-lwxtiff-3.0",
-					"-lwxjpeg-3.0",
-					"-lwxpng-3.0",
-					"-lwxscintilla-3.0",
+					"-lwx_osx_cocoau-3.1",
+					"-lwx_osx_cocoau_gl-3.1",
+					"-lwxregexu-3.1",
+					"-lwxtiff-3.1",
+					"-lwxjpeg-3.1",
+					"-lwxpng-3.1",
+					"-lwxscintilla-3.1",
 					"-lz",
 					"-lpthread",
 					"-liconv",
@@ -942,7 +1246,7 @@
 				PRESERVE_DEAD_CODE_INITS_AND_TERMS = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = com.github.toshinagata.LuaAppMaker;
 				PRODUCT_NAME = LuaAppMaker;
-				SDKROOT = macosx10.6;
+				SDKROOT = macosx10.11;
 				STRIP_INSTALLED_PRODUCT = NO;
 			};
 			name = Debug;
@@ -953,7 +1257,7 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = "$(ARCHS_STANDARD)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++98";
-				CLANG_CXX_LIBRARY = "libstdc++";
+				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_LINK_OBJC_RUNTIME = NO;
 				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = dwarf;
@@ -966,8 +1270,8 @@
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				GCC_VERSION = "";
 				HEADER_SEARCH_PATHS = (
-					"$(PROJECT_DIR)/../../wxWidgets-3.0.3/include",
-					"$(PROJECT_DIR)/../../wxWidgets-3.0.3/build-osx/lib/wx/include/osx_cocoa-unicode-static-3.0",
+					"$(PROJECT_DIR)/../../wxWidgets-3.1.5/include",
+					"$(PROJECT_DIR)/../../wxWidgets-3.1.5/build-osx/lib/wx/include/osx_cocoa-unicode-static-3.1",
 					"$(PROJECT_DIR)/../LuaJIT-$(LUAJIT_VERSION)/src",
 					"$(PROJECT_DIR)/../wxlua/wxLua/modules/wxbind/include",
 					"$(PROJECT_DIR)/../wxlua/wxLua/modules/wxbind/setup",
@@ -979,11 +1283,11 @@
 				LD_NO_PIE = NO;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/../Resources/lib";
 				LIBRARY_SEARCH_PATHS = (
-					"$(PROJECT_DIR)/../../wxWidgets-3.0.3/build-osx/lib",
+					"$(PROJECT_DIR)/../../wxWidgets-3.1.5/build-osx/lib",
 					"$(PROJECT_DIR)/build/lib",
 				);
 				LUAJIT_VERSION = "2.1.0-beta3";
-				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				OTHER_CFLAGS = (
 					"-D_FILE_OFFSET_BITS=64",
 					"-D__WXMAC__",
@@ -993,13 +1297,13 @@
 					"-DMacOS",
 				);
 				OTHER_LDFLAGS = (
-					"-lwx_osx_cocoau-3.0",
-					"-lwx_osx_cocoau_gl-3.0",
-					"-lwxregexu-3.0",
-					"-lwxtiff-3.0",
-					"-lwxjpeg-3.0",
-					"-lwxpng-3.0",
-					"-lwxscintilla-3.0",
+					"-lwx_osx_cocoau-3.1",
+					"-lwx_osx_cocoau_gl-3.1",
+					"-lwxregexu-3.1",
+					"-lwxtiff-3.1",
+					"-lwxjpeg-3.1",
+					"-lwxpng-3.1",
+					"-lwxscintilla-3.1",
 					"-lz",
 					"-lpthread",
 					"-liconv",
@@ -1013,7 +1317,7 @@
 				PRESERVE_DEAD_CODE_INITS_AND_TERMS = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = com.github.toshinagata.LuaAppMaker;
 				PRODUCT_NAME = LuaAppMaker;
-				SDKROOT = macosx10.6;
+				SDKROOT = macosx10.11;
 			};
 			name = Release;
 		};
@@ -1133,6 +1437,150 @@
 				OTHER_CFLAGS = "";
 				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		E4C8B54926DE527E00F6F42D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD)";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++98";
+				CLANG_CXX_LIBRARY = "libstdc++";
+				CLANG_LINK_OBJC_RUNTIME = NO;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_MODEL_TUNING = G5;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = NO;
+				GCC_PREFIX_HEADER = "";
+				GCC_REUSE_STRINGS = NO;
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = "";
+				HEADER_SEARCH_PATHS = (
+					"$(PROJECT_DIR)/../../wxWidgets-3.0.3/include",
+					"$(PROJECT_DIR)/../../wxWidgets-3.0.3/build-osx/lib/wx/include/osx_cocoa-unicode-static-3.0",
+					"$(PROJECT_DIR)/../LuaJIT-$(LUAJIT_VERSION)/src",
+					"$(PROJECT_DIR)/../wxlua/wxLua/modules/wxbind/include",
+					"$(PROJECT_DIR)/../wxlua/wxLua/modules/wxbind/setup",
+					"$(PROJECT_DIR)/../wxlua/wxLua/modules",
+					"$(PROJECT_DIR)/../wxlua/wxLua",
+				);
+				INFOPLIST_FILE = "$(SRCROOT)/Info.plist";
+				INSTALL_PATH = "$(HOME)/Applications";
+				KEEP_PRIVATE_EXTERNS = YES;
+				LD_NO_PIE = NO;
+				LD_RUNPATH_SEARCH_PATHS = "@executable_path/../Resources/lib";
+				LIBRARY_SEARCH_PATHS = (
+					"$(PROJECT_DIR)/../../wxWidgets-3.0.3/build-osx/lib",
+					"$(PROJECT_DIR)/build/lib",
+				);
+				LUAJIT_VERSION = "2.1.0-beta3";
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				OTHER_CFLAGS = (
+					"-D_FILE_OFFSET_BITS=64",
+					"-D__WXMAC__",
+					"-D__WXOSX__",
+					"-D__WXOSX_COCOA__",
+					"-DLUA_COMPAT_MODULE",
+					"-DMacOS",
+				);
+				OTHER_LDFLAGS = (
+					"-lwx_osx_cocoau-3.0",
+					"-lwx_osx_cocoau_gl-3.0",
+					"-lwxregexu-3.0",
+					"-lwxtiff-3.0",
+					"-lwxjpeg-3.0",
+					"-lwxpng-3.0",
+					"-lwxscintilla-3.0",
+					"-lz",
+					"-lpthread",
+					"-liconv",
+					"-lexpat",
+					"-lluajit-5.1",
+					"-pagezero_size",
+					10000,
+					"-image_base",
+					100000000,
+				);
+				PRESERVE_DEAD_CODE_INITS_AND_TERMS = NO;
+				PRODUCT_BUNDLE_IDENTIFIER = com.github.toshinagata.LuaAppMaker;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx10.6;
+				STRIP_INSTALLED_PRODUCT = NO;
+			};
+			name = Debug;
+		};
+		E4C8B54A26DE527E00F6F42D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD)";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++98";
+				CLANG_CXX_LIBRARY = "libstdc++";
+				CLANG_LINK_OBJC_RUNTIME = NO;
+				DEAD_CODE_STRIPPING = YES;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEPLOYMENT_POSTPROCESSING = NO;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_MODEL_TUNING = G5;
+				GCC_PRECOMPILE_PREFIX_HEADER = NO;
+				GCC_PREFIX_HEADER = "";
+				GCC_REUSE_STRINGS = NO;
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = "";
+				HEADER_SEARCH_PATHS = (
+					"$(PROJECT_DIR)/../../wxWidgets-3.0.3/include",
+					"$(PROJECT_DIR)/../../wxWidgets-3.0.3/build-osx/lib/wx/include/osx_cocoa-unicode-static-3.0",
+					"$(PROJECT_DIR)/../LuaJIT-$(LUAJIT_VERSION)/src",
+					"$(PROJECT_DIR)/../wxlua/wxLua/modules/wxbind/include",
+					"$(PROJECT_DIR)/../wxlua/wxLua/modules/wxbind/setup",
+					"$(PROJECT_DIR)/../wxlua/wxLua/modules",
+					"$(PROJECT_DIR)/../wxlua/wxLua",
+				);
+				INFOPLIST_FILE = "$(SRCROOT)/Info.plist";
+				INSTALL_PATH = "$(HOME)/Applications";
+				LD_NO_PIE = NO;
+				LD_RUNPATH_SEARCH_PATHS = "@executable_path/../Resources/lib";
+				LIBRARY_SEARCH_PATHS = (
+					"$(PROJECT_DIR)/../../wxWidgets-3.0.3/build-osx/lib",
+					"$(PROJECT_DIR)/build/lib",
+				);
+				LUAJIT_VERSION = "2.1.0-beta3";
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				OTHER_CFLAGS = (
+					"-D_FILE_OFFSET_BITS=64",
+					"-D__WXMAC__",
+					"-D__WXOSX__",
+					"-D__WXOSX_COCOA__",
+					"-DLUA_COMPAT_MODULE",
+					"-DMacOS",
+				);
+				OTHER_LDFLAGS = (
+					"-lwx_osx_cocoau-3.0",
+					"-lwx_osx_cocoau_gl-3.0",
+					"-lwxregexu-3.0",
+					"-lwxtiff-3.0",
+					"-lwxjpeg-3.0",
+					"-lwxpng-3.0",
+					"-lwxscintilla-3.0",
+					"-lz",
+					"-lpthread",
+					"-liconv",
+					"-lexpat",
+					"-lluajit-5.1",
+					"-pagezero_size",
+					10000,
+					"-image_base",
+					100000000,
+				);
+				PRESERVE_DEAD_CODE_INITS_AND_TERMS = NO;
+				PRODUCT_BUNDLE_IDENTIFIER = com.github.toshinagata.LuaAppMaker;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx10.6;
 			};
 			name = Release;
 		};
@@ -1262,6 +1710,15 @@
 			buildConfigurations = (
 				E4472677232E556F000600DD /* Debug */,
 				E4472678232E556F000600DD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		E4C8B54826DE527E00F6F42D /* Build configuration list for PBXNativeTarget "LuaAppMaker Legacy" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E4C8B54926DE527E00F6F42D /* Debug */,
+				E4C8B54A26DE527E00F6F42D /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

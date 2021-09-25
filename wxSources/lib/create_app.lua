@@ -1,7 +1,29 @@
-local function ChooseDir(event, msg, textctrl)
+local function ChooseDir(event, msg, textctrl, text2, text3)
+  local platform = string.match(wx.wxGetOsDescription(), "^(%S*)")
   local fname = wx.wxDirSelector(msg, "", wx.wxDD_DIR_MUST_EXIST)
   if fname ~= "" then
     textctrl:SetValue(fname)
+    -- if text2 is empty, then set the folder name
+    local fn = wx.wxFileName(fname)
+    local appname = fn:GetName()
+    if text2 and text2:GetValue() == "" then
+      text2:SetValue(appname)
+    end
+    -- if text3 is empty, then look for "appname" + extension
+    if text3 and text3:GetValue() == "" then
+      fn:AppendDir(appname)
+      fn:SetName(appname)
+      if platform == "Windows" then
+        fn:SetExt("ico")
+      elseif platform == "Mac" or platform == "macOS" then
+        fn:SetExt("icns")
+      else
+        fn:SetExt("png")
+      end
+      if fn:FileExists() then
+        text3:SetValue(fn:GetFullPath())
+      end
+    end
   end
 end
 
@@ -39,8 +61,6 @@ function LuaApp.CreateApp()
   local text11 = wx.wxStaticText(panel1, -1, "wxLua Script Folder", wx.wxPoint(6, 6))
   local button1 = wx.wxButton(panel1, -1, "Choose...", wx.wxPoint(320, 6), wx.wxSize(74, 18))
   local text12 = wx.wxTextCtrl(panel1, 1, "", wx.wxPoint(6, 28), wx.wxSize(388, 40), wx.wxTE_READONLY)
-  button1:Connect(-1, wx.wxEVT_COMMAND_BUTTON_CLICKED,
-    function (event) ChooseDir(event, "Choose wxLua script folder", text12) end)
 
   local text21 = wx.wxStaticText(panel1, -1, "Application Name", wx.wxPoint(6, 72))
   local text22 = wx.wxTextCtrl(panel1, 1, "", wx.wxPoint(6, 94), wx.wxSize(388, 20))
@@ -48,14 +68,17 @@ function LuaApp.CreateApp()
   local text31 = wx.wxStaticText(panel1, -1, "Application Icon", wx.wxPoint(6, 124))
   local button3 = wx.wxButton(panel1, -1, "Choose...", wx.wxPoint(320, 124), wx.wxSize(74, 18))
   local text32 = wx.wxTextCtrl(panel1, 1, "", wx.wxPoint(6, 146), wx.wxSize(388, 40), wx.wxTE_READONLY)
+
+  button1:Connect(-1, wx.wxEVT_COMMAND_BUTTON_CLICKED,
+    function (event) ChooseDir(event, "Choose wxLua script folder", text12, text22, text32) end)
   button3:Connect(-1, wx.wxEVT_COMMAND_BUTTON_CLICKED,
     function (event) ChooseFile(event, "Choose Application Icon file", text32) end)
 
   local sizerb = dialog:CreateButtonSizer(wx.wxOK + wx.wxCANCEL)
   local sizer1 = wx.wxBoxSizer(wx.wxVERTICAL)
 
-  sizer1:Add(panel1, wx.wxSizerFlags():Top())
-  sizer1:Add(sizerb, wx.wxSizerFlags():Bottom():Border(wx.wxALL, 5))
+  sizer1:Add(panel1, wx.wxSizerFlags(1))
+  sizer1:Add(sizerb, wx.wxSizerFlags(0):Border(wx.wxALL, 5))
   dialog:SetSizerAndFit(sizer1)
 
   local script_folder, app_name, icon_path

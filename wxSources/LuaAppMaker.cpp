@@ -22,6 +22,8 @@
 
 #ifdef __WXGTK__
 #include <locale.h>
+#include <sys/types.h>
+#include <sys/wait.h>
 #endif
 
 #ifdef __WXMAC__
@@ -42,6 +44,7 @@
 
 #include "LuaAppMaker.h"
 #include "ConsoleFrame.h"
+#include "ProgressDialog.h"
 
 #include "lua_addition.h"
 
@@ -50,6 +53,7 @@
 extern "C"
 {
 #include "lualib.h"
+#include "luajit.h"  /*  For version information  */
 }
 
 //  For stat or _stat functions
@@ -127,12 +131,13 @@ fix_dosish_path(char *p)
 }
 #endif
 
+#if wxUSE_WEBVIEW && wxLUA_USEBINDING_WXWEBVIEW
 //  wxWebView addition
 //  wxWebView::RegisterHandler is missing in wxLua, so we define a support function here
 //  wxwebview.wxWebView.RegisterHandler("type") translates to
 //  wxWebView::RegiserHandler(wxSharedPtr<wxWebViewHandler>(new wxWebViewFSHandler("type")))
 //  I am not sure whether this implementation is appropriate... (toshinagata 2021/8/26)
-static int
+/*static int
 registerHandlerToWebView(lua_State *L)
 {
     // wxwebview.RegisterHandler(wview, name)
@@ -142,7 +147,8 @@ registerHandlerToWebView(lua_State *L)
     const wxString name = wxlua_getwxStringtype(L, 2);
     webview->RegisterHandler(wxSharedPtr<wxWebViewHandler>(new wxWebViewFSHandler(name)));
     return 0;
-}
+}*/
+#endif
 
 //  wxMemoryFSHandler addition: this is one override of AddFile, but we define
 //  a support function with a different name
@@ -255,8 +261,55 @@ found:
     *resourcePath = fname.GetPath();
     *applicationName = fname.GetName();
     return *resourcePath;
-#else
-#error "FindResourcePath is not defined for UNIXes."
+
+#else  /*  UNIX-like  */
+
+    wxString str;
+    wxString argv0 = wxTheApp->argv[0];
+    
+    if (resourcePath != NULL)
+        return *resourcePath;
+    
+    resourcePath = new wxString;
+    applicationName = new wxString;
+    
+    //  Is it an absolute path?
+    if (wxIsAbsolutePath(argv0)) {
+        str = argv0;
+        goto found;
+    } else {
+        //  Is it a relative path?
+        wxString currentDir = wxGetCwd();
+        if (currentDir.Last() != wxFILE_SEP_PATH)
+            currentDir += wxFILE_SEP_PATH;
+        str = currentDir + argv0;
+        if (wxFileExists(str)) {
+            goto found;
+        }
+    }
+    //  Search PATH
+    {
+        wxPathList pathList;
+        pathList.AddEnvList(wxT("PATH"));
+        str = pathList.FindAbsoluteValidPath(argv0);
+        if (!str.IsEmpty()) {
+            goto found;
+        }
+    }
+    return wxEmptyString;
+found:
+    wxFileName fname(str);
+    *applicationName = fname.GetName();
+
+    //  Am I invoked as an AppImage?
+    if (wxGetEnv(wxT("APPIMAGE"), NULL) && wxGetEnv(wxT("APPDIR"), resourcePath)) {
+        *resourcePath = *resourcePath + wxT("/usr/bin");
+    } else {
+        *resourcePath = fname.GetPath();
+    }
+
+    return *resourcePath;
+
 #endif
 }
 
@@ -304,6 +357,22 @@ DyLibExtension()
     return wxT("dylib");
 #else
     return wxT("so");
+#endif
+}
+
+inline static wxString
+AppImageArchitecture()
+{
+#if defined(__WXGTK__)
+#if defined(__i386__)
+    return wxT("i686");
+#elif defined(__x86_64__)
+    return wxT("x86_64");
+#else
+    return wxT("arm");
+#endif
+#else
+    return wxT("");
 #endif
 }
 
@@ -369,9 +438,38 @@ bool wxLuaStandaloneApp::OnInit()
     setlocale(LC_NUMERIC, "C");
 #endif
     
+    wxString rpath = FindResourcePath();
+
     // Initialize the wxLua bindings we want to use.
     // See notes for WXLUA_DECLARE_BIND_ALL above.
     WXLUA_IMPLEMENT_BIND_ALL
+    
+    // On Windows and Mac, wxWebView is implemented.
+    // On Linux, wxWebView is not implemented as default, because it causes
+    // some large shared libraries to be linked, which results in a huge
+    // AppImage executable.
+    // Instead, wxwebview.so is built as a shared library, and if it loads
+    // successfully, wxWebView is usable. Otherwise, put a message later
+    // saying that wxWebView is not available and needs several libraries
+    // installed separately.
+    
+#if defined(__WXGTK__)
+    bool webviewAvailable = false;
+    {
+        void *handle = dlopen(rpath + wxT("/lib/wxwebview.so"), RTLD_NOW);
+        if (handle != NULL) {
+            wxLuaBinding * (*wxwebview_init)() = (typeof(wxwebview_init))dlsym(handle, "_Z27wxLuaBinding_wxwebview_initv");
+            if (wxwebview_init != NULL) {
+                (*wxwebview_init)();
+                webviewAvailable = true;
+            } else {
+                fprintf(stderr, "dlsym() failed: %s\n", dlerror());
+            }
+        } else {
+            fprintf(stderr, "dlopen() failed: %s\n", dlerror());
+        }
+    }
+#endif
     
     // When this function returns wxApp:MainLoop() will be called by wxWidgets
     // and so we want the Lua code wx.wxGetApp:MainLoop() to not
@@ -391,31 +489,60 @@ bool wxLuaStandaloneApp::OnInit()
     m_wxlState.RunString(wxT("LuaApp = wx.wxGetApp(); LuaApp.config = {}"));
     
     //  Replace package.path and package.cpath (to prevent looking outside this app)
-    wxString rpath = FindResourcePath();
     wxString lpath = wxT("./?.lua;") +
         rpath + wxT("/scripts/?.lua;") +
         rpath + wxT("/lib/?.lua");
     lpath.Replace(wxT("/"), wxFILE_SEP_PATH, true);
     wxString ext = DyLibExtension();
-    //  On Win32 system, "./lib32" directory is searched before "./", and
-    //  "$(rpath)/lib32/" is searched before "$(rpath)/lib/".
-    //  This allows dlls of the same name can be used for both 64bit and 32bit systems.
-    wxString cpath =
-#if defined(__WXMSW__) && defined(__i386__)
-        wxT("./lib32/?.") + ext + wxT(";");
+    //  The dynamic library is searched in the following paths:
+    //  ./lib/[processor]-[platform]/?.[ext]
+    //  ./lib32/?.[ext]   (for Win32 only)
+    //  ./lib/?.[ext]
+    //  ./?.[ext]
+    //    [processor]: i386 or i686 or x86_64
+    //    [platform]: windows or linux or mac
+    //    [ext]: dll or so or dylib
+    wxString platformLib = wxT("");
+#if defined(__WXMSW__)
+#if defined(__i386__)
+    platformLib = wxT("i686-windows/?.") + ext;   /*  Not i386  */
 #else
-        wxT("");
+    platformLib = wxT("x86_64-windows/?.") + ext;
 #endif
-    cpath =
-        cpath + wxT("./?.") + ext + wxT(";") +
+#elif defined(__WXMAC__)
+    platformLib = wxT("x86_64-mac/?.") + ext;
+#elif defined(__WXGTK__)
+#if defined(__i386__)
+    platformLib = wxT("i386-linux/?.") + ext;
+#elif defined(__x86_64__)
+    platformLib = wxT("x86_64-linux/?.") + ext;
+#else
+    platformLib = wxT("arm-linux/?.") + ext;
+#endif
+#endif
+    
+    wxString clib = wxT("/?.") + ext;
+    wxString cpath = wxT("");
+    if (platformLib != wxT("")) {
+        cpath = wxT("./lib/") + platformLib + wxT(";");
+    }
 #if defined(__WXMSW__) && defined(__i386__)
-        rpath + wxT("/scripts/lib32/?.") + ext + wxT(";") +
+        cpath = cpath + wxT("./lib32/?.") + ext + wxT(";");
 #endif
-        rpath + wxT("/scripts/?.") + ext + wxT(";") +
+    cpath = cpath + wxT("./?.") + ext + wxT(";");
+    if (platformLib != wxT("")) {
+        cpath = cpath + rpath + wxT("/scripts/lib/") + platformLib + wxT(";");
+    }
 #if defined(__WXMSW__) && defined(__i386__)
-        rpath + wxT("/lib32/?.") + ext + wxT(";") +
+    cpath = cpath + rpath + wxT("/scripts/lib32/?.") + ext + wxT(";");
 #endif
-        rpath + wxT("/lib/?.") + ext;
+    if (platformLib != wxT("")) {
+        cpath = cpath + rpath + wxT("/lib/") + platformLib + wxT(";");
+    }
+#if defined(__WXMSW__) && defined(__i386__)
+    cpath = cpath + rpath + wxT("/lib32/?.") + ext + wxT(";");
+#endif
+    cpath = cpath + rpath + wxT("/lib/?.") + ext;
     cpath.Replace(wxT("/"), wxFILE_SEP_PATH, true);
     
     m_wxlState.RunString(wxT("package.path = ") + MakeLuaString(lpath));
@@ -515,12 +642,13 @@ bool wxLuaStandaloneApp::OnInit()
     m_wxlState.RunString(wxT("local p = os.getenv('LUA_CPATH'); package.cpath = ((p and p..';') or '')..package.cpath"));
     
     {
-        //  Implement wxWebView::RegisterHandler (as wxwebview.RegisterHandler)
+#if wxUSE_WEBVIEW && wxLUA_USEBINDING_WXWEBVIEW
+/*        //  Implement wxWebView::RegisterHandler (as wxwebview.RegisterHandler)
         lua_getglobal(L, "wxwebview");
         lua_pushcfunction(L, registerHandlerToWebView);
         lua_setfield(L, -2, "RegisterHandler");
-        lua_pop(L, 1);
-
+        lua_pop(L, 1); */
+#endif
         //  Implement wxMemoryFSHandler::AddBinaryFile
         lua_getglobal(L, "wx");
         lua_getfield(L, -1, "wxMemoryFSHandler");
@@ -538,6 +666,13 @@ bool wxLuaStandaloneApp::OnInit()
     }
 #endif
 
+#if defined(__WXGTK__)
+    if (!webviewAvailable) {
+        DisplayMessage(wxT("wxWebView is not available. To make it available, please install the following libraries.\n"), false);
+        DisplayMessage(wxT("libwebkit2gtk-4.0, libjavascriptcoregtk-4.0"), false);
+    }
+#endif
+    
     RequestOpenFilesByEvent(files);
     
     gInitCompleted = true;
@@ -1020,15 +1155,19 @@ wxLuaStandaloneApp::OnAbout(wxCommandEvent &event)
     wxWindow *icon_panel = new wxWindow(&dialog, -1, wxDefaultPosition, wxSize(96, 96));
     icon_panel->Connect(wxEVT_PAINT, wxPaintEventHandler(wxLuaStandaloneApp::OnPaintIconPanel));
     wxStaticText *text1 = new wxStaticText(&dialog, -1, "LuaAppMaker");
+    wxStaticText *text11 = new wxStaticText(&dialog, -1, gVersionString);
     wxStaticText *text2 = new wxStaticText(&dialog, -1, "Copyright © Toshi Nagata, 2019-2021");
     wxStaticText *text3 = new wxStaticText(&dialog, -1, "Built with:");
-    wxStaticText *text4 = new wxStaticText(&dialog, -1, "wxLua v3.1.0.0 (John Labenski, Paul Kulchenko)");
-    wxStaticText *text5 = new wxStaticText(&dialog, -1, "wxWidgets v3.0.3 (Julian Smart and wxWidgets Team)");
-    wxStaticText *text6 = new wxStaticText(&dialog, -1, "LuaJIT v2.1 beta3 (Mike Pall)");
+    wxStaticText *text4 = new wxStaticText(&dialog, -1, wxLUA_VERSION_STRING wxT(" (John Labenski, Paul Kulchenko)"));
+    char vs[64];
+    snprintf(vs, sizeof vs, "wxWidgets %d.%d.%d (Julian Smart and wxWidgets Team)", wxMAJOR_VERSION, wxMINOR_VERSION, wxRELEASE_NUMBER);
+    wxStaticText *text5 = new wxStaticText(&dialog, -1, vs);
+    wxStaticText *text6 = new wxStaticText(&dialog, -1, LUAJIT_VERSION " (Mike Pall)");
     wxBoxSizer *vsizer = new wxBoxSizer(wxVERTICAL);
     wxSizer *bsizer = dialog.CreateSeparatedButtonSizer(wxOK);
     vsizer->Add(icon_panel, 0, wxCENTER | wxALL, 10);
     vsizer->Add(text1, 0, wxCENTER | wxALL, 10);
+    vsizer->Add(text11, 0, wxCENTER | wxALL, 6);
     vsizer->Add(text2, 0, wxCENTER | wxALL, 6);
     vsizer->Add(400, 6, 0, wxEXPAND);
     vsizer->Add(text3, 0, wxCENTER | wxALL, 2);
@@ -1050,6 +1189,7 @@ wxLuaStandaloneApp::OnAbout(wxCommandEvent &event)
     wxFont font2(size2, wxFONTFAMILY_SWISS, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD);
     wxFont font3(size3, wxFONTFAMILY_SWISS, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD);
     text1->SetFont(font1);
+    text11->SetFont(font2);
     text2->SetFont(font2);
     text3->SetFont(font3);
     text4->SetFont(font3);
@@ -1139,6 +1279,40 @@ CopyRecursive(wxString &src, wxString &dst, bool allowOverwrite)
     return wxT("");
 }
 
+/*  Remove the destination recursively  */
+static wxString
+RemoveRecursive(wxString &path)
+{
+    wxString msg;
+    if (wxFileName::DirExists(path)) {
+        wxDir dir(path);
+        if (!dir.IsOpened())
+            return wxString::Format(wxT("Cannot open directory %s"), (const char *)path);
+        wxString name;
+        if (dir.GetFirst(&name)) {
+            do {
+                if (name != wxT(".") && name != wxT("..")) {
+                    wxString path1 = path + wxFILE_SEP_PATH + name;
+                    msg = RemoveRecursive(path1);
+                    if (!msg.IsEmpty())
+                        return msg;
+                }
+            } while (dir.GetNext(&name));
+        }
+        dir.Close();
+        if (!wxDir::Remove(path)) {
+            return wxString::Format(wxT("Cannot remove directory %s"), (const char *)path);
+        }
+    } else if (wxFileName::FileExists(path)) {
+        if (!::wxRemoveFile(path)) {
+            return wxString::Format(wxT("Cannot remove file %s"), (const char *)path);
+        }
+    } else {
+        return wxString::Format(wxT("File %s does not exist"), (const char *)path);
+    }
+    return wxT("");
+}
+
 void
 wxLuaStandaloneApp::OnCreateApplication(wxCommandEvent &event)
 {
@@ -1146,6 +1320,7 @@ wxLuaStandaloneApp::OnCreateApplication(wxCommandEvent &event)
     const char *script_folder = NULL;
     const char *app_name = NULL;
     const char *icon_path = NULL;
+
     //  LuaApp.CreateApp() returns the following info:
     //  1 script_folder (string)
     //  2 app_name (string)
@@ -1165,14 +1340,25 @@ wxLuaStandaloneApp::OnCreateApplication(wxCommandEvent &event)
     wxString scriptFolder(script_folder, wxConvUTF8);
     wxString iconPath(icon_path, wxConvUTF8);
 
+    
     //  Replace the script folder name with app_name
     wxFileName scriptFolderFName = wxFileName::DirName(scriptFolder);
     scriptFolderFName.RemoveLastDir();
+    wxString scriptFolderParentPath = scriptFolderFName.GetFullPath();
     wxString appName(app_name, wxConvUTF8);
+    wxString appNameExt;
 #if defined(__WXMAC__)
-    wxString appNameExt = appName + wxT(".app");
+    appNameExt = appName + wxT(".app");
+#elif defined(__WXMSW__)
+    appNameExt = appName + wxT(" folder");
 #else
-    wxString appNameExt = appName;
+    bool isAppImage = false;
+    //  Am I running as an AppImage?
+    appNameExt = appName + wxT(" folder");
+    if (getenv("APPIMAGE") != NULL) {
+        isAppImage = true;
+        appNameExt = appName + wxT("-") + AppImageArchitecture() + wxT(".AppImage");
+    }
 #endif
     
     int n = 1;
@@ -1187,8 +1373,13 @@ wxLuaStandaloneApp::OnCreateApplication(wxCommandEvent &event)
         n++;
 #if defined(__WXMAC__)
         appNameExt = wxString::Format("%s %d.app", app_name, n);
+#elif defined(__WXMSW__)
+        appNameExt = wxString::Format("%s %d folder", app_name, n);
 #else
-        appNameExt = wxString::Format("%s %d", app_name, n);
+        if (isAppImage)
+            appNameExt = wxString::Format("%s %d-%s.AppImage", appName, n, AppImageArchitecture());
+        else
+            appNameExt = wxString::Format("%s %d folder", app_name, n);
 #endif
     }
     wxString appDstPath = scriptFolderFName.GetFullPath();
@@ -1262,11 +1453,355 @@ wxLuaStandaloneApp::OnCreateApplication(wxCommandEvent &event)
     }
     lua_pop(L, 1);
 
+#elif defined(__WXGTK__)
+
+    if (isAppImage) {
+        wxString errorMessage;
+        pid_t pid;
+        int status;
+
+        //  Validate icon format (256x256 or 128x128 png, or svg)
+        int iconType = 0;
+        if (iconPath.EndsWith(wxT(".png"))) {
+            wxBitmap bitmap(iconPath, wxBITMAP_TYPE_PNG);
+            if (bitmap.GetWidth() == 128 && bitmap.GetHeight() == 128)
+                iconType = 2;
+            else if (bitmap.GetWidth() == 256 && bitmap.GetHeight() == 256)
+                iconType = 3;
+        } else if (iconPath.EndsWith(wxT(".svg"))) {
+            iconType = 1;
+        }
+        if (iconType == 0) {
+            DisplayMessage(wxT("ERROR: The icon should be either png (256x256 or 128x128) or svg"), false);
+            return;
+        }
+        
+        //  Create a working directory in /tmp
+        char tempDir[] = "/tmp/LuaAppImageXXXXXX";
+        if (mkdtemp(tempDir) == NULL) {
+            DisplayMessage(wxT("ERROR: Cannot create working directory in /tmp"), false);
+            return;
+        }
+        wxString tempDirString(tempDir);
+        wxString saveCwdString = wxGetCwd();
+        
+        wxString title = wxT("Creating AppImage");
+        wxString message = wxT("");
+        ProgressDialog aDialog(title, message);
+        wxStopWatch sw;
+
+        //  run APPIMAGE --appimage-extract to extract the AppImage content
+        //  The environement variable APPIMAGE contains the full path of the running appimage
+        {
+            wxBetterProcess *appimage_proc = new wxBetterProcess(wxPROCESS_REDIRECT);
+            const char *args[3];
+            long retval;
+            args[0] = getenv("APPIMAGE");
+            args[1] = "--appimage-extract";
+            args[2] = NULL;
+            wxSetWorkingDirectory(tempDirString);
+            retval = wxExecute(args, wxEXEC_ASYNC, appimage_proc);
+            wxSetWorkingDirectory(saveCwdString);
+            if (retval <= 0) {
+                errorMessage = wxT("ERROR: Cannot run subprocess");
+                delete appimage_proc;
+                goto cleanup;
+            }
+            aDialog.SetProgressMessage(wxT("Extracting AppImage..."));
+            while (!appimage_proc->IsTerminated()) {
+                wxString message;
+                sw.Start(0);
+                if (aDialog.CheckInterrupt() != 0) {
+                    appimage_proc->KillProcess();
+                    break;
+                }
+                /*while (appimage_proc->GetLine(message) > 0) {
+                    aDialog.SetProgressMessage(message);
+                }*/
+                aDialog.SetProgressValue(-1);
+                wxMilliSleep(wxMax((long)500 - sw.Time(), 0L));
+                sw.Pause();
+            }
+            if (appimage_proc->GetStatus() != 0 || appimage_proc->GetKillSignal() != wxSIGNONE) {
+                errorMessage = wxT("ERROR: the appimage extract failed or interrupted");
+                delete appimage_proc;
+                goto cleanup;
+            }
+            delete appimage_proc;
+        }
+
+        //  Copy script folder to usr/bin
+        {
+            wxString scriptDstPath = tempDirString + wxT("/squashfs-root/usr/bin/scripts");
+            errorMessage = CopyRecursive(scriptFolder, scriptDstPath, true);
+            if (!errorMessage.IsEmpty())
+                goto cleanup;
+        }
+        
+        {
+            //  Copy Icon
+            wxString iconDstPath = tempDirString + wxT("/squashfs-root/");
+            wxString iconDstSubPath;
+            if (iconType == 1)
+                iconDstSubPath = wxT("usr/share/icons/hicolor/scalable/apps/myicon.svg");
+            else if (iconType == 2)
+                iconDstSubPath = wxT("usr/share/icons/hicolor/128x128/apps/myicon.png");
+            else
+                iconDstSubPath = wxT("usr/share/icons/hicolor/256x256/apps/myicon.png");
+            iconDstPath = iconDstPath + iconDstSubPath;
+            errorMessage = CopyRecursive(iconPath, iconDstPath, true);
+            if (!errorMessage.IsEmpty())
+                goto cleanup;
+
+            //  Create a symbolic link to the icon file
+            wxString symlinkPath = tempDirString + wxT("/squashfs-root/myicon.") + (iconType == 1 ? wxT("svg") : wxT("png"));
+            unlink(symlinkPath);
+            symlink(iconDstSubPath, symlinkPath);
+        
+            //  Edit LuaAppMaker.desktop for Name and Icon entries
+            wxString desktopPath = tempDirString + wxT("/squashfs-root/usr/share/applications/LuaAppMaker.desktop");
+            wxFile desktopRead(desktopPath);
+            wxString desktopContent;
+            desktopRead.ReadAll(&desktopContent);
+            desktopRead.Close();
+            desktopContent.Replace(wxT("Name=LuaAppMaker"), wxT("Name=") + appName, true);
+            desktopContent.Replace(wxT("Icon=wxlualogo"), wxT("Icon=myicon"), true);
+            wxFile desktopWrite(desktopPath, wxFile::write);
+            desktopWrite.Write(desktopContent);
+            desktopWrite.Close();
+        }
+        
+        //  Run appimagetool to build the new AppImage
+        //  LuaApp.resourcePath contains the usr/bin directory in the appimage, which contains appimagetool-$(ARCH).AppImage
+        {
+            wxString resourcePath = FindResourcePath();
+            wxBetterProcess *appimagetool_proc = new wxBetterProcess(wxPROCESS_REDIRECT);
+            const char *args[4];
+            long retval;
+            wxString appImageTool = resourcePath + "/appimagetool-" + AppImageArchitecture() + ".AppImage";
+            args[0] = (const char *)appImageTool;
+            args[1] = "squashfs-root";
+            args[2] = (const char *)appNameExt;
+            args[3] = NULL;
+            wxSetWorkingDirectory(tempDirString);
+            retval = wxExecute(args, wxEXEC_ASYNC, appimagetool_proc);
+            wxSetWorkingDirectory(saveCwdString);
+            if (retval <= 0) {
+                errorMessage = wxT("ERROR: Cannot run subprocess");
+                delete appimagetool_proc;
+                goto cleanup;
+            }
+            aDialog.SetProgressMessage(wxT("Creating AppImage..."));
+            while (!appimagetool_proc->IsTerminated()) {
+                wxString message;
+                sw.Start(0);
+                if (aDialog.CheckInterrupt() != 0) {
+                    appimagetool_proc->KillProcess();
+                    break;
+                }
+                /*while (appimagetool_proc->GetLine(message) > 0) {
+                    aDialog.SetProgressMessage(message);
+                }*/
+                aDialog.SetProgressValue(-1);
+                wxMilliSleep(wxMax((long)500 - sw.Time(), 0L));
+                sw.Pause();
+            }
+            if (appimagetool_proc->GetStatus() != 0 || appimagetool_proc->GetKillSignal() != wxSIGNONE) {
+                errorMessage = wxT("ERROR: the appimagetool failed or interrupted");
+                delete appimagetool_proc;
+                goto cleanup;
+            }
+            delete appimagetool_proc;
+        }
+
+        //  Rename and copy the generated AppImage
+        {
+            wxString appImageSrcPath = tempDirString + wxT("/") + appNameExt;
+            if (appDstPath.EndsWith("/")) {
+                //  AppImage is a regular file (not a directory)
+                appDstPath.Truncate(appDstPath.Len() - 1);
+            }
+            errorMessage = CopyRecursive(appImageSrcPath, appDstPath, true);
+        }
+        RemoveRecursive(tempDirString);
+
+    cleanup:
+        aDialog.Destroy();
+        if (!errorMessage.IsEmpty()) {
+            DisplayMessage(errorMessage, false);
+            return;
+        }
+    
+    } else {
+        //  Find the folder in which this executable is located
+        wxFileName appSrcFName = wxFileName::DirName(FindResourcePath());
+        wxString appSrcPath = appSrcFName.GetFullPath();
+        
+        //  Copy executable
+        CopyRecursive(appSrcPath, appDstPath, true);
+        //  Copy script folder
+        wxString scriptDstPath = appDstPath + wxT("scripts");
+        CopyRecursive(scriptFolder, scriptDstPath, true);
+        //  TODO: Replace application icon
+        wxString exeName = appDstPath + wxFILE_SEP_PATH + wxT("LuaAppMaker");
+        //  Rename executable
+        wxString exeNewName = appDstPath + wxFILE_SEP_PATH + appName;
+        ::wxRenameFile(exeName, exeNewName);
+    }
+
 #else
     DisplayMessage(wxT("script_folder = ") + wxString(script_folder ? script_folder : "(nil)") + wxT("\n"), false);
     DisplayMessage(wxT("icon_path = ") + wxString(icon_path ? icon_path : "(nil)") + wxT("\n"), false);
-#endif
     return;
+#endif
+    
+    wxString msg = wxT("\"") + appNameExt + wxT("\" was successfully created.");
+    ::wxMessageBox(msg, "Success", wxOK|wxCENTRE);
+    return;
+}
+
+#if 0
+#pragma mark ====== Better wxProcess ======
+#endif
+
+void
+wxBetterProcess::OnTerminate(int pid, int status)
+{
+    m_terminated = true;
+    m_status = status;
+}
+wxKillError
+wxBetterProcess::KillProcess(wxSignal sig, int flags)
+{
+    wxKillError retval = wxProcess::Kill(this->GetPid(), sig, flags);
+    if (retval == wxKILL_OK)
+        m_killSignal = sig;
+    return retval;
+}
+
+int
+wxBetterProcess::GetLine(wxString &outStr)
+{
+    wxInputStream *stream = this->GetInputStream();
+    int trial = 0;
+    char *p, *pp;
+    long len;
+    char buf[1024];
+    if (stream == NULL)
+        return -3;  //  No stderr stream
+    while (1) {
+        p = (char *)m_stdout.GetData();
+        len = m_stdout.GetDataLen();
+        pp = (char *)memchr(p, '\n', len);
+        if (pp == NULL)
+            pp = (char *)memchr(p, '\r', len);
+        if (pp == NULL && stream->GetLastError() == wxSTREAM_EOF) {
+            //  If EOF, then return all remaining data (without '\n')
+            pp = p + m_stdout.GetDataLen() - 1;  //  Point to the last char
+        }
+        if (pp != NULL) {
+            //  Return one line and string length
+            outStr = wxString(p, wxConvUTF8, pp - p + 1);
+            memmove(p, pp + 1, len - (pp - p + 1));
+            m_stdout.SetDataLen(len - (pp - p + 1));
+            return pp - p + 1;
+        }
+        if (trial > 0)
+            return 0;  //  stream->Read() is called only once
+        len = 0;
+        if (stream->CanRead()) {
+            //  We need to read by one character because wxInputStream has
+            //  no way to give the available number of bytes
+            stream->Read(buf, sizeof buf);
+            int err = stream->GetLastError();
+            if (err != wxSTREAM_NO_ERROR) {
+                if (err != wxSTREAM_EOF)
+                    return -2;  //  Some read error
+                if (m_stdout.GetDataLen() == 0)
+                    return -1;  //  EOF and no data left
+            }
+            len = stream->LastRead();
+        }
+        if (len > 0)
+            m_stdout.AppendData(buf, len);
+        trial++;
+    }
+}
+
+int
+wxBetterProcess::GetErrorLine(wxString &outStr)
+{
+    wxInputStream *stream = this->GetErrorStream();
+    int trial = 0;
+    char *p, *pp;
+    long len;
+    char buf[1024];
+    if (stream == NULL)
+        return -3;  //  No stderr stream
+    while (1) {
+        p = (char *)m_stderr.GetData();
+        len = m_stderr.GetDataLen();
+        pp = (char *)memchr(p, '\n', len);
+        if (pp == NULL)
+            pp = (char *)memchr(p, '\r', len);
+        if (pp == NULL && stream->GetLastError() == wxSTREAM_EOF) {
+            //  If EOF, then return all remaining data (without '\n')
+            pp = p + m_stderr.GetDataLen() - 1;  //  Point to the last char
+        }
+        if (pp != NULL) {
+            //  Return one line and string length
+            outStr = wxString(p, wxConvUTF8, pp - p + 1);
+            memmove(p, pp + 1, len - (pp - p + 1));
+            m_stderr.SetDataLen(len - (pp - p + 1));
+            return pp - p + 1;
+        }
+        if (trial > 0)
+            return 0;  //  stream->Read() is called only once
+        if (stream->CanRead()) {
+            stream->Read(buf, sizeof buf);
+            int err = stream->GetLastError();
+            if (err != wxSTREAM_NO_ERROR) {
+                if (err != wxSTREAM_EOF)
+                    return -2;  //  Some read error
+                if (m_stdout.GetDataLen() == 0)
+                    return -1;  //  EOF and no data left
+            }
+            len = stream->LastRead();
+            m_stderr.AppendData(buf, len);
+        }
+        trial++;
+    }
+}
+
+int
+wxBetterProcess::PutLine(wxString str)
+{
+    wxOutputStream *stream = this->GetOutputStream();
+    if (stream == NULL)
+        return -3;  //  No stdin stream
+    const char *p = str.utf8_str();
+    long len = strlen(p);
+    if (len > 0)
+        m_stdin.AppendData(p, len);
+    char *pp = (char *)m_stdin.GetData();
+    len = m_stdin.GetDataLen();
+    if (len == 0)
+        return 0;
+    stream->Write(pp, len);
+    long len2 = stream->LastWrite();
+    if (len2 > 0) {
+        memmove(pp, pp + len2, len - len2);
+        m_stdin.SetDataLen(len - len2);
+    }
+    return len2;
+}
+
+void
+wxBetterProcess::CloseOutput()
+{
+    //  We must flush the data in the internal buffer before closing the output
+    while (PutLine("") > 0) {}
+    wxProcess::CloseOutput();  //  Call the original version
 }
 
 #if 0
