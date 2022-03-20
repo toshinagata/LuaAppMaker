@@ -150,7 +150,7 @@ ifeq ($(TARGET_PLATFORM),LINUX)
  CPP_EXTRA_FLAGS = -I$(LUAJIT_DIR)/src -I../wxlua/wxLua -I../wxlua/wxLua/modules -I../wxlua/wxLua/modules/wxbind/include -I../wxlua/wxLua/modules/wxbind/setup -DLUA_COMPAT_MODULE -fpermissive
  ifeq ($(CROSS),)
   ifeq ($(TARGET_ARCH),i686)
-   BUILD_DIR = build-debian
+   BUILD_DIR = $(shell basename `pwd`)
    TOOL_PREFIX =
    PATH_PREFIX =
    LIB_SUFFIX = -3.1
@@ -159,7 +159,7 @@ ifeq ($(TARGET_PLATFORM),LINUX)
    APPIMAGE_PRODUCT_ARCH = i386
    #LUAJIT_HOSTCC_FLAGS = "HOST_XCFLAGS=-I. -DLUAJIT_OS=LUAJIT_OS_WINDOWS"
   else
-   BUILD_DIR = build-debian64
+   BUILD_DIR = $(shell basename `pwd`)
    TOOL_PREFIX =
    PATH_PREFIX=
    LIB_SUFFIX = -3.1
@@ -183,12 +183,15 @@ ifeq ($(TARGET_PLATFORM),LINUX)
    endif
   endif
  endif
+ CPP_NAME = g++
+ CC_NAME = gcc
  WX_LIB_DIR = $(WX_DIR)/$(BUILD_DIR)/lib
  WX_ARCH_DIR = $(WX_LIB_DIR)/wx/include/gtk3-unicode-static-3.1
  WX_CPPFLAGS = -I$(WX_ARCH_DIR) -I$(WX_DIR)/include -D_FILE_OFFSET_BITS=64 -D__WXGTK__ -pthread -DwxLUA_USEBINDING_WXWEBVIEW=0
- WX_LDFLAGS = -fPIC -L$(WX_LIB_DIR) -pthread $(WX_LIB_DIR)/libwx_gtk3u_gl$(LIB_SUFFIX).a -lGL -Wl,-Bstatic,-lGLU,-Bdynamic -lEGL -lwayland-egl -lwayland-client $(WX_LIB_DIR)/libwx_gtk3u$(LIB_SUFFIX).a -lgtk-3 -lgdk-3 -lpangocairo-1.0 -lpango-1.0 -latk-1.0 -lcairo-gobject -lcairo -lgdk_pixbuf-2.0 -lgio-2.0 -lgobject-2.0 -lgthread-2.0 -pthread -lglib-2.0 -lX11 -lXxf86vm -lSM -lgtk-3 -lgdk-3 -lpangocairo-1.0 -lpango-1.0 -latk-1.0 -lcairo-gobject -lcairo -lgdk_pixbuf-2.0 -lgio-2.0 -lgobject-2.0 -lglib-2.0 -lXtst -lpangoft2-1.0 -lpango-1.0 -lgobject-2.0 -lglib-2.0 -lfontconfig -lfreetype -lpng -lz -lwxregexu$(LIB_SUFFIX) -lwxtiff$(LIB_SUFFIX) -lwxjpeg$(LIB_SUFFIX) -lwxscintilla$(LIB_SUFFIX) -lz -lexpat -lpng -lz -ldl -lm
+# WX_LDFLAGS = -fPIC -L$(WX_LIB_DIR) -pthread $(WX_LIB_DIR)/libwx_gtk3u_gl$(LIB_SUFFIX).a -lGL -Wl,-Bstatic,-lGLU,-Bdynamic -lEGL -lwayland-egl -lwayland-client $(WX_LIB_DIR)/libwx_gtk3u$(LIB_SUFFIX).a -lgtk-3 -lgdk-3 -lpangocairo-1.0 -lpango-1.0 -latk-1.0 -lcairo-gobject -lcairo -lgdk_pixbuf-2.0 -lgio-2.0 -lgobject-2.0 -lgthread-2.0 -pthread -lglib-2.0 -lX11 -lXxf86vm -lSM -lgtk-3 -lgdk-3 -lpangocairo-1.0 -lpango-1.0 -latk-1.0 -lcairo-gobject -lcairo -lgdk_pixbuf-2.0 -lgio-2.0 -lgobject-2.0 -lglib-2.0 -lXtst -lpangoft2-1.0 -lpango-1.0 -lgobject-2.0 -lglib-2.0 -lfontconfig -lfreetype -lpng -lz -lwxregexu$(LIB_SUFFIX) -lwxtiff$(LIB_SUFFIX) -lwxjpeg$(LIB_SUFFIX) -lwxscintilla$(LIB_SUFFIX) -lz -lexpat -lpng -lz -ldl -lm
      # -lwebkit2gtk-4.0 -ljavascriptcoregtk-4.0
- LD_EXTRA_FLAGS = -L$(PWD)/build/lib -Wl,-rpath='$$ORIGIN/lib' -Wl,-export-dynamic
+ WX_LDFLAGS = -fPIC -L$(WX_LIB_DIR) -pthread $(WX_LIB_DIR)/libwx_gtk3u_gl$(LIB_SUFFIX).a -lGL -lGLU -lEGL -lwayland-egl -lwayland-client $(WX_LIB_DIR)/libwx_gtk3u$(LIB_SUFFIX).a -lgtk-3 -lgdk-3 -lpangocairo-1.0 -lpango-1.0 -latk-1.0 -lcairo-gobject -lcairo -lgdk_pixbuf-2.0 -lgio-2.0 -lgobject-2.0 -lgthread-2.0 -pthread -lglib-2.0 -lX11 -lXxf86vm -lSM -lgtk-3 -lgdk-3 -lpangocairo-1.0 -lpango-1.0 -latk-1.0 -lcairo-gobject -lcairo -lgdk_pixbuf-2.0 -lgio-2.0 -lgobject-2.0 -lglib-2.0 -lpangoft2-1.0 -lpango-1.0 -lgobject-2.0 -lglib-2.0 -lfontconfig -lfreetype -lpng -ljpeg -lz -lwxregexu$(LIB_SUFFIX) -lwxtiff$(LIB_SUFFIX) -lwxscintilla$(LIB_SUFFIX) -lz -lexpat -lpng -lz -ldl -lm
+ LD_EXTRA_FLAGS = -L$(PWD)/build/lib -Wl,-rpath='$$ORIGIN/lib' -shared -pie -Wl,-export-dynamic
  LD_EXTRA_FLAGS_WEBVIEW_SO = -L$(PWD)/build/lib -Wl,-rpath='$$ORIGIN/..'
  EXECUTABLE = _$(APPNAME)_
  FINAL_EXECUTABLE = $(APPNAME)
@@ -199,8 +202,11 @@ ifeq ($(TARGET_PLATFORM),LINUX)
  LUAJIT_LDFLAGS = -lluajit-5.1
 endif
 
-CPP = $(PATH_PREFIX)$(TOOL_PREFIX)g++
-CC = $(PATH_PREFIX)$(TOOL_PREFIX)gcc
+CPP_NAME ?= g++
+CC_NAME ?= gcc
+
+CPP = $(PATH_PREFIX)$(TOOL_PREFIX)$(CPP_NAME)
+CC = $(PATH_PREFIX)$(TOOL_PREFIX)$(CC_NAME)
 AR = $(PATH_PREFIX)$(TOOL_PREFIX)ar
 RANLIB = $(PATH_PREFIX)$(TOOL_PREFIX)ranlib
 
@@ -301,10 +307,11 @@ ifeq ($(TARGET_PLATFORM),LINUX)
 WEBVIEW_SO = $(DESTPREFIX)/wxwebview.so
 WXLUA_SRC_PATH = wxlua/wxLua/modules/wxbind/src
 $(DESTPREFIX)/$(WXLUA_SRC_PATH)/wxwebview_bind.o : $(WXLUA_DIR)/$(WXLUA_SRC_PATH)/wxwebview_bind.cpp
-	$(CPP) -c $< -o $@ $(CFLAGS) -DWXMAKINGDLL_BINDWXWEBVIEW=1
+	$(CPP) -c $< -o $@ -fPIC $(CFLAGS) -DWXMAKINGDLL_BINDWXWEBVIEW=1
 
 $(WEBVIEW_SO) : $(DESTPREFIX)/$(WXLUA_SRC_PATH)/wxwebview_bind.o final_executable
-	(cd $(PWD)/$(DESTPREFIX)/$(PRODUCT_DIR); $(CPP) -shared -fPIC -o $(PWD)/$@ $(PWD)/$(DESTPREFIX)/wxlua/wxLua/modules/wxbind/src/wxwebview_bind.o $(CFLAGS) $(FINAL_EXECUTABLE) $(LD_EXTRA_FLAGS_WEBVIEW_SO) $(WX_LDFLAGS) -lwebkit2gtk-4.0 -ljavascriptcoregtk-4.0 $(LUAJIT_LDFLAGS))
+#	(cd $(PWD)/$(DESTPREFIX)/$(PRODUCT_DIR); $(CPP) -shared -fPIC -o $(PWD)/$@ $(PWD)/$(DESTPREFIX)/wxlua/wxLua/modules/wxbind/src/wxwebview_bind.o $(CFLAGS) -Wl,--just-symbols=$(FINAL_EXECUTABLE) $(LD_EXTRA_FLAGS_WEBVIEW_SO) $(WX_LDFLAGS) -lwebkit2gtk-4.0 -ljavascriptcoregtk-4.0 $(LUAJIT_LDFLAGS) -Wl,-t -nostartfiles -nodefaultlibs)
+	(cd $(PWD)/$(DESTPREFIX)/$(PRODUCT_DIR); $(CPP) -shared -fPIC -o $(PWD)/$@ $(PWD)/$(DESTPREFIX)/wxlua/wxLua/modules/wxbind/src/wxwebview_bind.o $(FINAL_EXECUTABLE) $(LD_EXTRA_FLAGS_WEBVIEW_SO) $(WX_LDFLAGS) -lwebkit2gtk-4.0 -ljavascriptcoregtk-4.0 $(LUAJIT_LDFLAGS))
 endif
 
 final_executable : $(DESTPREFIX)/$(EXECUTABLE)
@@ -356,7 +363,8 @@ install: release
 setup: $(DESTPREFIX)/$(PRODUCT_DIR)/$(FINAL_EXECUTABLE)
 	mkdir -p ../_latest_binaries
 	rm -rf $(DESTPREFIX)/$(PRODUCT_DIR)/$(PRODUCT_DIR).AppDir
-	../../AppImage/linuxdeploy/build-$(APPIMAGE_TOOL_ARCH)/bin/linuxdeploy -e $(DESTPREFIX)/$(PRODUCT_DIR)/$(FINAL_EXECUTABLE) -l $(LUAJIT_LIB) -d ../wxSources/LuaAppMaker.desktop -i ../wxlua/wxLua/art/wxlualogo.png --appdir $(DESTPREFIX)/$(PRODUCT_DIR)/$(PRODUCT_DIR).AppDir
+	../../AppImage/linuxdeploy-i386.AppImage -e $(DESTPREFIX)/$(PRODUCT_DIR)/$(FINAL_EXECUTABLE) -l $(LUAJIT_LIB) -d ../wxSources/LuaAppMaker.desktop -i ../wxlua/wxLua/art/wxlualogo.png --appdir $(DESTPREFIX)/$(PRODUCT_DIR)/$(PRODUCT_DIR).AppDir
+#	perl ../wxSources/prepare_appdir.pl -e $(DESTPREFIX)/$(PRODUCT_DIR)/$(FINAL_EXECUTABLE)  -i ../wxlua/wxLua/art/wxlualogo.png --appdir $(DESTPREFIX)/$(PRODUCT_DIR)/$(PRODUCT_DIR).AppDir
 	cp -R $(DESTPREFIX)/$(PRODUCT_DIR)/lib $(DESTPREFIX)/$(PRODUCT_DIR)/$(PRODUCT_DIR).AppDir/usr/bin
 	rm -f $(DESTPREFIX)/$(PRODUCT_DIR)/$(PRODUCT_DIR).AppDir/usr/bin/lib/libluajit-*
 	cp ../../AppImage/appimagetool-$(APPIMAGE_TOOL_ARCH).AppImage $(DESTPREFIX)/$(PRODUCT_DIR)/$(PRODUCT_DIR).AppDir/usr/bin

@@ -118,7 +118,7 @@ elif [ $TARGET_PLATFORM = "MAC" ]; then
   install_name_tool -id "@rpath/libluajit-5.1.dylib" ../lib/libluajit-5.1.dylib
 #  cp -f src/libluajit-5.1.dylib ../lib
 elif [ $TARGET_PLATFORM = "LINUX" ]; then
-  make HOST_CC=$HOST_CC LDFLAGS="" DESTDIR="" TARGET_ARCH="" TARGET_SYS=$TARGET_SYS PREFIX="$INSTALL_DIR" install || exit 1
+  (PATH=$PATH:/usr/sbin:/sbin; make HOST_CC=$HOST_CC LDFLAGS="" DESTDIR="" TARGET_ARCH="" TARGET_SYS=$TARGET_SYS PREFIX="$INSTALL_DIR" install) || exit 1
 fi
 
 make clean
