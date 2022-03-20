@@ -15,7 +15,11 @@ local HANDLE_CFUNC = 3
 local baseLevel = 0    -- Usually zero, but if we are stopping at a function call and want to fake that we are just before the call, then this is 1
 
 miniDebug.env = nil
-miniDebug.verbose = nil      -- 1: show message, 2: 1 + $HOME/luaappmaker_debug_X.log
+
+--  Show message in $HOME/luaappmaker_debug_X.log
+--  1: show communiation messages with remote debugger
+--  2: 1 + show info on every HOOK invocation
+miniDebug.verbose = nil
 
 LuaApp.config.showConsole = true
 
@@ -24,7 +28,7 @@ local thisSource = debug.getinfo(1).source
 local socket = nil --  The socket to connect with the server
 
 local function Output(msg)
-  if not miniDebug.verbose or miniDebug.verbose < 2 then return end
+  if not miniDebug.verbose then return end
   if not logfile then
     local i = 1
     local name
@@ -58,7 +62,7 @@ local function Receive(nbytes)
       buffer = ""
     end
     if miniDebug.verbose and #buf > 0 then
-      print("(In)  " .. buf)
+      --print("(In)  " .. buf)
       Output("(In)  " .. buf)
     end
     return buf
@@ -69,7 +73,7 @@ end
 local function Send(msg)
   if socket and socket:Ok() and socket:IsConnected() then
     if miniDebug.verbose then
-      print("(Out) " .. msg)
+      --print("(Out) " .. msg)
       Output("(Out) " .. msg)
     end
     socket:Write(msg)
@@ -77,7 +81,7 @@ local function Send(msg)
     while n < #msg do
       msg = msg:sub(n + 1, -1)
       if not socket:Wait(10) then
-        print("(Out)[Send timeout, the following chars are not sent: "..msg.."]")
+        Output("(Out)[Send timeout, the following chars are not sent: "..msg.."]")
         return
       end
       socket:Write(msg)
@@ -96,17 +100,22 @@ local function RemoveBaseDir(str)
   return str
 end
 
+local function quote(str)
+  str = string.format("%q", str):gsub("\\\n", "\\n")
+  return str
+end
+
 local function ToString(val, options)
   local t = type(val)
   if t == "number" or t == "nil" then
     return tostring(val)
   elseif t == "string" then
-    return string.format("%q", val)
+    return quote(val)
   elseif t == "userdata" then
     local s = tostring(val)
     local s1 = s:match("userdata: 0x[0-9a-f]+ (%[wx.*)")
     if s1 then s = s1 end
-    return string.format("%q", s)
+    return quote(s)
   elseif t == "function" then
     local info = debug.getinfo(val)
     local s
@@ -115,7 +124,7 @@ local function ToString(val, options)
     else
       s = tostring(val)
     end
-    return string.format("%q", s)
+    return quote(s)
   elseif t == "table" then
     options = options or { loop = {} }
     local loop = options.loop
@@ -123,7 +132,7 @@ local function ToString(val, options)
     for i = 1, #loop do
       if loop[i] == val then
         --  Avoid circular reference
-        return string.format("%q", "<Circular reference> "..tostring(val))
+        return quote("<Circular reference> "..tostring(val))
       end
     end
     table.insert(loop, val)
@@ -141,8 +150,8 @@ local function ToString(val, options)
         --  Skip
       else
         k = tostring(k)
-        if k:find("[^_%w]") then
-          k = string.format("[%q]", k)
+        if k == "" or k:find("[^_A-Za-z]") then
+          k = "["..quote(k).."]"
         end
         s = s .. k .. "=" .. ToString(v, options) .. ","
       end
@@ -154,7 +163,7 @@ local function ToString(val, options)
     table.remove(loop)
     return s
   else
-    return string.format("%q", tostring(val))
+    return quote(tostring(val))
   end
 end
 
@@ -367,7 +376,8 @@ local function ProcessLines(event)
       end
     elseif com == "STACK" then
       local val = {}
-      for i = baseLevel + 3, baseLevel + 5 do
+      local i = baseLevel + 3
+      while true do
         local info = debug.getinfo(i)
         if not info then break end
         local ups, locals, varargs = GetUpvaluesAndLocals(i + 1, info.func)
@@ -388,6 +398,7 @@ local function ProcessLines(event)
           short_src = source
         end
         table.insert(val, {{info.name, source, info.linedefined, info.currentline, info.what, info.namewhat, short_src}, locals, ups})
+        i = i + 1
       end
       local res = "do local _="..ToString(val)..";return _;end"
       Send("200 OK " .. res .. "\n")
@@ -405,16 +416,16 @@ local function ProcessLines(event)
 end
 
 local function OnSocketConnection(event)
-  print("OnSocketConnection invoked")
+  Output("OnSocketConnection invoked")
   local socketEvent = event:GetSocketEvent()
   if socketEvent == wx.wxSOCKET_CONNECTION then
     if socket:Ok() and socket:IsConnected() then
-      print("Connection established.")
+      Output("Connection established.")
     else
-      print("SOCKET_CONNECTION event is caught but failed to connect.")
+      Output("SOCKET_CONNECTION event is caught but failed to connect.")
     end
   elseif socketEvent == wx.wxSOCKET_LOST then
-    print("Connection lost.")
+    Output("Connection lost.")
   elseif socketEvent == wx.wxSOCKET_INPUT then
     ProcessLines()
   end
@@ -442,13 +453,13 @@ local function Hook(event, line)
     end
     Output(msg)
   end
-  if miniDebug.verbose then
-    print("HOOK", event, line)
+  if miniDebug.verbose and miniDebug.verbose >= 2 then
+    Output("HOOK", event, line)
     if event == "call" or event == "return" then
       local info1 = debug.getinfo(2)
       if info1.what ~= "C" then
-        print(info1.linedefined, info1.lastlinedefined, info1.source, info1.name, info1.what, info1.currentline)
-        print("stack level = "..tostring(StackLevel(2)))
+        Output(info1.linedefined, info1.lastlinedefined, info1.source, info1.name, info1.what, info1.currentline)
+        Output("stack level = "..tostring(StackLevel(2)))
       end
     end
   end
@@ -545,11 +556,17 @@ local function Hook(event, line)
     end
   end
   ::stopHere::
+  Output("info = "..ToString(info).."\n")
   if not info then
     info = debug.getinfo(baseLevel + 2)
-    if info.what == "C" then return end  --  Don't stop inside a C function
-    if info.source == thisSource and info.currentline ~= miniDebug.errorHookLine then
-      return  --  Don't stop inside this file (unless we are on the errorHookLine)
+    if info.what == "C" then
+      --  Don't stop inside a C function
+      return
+    else
+      --  Don't stop inside this file, unless we are on the errorHookLine
+      if info.source == thisSource and info.currentline ~= miniDebug.errorHookLine then
+        return
+      end
     end
   end
   --  Discard 'OVER' loop
@@ -560,14 +577,28 @@ local function Hook(event, line)
     local source = info.source
     local currentline = info.currentline
     if source == thisSource and currentline == miniDebug.errorHookLine then
-      --  We're handling runtime error; fake as if we are on the line where the runtime error occurred
-      local errorInfo = debug.getinfo(4)
-      source = errorInfo.source
-      currentline = errorInfo.currentline
+      --  We're handling runtime error
+      --  Fake as if we are on the line where the runtime error occurred
+      local level = baseLevel + 2
+      local errorInfo
+      while true do
+        --  Look for the first stack frame inside the lua function
+        errorInfo = debug.getinfo(level + 2)
+        if not errorInfo or errorInfo.what ~= "C" then break end
+        level = level + 1
+      end
+      Output("errorInfo = "..ToString(errorInfo).."\n")
+      if errorInfo then
+        source = errorInfo.source
+        currentline = errorInfo.currentline
+        baseLevel = level
+      end
     end
-    if source:sub(1, 1) == "@" and source:sub(2, #basedir + 1) == basedir then
-      --  Remove @ and basedir
-      source = source:sub(#basedir + 2, -1)
+    if source:sub(1, 1) == "@" then
+      source = RemoveBaseDir(source)
+      -- if source:sub(1, 1) == "@" and source:sub(2, #basedir + 1) == basedir then
+          --  Remove @ and basedir
+      --   source = source:sub(#basedir + 2, -1)
     end
     if miniDebug.reportPause then
       Output(string.format("Paused at %d in %s\n", currentline, source))
@@ -597,14 +628,14 @@ local function StartClient(port)
     assert(addr:LocalHost())
     assert(addr:Service(port or 8172))
     socket = wx.wxSocketClient(wx.wxSOCKET_NOWAIT)
-    if miniDebug.verbose then print("socket = " .. tostring(socket)) end
+    if miniDebug.verbose then Output("socket = " .. tostring(socket)) end
     --socket:SetNotify(wx.wxSOCKET_INPUT_FLAG + wx.wxSOCKET_CONNECTION_FLAG + wx.wxSOCKET_LOST_FLAG)
     --socket:Notify(true)
     --socket:SetEventHandler(LuaApp)
     --LuaApp:Connect(-1, wx.wxEVT_SOCKET, OnSocketConnection)
     socket:Connect(addr, false)
     while not socket:Wait(5, 0) do
-      if miniDebug.verbose then print(string.format("Waiting for connection to %s (%s):%d...", addr:Hostname(), addr:IPAddress(), addr:Service())) end
+      if miniDebug.verbose then Output(string.format("Waiting for connection to %s (%s):%d...", addr:Hostname(), addr:IPAddress(), addr:Service())) end
     end
     hasInited = false
     ProcessLines()  --  Process startup commands
@@ -625,11 +656,12 @@ local function start()
     local info = debug.getinfo(1)
     debug.traceback = function (errorMessage)
       miniDebug.errorMessage = errorMessage
+      Output("debug.traceback has been invoked")
       local retval = miniDebug.traceback(errorMessage)  --  Break on this line
       return retval
     end
     --  Hook on runtime error; register the breakpoint
-    miniDebug.errorHookLine = info.currentline + 3
+    miniDebug.errorHookLine = info.currentline + 4
     miniDebug.errorHookFile = info.source
     breakpoints[miniDebug.errorHookLine] = breakpoints[miniDebug.errorHookLine] or {}
     breakpoints[miniDebug.errorHookLine][miniDebug.errorHookFile] = true
