@@ -559,7 +559,10 @@ local function Hook(event, line)
   Output("info = "..ToString(info).."\n")
   if not info then
     info = debug.getinfo(baseLevel + 2)
-    if info.what == "C" then
+    if not info then
+      --  We have no valid stack info
+      return
+    elseif info.what == "C" then
       --  Don't stop inside a C function
       return
     else
