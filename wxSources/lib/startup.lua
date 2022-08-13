@@ -22,3 +22,14 @@ function LuaApp.SaveSettings()
   end
   f:close()
 end
+
+--  Wrapper function, in case miniDebug.start() should be called from inside C function
+function LuaApp.startDebug()
+  if LuaApp.debug then
+    local runflag = LuaApp.debug.dontStopAfterFirstRun
+    LuaApp.debug.dontStopAfterFirstRun = true  --  Temporarily disable initial pausing
+    LuaApp.debug.start()
+    LuaApp.debug.dontStopAfterFirstRun = runflag
+  end
+end
+

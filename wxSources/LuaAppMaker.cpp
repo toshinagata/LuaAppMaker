@@ -1003,15 +1003,17 @@ wxLuaStandaloneApp::OpenPendingFiles()
         m_wxlState.RunString(wxT("package.path = ") + MakeLuaString(lpath) + wxT(".. package.path"));
         m_wxlState.RunString(wxT("package.cpath = ") + MakeLuaString(cpath) + wxT(".. package.cpath"));
         
-        //  Load "wxmain.lua"
-        DisplayMessage(wxT("Running wxmain.lua from " + dpath), false);
+        //  Load the main lua file
+        wxFileName mainname(spath);
+        wxString mainfilename = mainname.GetFullName();
+        DisplayMessage(wxT("Running ") + mainfilename + " from " + dpath, false);
         int rc = m_wxlState.RunFile(spath);
         if (rc == 0) {
             if (!CheckLuaLogicalExpression(wxT("LuaApp.config.showConsole"))) {
                 hideConsole = 1;
             }
             //  Start debugger client (if not started yet)
-            m_wxlState.RunString(wxT("if LuaApp.debug then LuaApp.debug.start() end"));
+            m_wxlState.RunString(wxT("if LuaApp.debug then LuaApp.startDebug() end"));
             m_wxmainExecuted = true;
         } else {
             DisplayMessage(wxlua_LUA_ERR_msg(rc), false);

@@ -643,7 +643,9 @@ local function StartClient(port)
     hasInited = false
     ProcessLines()  --  Process startup commands
     hasInited = true
-    willStop = true --  Stop immediately after "RUN"
+    if not miniDebug.dontStopAfterFirstRun then
+      willStop = true --  Stop immediately after "RUN"
+    end
     stackLevel = nil
     stopLevel = nil
     savedStopLevel = {}
@@ -670,6 +672,7 @@ local function start()
     breakpoints[miniDebug.errorHookLine][miniDebug.errorHookFile] = true
   end
   StartClient()
+  miniDebug.hasStarted = true
   debug.sethook(Hook, "crl", 10000)
 end
 
