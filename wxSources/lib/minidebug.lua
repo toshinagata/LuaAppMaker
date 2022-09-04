@@ -100,73 +100,6 @@ local function RemoveBaseDir(str)
   return str
 end
 
-local function quote(str)
-  str = string.format("%q", str):gsub("\\\n", "\\n")
-  return str
-end
-
-local function ToString(val, options)
-  local t = type(val)
-  if t == "number" or t == "nil" then
-    return tostring(val)
-  elseif t == "string" then
-    return quote(val)
-  elseif t == "userdata" then
-    local s = tostring(val)
-    local s1 = s:match("userdata: 0x[0-9a-f]+ (%[wx.*)")
-    if s1 then s = s1 end
-    return quote(s)
-  elseif t == "function" then
-    local info = debug.getinfo(val)
-    local s
-    if info then
-      s = string.format("function %sat %s:%d", (info.name and info.name.." ") or "", RemoveBaseDir(info.source), info.linedefined)
-    else
-      s = tostring(val)
-    end
-    return quote(s)
-  elseif t == "table" then
-    options = options or { loop = {} }
-    local loop = options.loop
-    local limit = options.limit or 10
-    for i = 1, #loop do
-      if loop[i] == val then
-        --  Avoid circular reference
-        return quote("<Circular reference> "..tostring(val))
-      end
-    end
-    table.insert(loop, val)
-    local s = "{"
-    local len = #val
-    local n1 = 0
-    for i = 1, len do
-      if n1 >= limit then break end
-      s = s .. ToString(val[i], options) .. ","
-      n1 = n1 + 1
-    end
-    n1 = 0
-    for k, v in pairs(val) do
-      if type(k) == "number" and math.floor(k) == k and k >= 1 and k <= len then
-        --  Skip
-      else
-        k = tostring(k)
-        if k == "" or k:find("[^_A-Za-z]") then
-          k = "["..quote(k).."]"
-        end
-        s = s .. k .. "=" .. ToString(v, options) .. ","
-      end
-    end
-    if s:sub(-1) == "," then
-      s = s:sub(1, -2)
-    end
-    s = s .. "}"
-    table.remove(loop)
-    return s
-  else
-    return quote(tostring(val))
-  end
-end
-
 local function GetUpvaluesAndLocals(level, func)
   if not func then return nil, nil, nil end
   local locals = {}
@@ -262,11 +195,16 @@ local function ProcessLines(event)
       local file, line = buf:match("%s*(.-)%s+(%d+)", init)
       if file and line then
         line = tonumber(line)
-        file = "@" .. basedir .. file
+        local fn = wx.wxFileName(file)
+        if fn and not fn:IsAbsolute() then
+          file = basedir .. file
+        end
+        file = "@" .. file
         if not breakpoints[line] then
           breakpoints[line] = {}
         end
         breakpoints[line][file] = true
+        Output("(Info) breakpoints = "..ToString(breakpoints).."\n")
       end
       if not isRunning then
         Send("200 OK\n")
@@ -278,11 +216,19 @@ local function ProcessLines(event)
         if file == "*" then
           breakpoints[line] = nil
         else
-          file = "@" .. basedir .. file
+          local fn = wx.wxFileName(file)
+          if fn and not fn:IsAbsolute() then
+            file = basedir .. file
+          end
+          file = "@" .. file
           local b = breakpoints[line]
           if b then
             b[file] = nil
+            if table.isempty(b) then
+              breakpoints[line] = nil
+            end
           end
+          Output("(info) breakpoints = "..ToString(breakpoints).."\n")
         end
       end
       if not isRunning then
